@@ -169,7 +169,7 @@
   <header>
     <img src="logo.jpg" alt="sysfx Logo">
     <div>
-      <h1>A+ Technology Solutions</h1>
+      <h1>Business Technology Solutions</h1>
     </div>
   </header>
 
@@ -205,48 +205,12 @@
     </div>
   </nav>
 
-  <h3>Public Message Board</h3>
-<form id="messageForm">
-  <input type="text" id="messageInput" placeholder="Leave a message!" required>
-  <button type="submit">Post</button>
-</form>
-
-<div id="messageBoard">
-  <!-- Messages will be displayed here -->
-</div>
-
-<script>
-  // Get elements
-  const form = document.getElementById('messageForm');
-  const messageInput = document.getElementById('messageInput');
-  const messageBoard = document.getElementById('messageBoard');
-
-  // Add event listener for form submission
-  form.addEventListener('submit', function (event) {
-    event.preventDefault();
-
-    const message = messageInput.value.trim();
-
-    if (message) {
-      // Create a new div to display the message
-      const messageDiv = document.createElement('div');
-      messageDiv.textContent = message;
-
-      // Append the new message to the board
-      messageBoard.appendChild(messageDiv);
-
-      // Clear the input field
-      messageInput.value = '';
-    }
-  });
-</script>
-
   <!-- Main Content Section -->
   <main>
     <!-- Home Section -->
     <section id="home">
       <h2>Welcome to sysfx!</h2>
-      <p class="section-content">We are here to provide you with exceptional tech solutions. Some of our services include hardware and software repairs, virus removal, network installs, web development, and custom builds. Let us help you keep your system(s) running smoothly!</p>
+      <p class="section-content">We are here to provide you and your business with exceptional tech solutions. Some of our services include hardware and software repairs, virus removal, network installs, web development, and custom builds. Let us help you keep your system(s) running smoothly!</p>
       <p><a href="mailto:nick@sysfx.net" class="contact-email">nick@sysfx.net</a></p>
     </section>
 

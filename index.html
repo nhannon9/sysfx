@@ -205,6 +205,42 @@
     </div>
   </nav>
 
+  <h3>Public Message Board</h3>
+<form id="messageForm">
+  <input type="text" id="messageInput" placeholder="Leave a message!" required>
+  <button type="submit">Post</button>
+</form>
+
+<div id="messageBoard">
+  <!-- Messages will be displayed here -->
+</div>
+
+<script>
+  // Get elements
+  const form = document.getElementById('messageForm');
+  const messageInput = document.getElementById('messageInput');
+  const messageBoard = document.getElementById('messageBoard');
+
+  // Add event listener for form submission
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    const message = messageInput.value.trim();
+
+    if (message) {
+      // Create a new div to display the message
+      const messageDiv = document.createElement('div');
+      messageDiv.textContent = message;
+
+      // Append the new message to the board
+      messageBoard.appendChild(messageDiv);
+
+      // Clear the input field
+      messageInput.value = '';
+    }
+  });
+</script>
+
   <!-- Main Content Section -->
   <main>
     <!-- Home Section -->
@@ -237,6 +273,8 @@
       <h2>About Us</h2>
       <p class="section-content">We are a team of passionate tech enthusiasts dedicated to providing high-quality technology solutions. Our mission is to make technology more accessible and user-friendly for everyone.</p>
     </section>
+
+    <p id="counter">Page Visits: 0</p>
   </main>
 
   <script>
@@ -247,6 +285,25 @@
       nav.classList.toggle('active');
       menu.classList.toggle('active');
     }
+  </script>
+
+  <script>
+  // Check if the counter already exists in localStorage
+  let visitCount = localStorage.getItem('visitCount');
+  
+  // If it's the first visit, initialize it
+  if (!visitCount) {
+    visitCount = 0;
+  }
+  
+  // Increment the counter
+  visitCount++;
+
+  // Store the updated counter back in localStorage
+  localStorage.setItem('visitCount', visitCount);
+
+  // Display the counter
+  document.getElementById('counter').innerText = `Page Visits: ${visitCount}`;
   </script>
 
 </body>

@@ -65,7 +65,7 @@
     .hamburger-menu div {
       width: 30px;
       height: 5px;
-      background-color: #fff;
+      background-color: #333; /* Dark color for visibility */
       margin: 6px 0;
     }
 
@@ -75,10 +75,11 @@
       justify-content: space-around;
       flex-grow: 1;
       padding-left: 20px;
+      background-color: #333; /* Dark background for navbar */
     }
 
     nav a {
-      color: #fff;
+      color: #fff;  /* White text for links */
       text-decoration: none;
       padding: 10px;
     }
@@ -115,20 +116,21 @@
     /* Responsive Hamburger */
     @media (max-width: 768px) {
       nav {
-        display: none;
+        display: none;  /* Initially hide the nav links */
       }
 
       .hamburger-menu {
-        display: block;
+        display: block; /* Show hamburger menu */
       }
 
       .hamburger-menu.active + nav {
-        display: block;
+        display: block;  /* Show nav when active */
       }
 
       nav a {
         display: block;
         padding: 10px 0;
+        color: #fff;  /* Ensure links are white on dark background */
       }
     }
 
@@ -159,7 +161,6 @@
     .contact-email:hover {
       text-decoration: underline;
     }
-
   </style>
 </head>
 <body>
@@ -242,9 +243,9 @@
     // Toggle Hamburger Menu
     function toggleMenu() {
       const menu = document.querySelector('.hamburger-menu');
-      menu.classList.toggle('active');
       const nav = document.querySelector('nav');
       nav.classList.toggle('active');
+      menu.classList.toggle('active');
     }
   </script>
 

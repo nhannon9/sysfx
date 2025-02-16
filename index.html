@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>sysfx - Technology Solutions</title>
+  <style>
+    /* Basic Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* Body Styling */
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f0f0f0;
+      color: #333;
+    }
+
+    /* Header */
+    header {
+      background-color: #333;
+      color: white;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header img {
+      max-width: 100px;
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+      font-weight: normal;
+    }
+
+    /* Scrolling Text */
+    .scrolling-text {
+      font-size: 1rem;
+      color: #f0f0f0;
+      text-align: center;
+      padding: 10px;
+      background-color: #444;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .scrolling-text p {
+      display: inline-block;
+      padding-left: 100%;
+      animation: scroll-left 10s linear infinite;
+    }
+
+    @keyframes scroll-left {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+
+    /* Hamburger Menu */
+    .hamburger-menu {
+      display: none;
+      cursor: pointer;
+    }
+
+    .hamburger-menu div {
+      width: 30px;
+      height: 5px;
+      background-color: #fff;
+      margin: 6px 0;
+    }
+
+    /* Navigation Links */
+    nav {
+      display: flex;
+      justify-content: space-around;
+      flex-grow: 1;
+      padding-left: 20px;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      padding: 10px;
+    }
+
+    nav a:hover {
+      background-color: #555;
+    }
+
+    /* Responsive Hamburger */
+    @media (max-width: 768px) {
+      nav {
+        display: none;
+      }
+
+      .hamburger-menu {
+        display: block;
+      }
+
+      .hamburger-menu.active + nav {
+        display: block;
+      }
+
+      nav a {
+        display: block;
+        padding: 10px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header Section -->
+  <header>
+    <!-- Replace 'logo.png' with the path to your logo -->
+    <img src="logo.png" alt="sysfx Logo">
+    <div>
+      <h1>Providing Technology Solutions</h1>
+    </div>
+  </header>
+
+  <!-- Scrolling Text -->
+  <div class="scrolling-text">
+    <p>N-TEC is now sysfx! Welcome to the new era of tech solutions!</p>
+  </div>
+
+  <!-- Hamburger Menu -->
+  <div class="hamburger-menu" onclick="toggleMenu()">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+
+  <!-- Navigation Links -->
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">Events</a>
+    <a href="#">Get Support</a>
+    <a href="#">Community</a>
+    <a href="#">About</a>
+    <a href="#">Local Weather</a>
+  </nav>
+
+  <!-- Main Content Section (optional) -->
+  <main>
+    <!-- Example content, replace with your actual content -->
+    <section id="home">
+      <h2>Welcome to sysfx!</h2>
+      <p>We're here to provide you with the best tech solutions, from computer repair to system optimization. Let us help you keep your tech running smoothly.</p>
+    </section>
+  </main>
+
+  <script>
+    // Toggle Hamburger Menu
+    function toggleMenu() {
+      const menu = document.querySelector('.hamburger-menu');
+      menu.classList.toggle('active');
+      const nav = document.querySelector('nav');
+      nav.classList.toggle('active');
+    }
+  </script>
+
+</body>
+</html>

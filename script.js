@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const text = "Providing next-gen tech solutions";
+    const text = "Providing next-gen tech solutions.";
     let index = 0;
     const typingEffectElement = document.getElementById("typing-effect");
 

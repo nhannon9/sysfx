@@ -208,9 +208,13 @@ body.dark-mode {
     z-index: -1;
 }
 
-/* Glass morphism effect */
+/* Update particles color based on mode */
+body .particles-js-canvas-el {
+    opacity: 0.3; /* Visible in light mode */
+}
+
 .glass-morphism {
-    background: var(--glass-bg);
+    background: rgba(255, 255, 255, 0.8); /* More opaque in light mode */
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     border: 1px solid var(--glass-border);
@@ -351,8 +355,9 @@ nav ul li {
     padding: 20px 0;
 }
 
+/* Fix service cards contrast */
 .service {
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: #ffffff;
     padding: 25px;
     border-radius: 8px;
     text-align: center;
@@ -407,10 +412,11 @@ nav ul li {
 }
 
 .testimonial {
-    background: rgba(255, 255, 255, 0.05);
+    background-color: #ffffff; /* Light background in light mode */
     padding: 25px;
     border-radius: 8px;
     position: relative;
+    color: #333; /* Dark text in light mode */
 }
 
 .quote-icon {
@@ -501,8 +507,16 @@ footer {
 }
 
 /* Dark mode adjustments */
-body.dark-mode .service,
-body.dark-mode .testimonial,
+body.dark-mode .service {
+    background-color: #333; /* Dark background in dark mode */
+    color: #fff; /* Light text in dark mode */
+}
+
+body.dark-mode .testimonial {
+    background-color: #333; /* Dark background in dark mode */
+    color: #fff; /* Light text in dark mode */
+}
+
 body.dark-mode .event-card {
     background-color: rgba(51, 51, 51, 0.5);
 }
@@ -511,6 +525,10 @@ body.dark-mode .modern-button {
     background-color: #45a049;
 }333; /* Darker background for service/testimonial boxes */
     color: #eee;
+}
+
+body.dark-mode .glass-morphism {
+    background: rgba(51, 51, 51, 0.8); /* More opaque in dark mode */
 }
 
 /* ... (media queries) */

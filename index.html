@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>sysfx - Technology Solutions</title>
+    <title>sysfx - Sys Fix Tech Solutions</title>
     <link rel="stylesheet" href="styles.css">
     <script defer src="script.js"></script>
 </head>
 <body>
     <header>
         <div class="logo-container">
-            <img src="logo.png" alt="sysfx Logo" class="spinning-logo">
+            <img src="logo.jpg" alt="sysfx Logo" class="spinning-logo">
         </div>
-        <h1>sysfx - Technology Solutions</h1>
-        <p>Providing next-gen tech solutions</p>
+        <h1>sysfx - Sys Fix Tech Solutions</h1>
+        <h2 id="typing-effect"></h2>
         <nav>
             <ul>
                 <li><a href="#">Events</a></li>
@@ -29,8 +29,8 @@
         <section class="welcome">
             <h2>Welcome to sysfx!</h2>
             <p>We provide expert tech solutions, including repairs, security, web development, and networking.
-               Our mission is to bring cutting-edge technology to our clients with precision and expertise.</p>
-            <p>Contact us at: <a href="mailto:nick@sysfx.net">nick@sysfx.net</a></p>
+               At Sys Fix, our mission is to bring suitable technology to our clients with precision and expertise.</p>
+            <p>Contact us for support at: <a href="mailto:nick@sysfx.net">nick@sysfx.net</a></p>
             <button id="darkModeToggle">Toggle Dark Mode</button>
         </section>
 
@@ -48,5 +48,20 @@
     <footer>
         <p>© 2025 sysfx. All rights reserved.</p>
     </footer>
+
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const text = "Providing next-gen tech solutions";
+    let index = 0;
+    function typeEffect() {
+        if (index < text.length) {
+            document.getElementById("typing-effect").innerHTML += text.charAt(index);
+            index++;
+            setTimeout(typeEffect, 100); // Adjust speed here (lower = faster)
+        }
+    }
+    typeEffect();
+});
+    </script>
 </body>
 </html>

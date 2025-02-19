@@ -3,189 +3,182 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>sysfx - Technology Solutions</title>
+  <title>sysfx - Tech Solutions & Innovation</title>
   <style>
-    /* Basic Reset */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    /* Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
 
-    /* Body Styling */
+    /* Dark Mode */
+    :root {
+      --bg-color: #f8f9fa;
+      --text-color: #222;
+      --accent-color: #007bff;
+      --glass-bg: rgba(255, 255, 255, 0.1);
+      --shadow-color: rgba(0, 0, 0, 0.2);
+    }
+
+    body.dark-mode {
+      --bg-color: #111;
+      --text-color: #f1f1f1;
+      --glass-bg: rgba(0, 0, 0, 0.2);
+      --shadow-color: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Body */
     body {
       font-family: 'Arial', sans-serif;
-      background-color: #f0f0f0;
-      color: #333;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background 0.3s, color 0.3s;
     }
 
     /* Header */
     header {
-      background-color: #333;
+      background-color: #222;
       color: white;
-      padding: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 15px 20px;
+      position: relative;
+      z-index: 10;
     }
 
-    header img {
-      max-width: 100px;
+    /* 3D Parallax Background */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: url('https://source.unsplash.com/1920x1080/?technology,digital') no-repeat center/cover;
+      filter: blur(5px);
+      transform: scale(1.1);
+      transition: transform 0.1s;
+      z-index: -1;
     }
 
-    header h1 {
-      font-size: 1.5rem;
-      font-weight: normal;
+    /* Logo */
+    .logo {
+      width: 80px;
+      height: 80px;
+      animation: spin 5s linear infinite;
     }
 
-    /* Scrolling Text */
-    .scrolling-text {
-      font-size: 1rem;
-      color: #f0f0f0;
-      text-align: center;
-      padding: 10px;
-      background-color: #444;
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Typing Animation */
+    .tagline {
+      font-size: 1.2rem;
       white-space: nowrap;
       overflow: hidden;
+      border-right: 3px solid var(--text-color);
+      width: 0;
+      animation: typing 3s steps(30, end) forwards, blink 0.8s infinite;
     }
 
-    .scrolling-text p {
-      display: inline-block;
-      padding-left: 100%;
-      animation: scroll-left 10s linear infinite;
-    }
+    @keyframes typing { to { width: 100%; } }
+    @keyframes blink { 50% { border-color: transparent; } }
 
-    @keyframes scroll-left {
-      0% { transform: translateX(100%); }
-      100% { transform: translateX(-100%); }
-    }
-
-    /* Hamburger Menu */
-    .hamburger-menu {
-      display: none;
-      cursor: pointer;
-    }
-
-    .hamburger-menu div {
-      width: 30px;
-      height: 5px;
-      background-color: #333; /* Dark color for visibility */
-      margin: 6px 0;
-    }
-
-    /* Navigation Links */
+    /* Navigation */
     nav {
+      background-color: #222;
       display: flex;
-      justify-content: space-around;
-      flex-grow: 1;
-      padding-left: 20px;
-      background-color: #333; /* Dark background for navbar */
+      justify-content: center;
+      padding: 10px 0;
     }
 
     nav a {
-      color: #fff;  /* White text for links */
+      color: white;
       text-decoration: none;
-      padding: 10px;
+      padding: 10px 20px;
+      transition: 0.3s;
+      position: relative;
     }
 
+    /* Neon Hover Effect */
     nav a:hover {
-      background-color: #555;
+      color: var(--accent-color);
     }
 
-    /* Green Color for Dropdown */
-    .dropdown-content {
-      display: none;
+    nav a::after {
+      content: "";
       position: absolute;
-      background-color: #fff;
-      min-width: 160px;
-      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-      z-index: 1;
+      width: 100%;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background: var(--accent-color);
+      transform: scaleX(0);
+      transition: transform 0.3s ease-in-out;
     }
 
-    .dropdown-content a {
-      color: #28a745;  /* Green Color */
-      padding: 12px 16px;
-      text-decoration: none;
-      display: block;
-    }
+    nav a:hover::after { transform: scaleX(1); }
 
-    .dropdown-content a:hover {
-      background-color: #ddd;
-    }
-
-    .dropdown:hover .dropdown-content {
-      display: block;
-    }
-
-    /* Responsive Hamburger */
-    @media (max-width: 768px) {
-      nav {
-        display: none;  /* Initially hide the nav links */
-      }
-
-      .hamburger-menu {
-        display: block; /* Show hamburger menu */
-      }
-
-      .hamburger-menu.active + nav {
-        display: block;  /* Show nav when active */
-      }
-
-      nav a {
-        display: block;
-        padding: 10px 0;
-        color: #fff;  /* Ensure links are white on dark background */
-      }
-    }
-
-    /* Main Content Styling */
+    /* Main Content */
     main {
+      max-width: 900px;
+      margin: 30px auto;
       padding: 20px;
-      background-color: #fff;
-      margin-top: 20px;
+      background: var(--glass-bg);
+      box-shadow: 0 4px 10px var(--shadow-color);
+      border-radius: 10px;
+      backdrop-filter: blur(15px);
+      animation: fadeInUp 1s ease-out;
     }
 
-    section {
-      margin-bottom: 20px;
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    h2 {
-      color: #333;
-    }
+    h2 { color: var(--text-color); }
 
-    .section-content {
-      color: #555;
-    }
-
+    /* Contact */
     .contact-email {
-      color: #28a745;  /* Green Color */
+      color: var(--accent-color);
       text-decoration: none;
+      font-weight: bold;
     }
 
-    .contact-email:hover {
-      text-decoration: underline;
+    /* Live Clock */
+    .clock {
+      font-size: 1.5rem;
+      text-align: right;
     }
+
+    /* Dark Mode Button */
+    .dark-mode-toggle {
+      cursor: pointer;
+      background: var(--accent-color);
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      margin-top: 10px;
+      transition: 0.3s;
+    }
+
+    .dark-mode-toggle:hover {
+      background: #0056b3;
+    }
+
   </style>
 </head>
 <body>
 
-  <!-- Header Section -->
+  <!-- Header -->
   <header>
-    <img src="logo.jpg" alt="sysfx Logo">
+    <img src="logo.jpg" alt="sysfx Logo" class="logo">
     <div>
-      <h1>Business Technology Solutions</h1>
+      <h1>sysfx - Technology Solutions</h1>
+      <p class="tagline">Providing next-gen tech solutions.</p>
     </div>
+    <div class="clock" id="clock"></div>
   </header>
 
-  <!-- Scrolling Text -->
-  <div class="scrolling-text">
-    <p>N-TEC is now sysfx! Welcome to the new era of tech solutions!</p>
-  </div>
-
-  <!-- Hamburger Menu -->
-  <div class="hamburger-menu" onclick="toggleMenu()">
-    <div></div>
-    <div></div>
-    <div></div>
-  </div>
-
-  <!-- Navigation Links -->
+  <!-- Navigation -->
   <nav>
     <a href="#">Home</a>
     <a href="#">Events</a>
@@ -193,81 +186,35 @@
     <a href="#">Community</a>
     <a href="#">About</a>
     <a href="#">Local Weather</a>
-
-    <!-- Dropdown Menu Example -->
-    <div class="dropdown">
-      <a href="#">More</a>
-      <div class="dropdown-content">
-        <a href="#">Service 1</a>
-        <a href="#">Service 2</a>
-        <a href="#">Service 3</a>
-      </div>
-    </div>
   </nav>
 
-  <!-- Main Content Section -->
+  <!-- Main Content -->
   <main>
-    <!-- Home Section -->
-    <section id="home">
-      <h2>Welcome to sysfx!</h2>
-      <p class="section-content">We are here to provide you and your business with exceptional tech solutions. Some of our services include hardware and software repairs, virus removal, network installs, web development, and custom builds. Let us help you keep your system(s) running smoothly!</p>
-      <p><a href="mailto:nick@sysfx.net" class="contact-email">nick@sysfx.net</a></p>
-    </section>
-
-    <!-- Events Section -->
-    <section id="events">
-      <h2>Upcoming Events</h2>
-      <p class="section-content">Stay tuned for upcoming workshops and tech talks! We're bringing the latest in tech to you. Check back soon!</p>
-    </section>
-
-    <!-- Get Support Section -->
-    <section id="get-support">
-      <h2>Get Support</h2>
-      <p class="section-content">If you're facing issues with your computer or network, we're here to help. Fill out our support form or contact us directly for fast assistance.</p>
-    </section>
-
-    <!-- Community Section -->
-    <section id="community">
-      <h2>Join the Community</h2>
-      <p class="section-content">Become a part of our growing tech community. Share tips, ask questions, and learn from others in a collaborative environment.</p>
-    </section>
-
-    <!-- About Section -->
-    <section id="about">
-      <h2>About Us</h2>
-      <p class="section-content">We are a team of passionate tech enthusiasts dedicated to providing high-quality technology solutions. Our mission is to make technology more accessible and user-friendly for everyone.</p>
-    </section>
-
-    <p id="counter">Page Visits: 0</p>
+    <h2>Welcome to sysfx!</h2>
+    <p>We provide expert tech solutions, including repairs, security, web development, and networking. Our mission is to bring cutting-edge technology to our clients with precision and expertise.</p>
+    <p>Contact us at: <a href="mailto:nick@sysfx.net" class="contact-email">nick@sysfx.net</a></p>
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()">Toggle Dark Mode</button>
   </main>
 
   <script>
-    // Toggle Hamburger Menu
-    function toggleMenu() {
-      const menu = document.querySelector('.hamburger-menu');
-      const nav = document.querySelector('nav');
-      nav.classList.toggle('active');
-      menu.classList.toggle('active');
+    // Live Clock
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('clock').textContent = now.toLocaleTimeString();
     }
-  </script>
+    setInterval(updateClock, 1000);
+    updateClock();
 
-  <script>
-  // Check if the counter already exists in localStorage
-  let visitCount = localStorage.getItem('visitCount');
-  
-  // If it's the first visit, initialize it
-  if (!visitCount) {
-    visitCount = 0;
-  }
-  
-  // Increment the counter
-  visitCount++;
+    // Dark Mode Toggle
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+    }
 
-  // Store the updated counter back in localStorage
-  localStorage.setItem('visitCount', visitCount);
-
-  // Display the counter
-  document.getElementById('counter').innerText = `Page Visits: ${visitCount}`;
+    // Parallax Effect
+    document.addEventListener('mousemove', (e) => {
+      document.body.style.setProperty('--parallax-x', e.clientX / window.innerWidth * 10 + 'px');
+      document.body.style.setProperty('--parallax-y', e.clientY / window.innerHeight * 10 + 'px');
+    });
   </script>
 
 </body>

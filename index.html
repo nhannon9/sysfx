@@ -48,7 +48,13 @@
             <h2 class="gradient-text">Welcome to sysfx!</h2>
             <p>We provide expert tech solutions, including repairs, security, web development, and networking.</p>
             <p>At Sys Fix, our mission is to bring suitable technology to our clients with precision and expertise.</p>
-            <p>Contact us for support at: <a href="mailto:nick@sysfx.net" class="email-link">nick@sysfx.net</a></p>
+            <p>Contact us for support at: <span id="email"></span></p>
+            <script>
+                var user = "nick";
+                var domain = "sysfx.net";
+                var email = user + "@" + domain;
+                document.getElementById("email").innerHTML = '<a href="mailto:' + email + '">' + email + '</a>';
+            </script>
             <div class="button-container">
                 <button id="darkModeToggle" class="modern-button">
                     <i class="fas fa-moon"></i> Toggle Dark Mode
@@ -156,7 +162,14 @@
                 <div class="contact-info">
                     <div class="contact-item">
                         <i class="fas fa-envelope"></i>
-                        <a href="mailto:nick@sysfx.net" class="email-link">nick@sysfx.net</a>
+                        <a href="#" class="email-link" onclick="sendEmail()">Click to email</a>
+                        <script>
+                            function sendEmail() {
+                                var user = "nick";
+                                var domain = "sysfx.net";
+                                var email = user + "@" + domain;
+                                window.location.href = "mailto:" + email;
+                        </script>
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-phone"></i>
@@ -225,7 +238,7 @@
                 // Simulated weather data (replace with actual API call)
                 setTimeout(() => {
                     document.getElementById('weather-widget').innerHTML = 
-                        `<i class="fas fa-sun"></i> 72°F in Clinton, CT`;
+                        `<i class="fas fa-sun"></i> 0°F in CT`;
                 }, 1000);
             }
             fetchWeather();
@@ -245,7 +258,7 @@
             const mapDiv = document.getElementById('map');
             mapDiv.innerHTML = `
                 <div style="background: #eee; height: 100%; display: flex; align-items: center; justify-content: center;">
-                    <p>Map of Clinton, CT</p>
+                    <p>Map of CT</p>
                 </div>
             `;
         }

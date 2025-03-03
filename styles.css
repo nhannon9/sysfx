@@ -81,9 +81,14 @@ body.dark-mode {
     background: linear-gradient(135deg, #00a000, #4CAF50);
     padding: 60px 20px;
     text-align: center;
-    color: #fff;
+    color: #333;
     position: relative;
     overflow: hidden;
+    animation: gradientShift 10s infinite ease-in-out;
+}
+
+body.dark-mode .hero {
+    color: #fff;
 }
 
 .hero::before {
@@ -96,6 +101,12 @@ body.dark-mode {
     border: 2px solid transparent;
     border-radius: 15px;
     animation: glowing-border 3s infinite;
+}
+
+@keyframes gradientShift {
+    0% { background: linear-gradient(135deg, #00a000, #4CAF50); }
+    50% { background: linear-gradient(135deg, #4CAF50, #00a000); }
+    100% { background: linear-gradient(135deg, #00a000, #4CAF50); }
 }
 
 @keyframes glowing-border {
@@ -117,6 +128,12 @@ body.dark-mode {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.parallax.visible {
+    opacity: 1;
 }
 
 .services.parallax {
@@ -130,12 +147,19 @@ body.dark-mode {
 /* Header styles */
 header {
     background-color: rgba(34, 34, 34, 0.9);
-    color: white;
     padding: 20px;
     text-align: center;
     position: sticky;
     top: 0;
     z-index: 100;
+}
+
+header h1 {
+    color: #333;
+}
+
+body.dark-mode header h1 {
+    color: white;
 }
 
 .status-bar {
@@ -186,7 +210,7 @@ nav ul li {
 }
 
 .nav-link {
-    color: #333; /* Default to dark for light mode */
+    color: #333;
     text-decoration: none;
     font-weight: 500;
     padding: 8px 15px;
@@ -200,7 +224,7 @@ nav ul li {
 }
 
 body.dark-mode .nav-link {
-    color: white; /* White in dark mode */
+    color: white;
 }
 
 .nav-link::after {
@@ -355,6 +379,7 @@ body.dark-mode .modern-button {
     text-align: center;
     transition: all 0.3s ease;
     transform-style: preserve-3d;
+    cursor: pointer;
 }
 
 body.dark-mode .service {
@@ -391,6 +416,41 @@ body.dark-mode .service {
 
 body.dark-mode .extra-info {
     color: #ccc;
+}
+
+/* Modal for service details */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: var(--glass-bg);
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 500px;
+    text-align: center;
+    color: #333;
+}
+
+body.dark-mode .modal-content {
+    color: #fff;
+}
+
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.5em;
+    cursor: pointer;
 }
 
 /* Event timeline */
@@ -433,7 +493,7 @@ body.dark-mode .event-card {
     margin-top: 30px;
     position: relative;
     overflow: hidden;
-    height: 250px; /* Fixed height for carousel */
+    height: 250px;
 }
 
 .testimonial {
@@ -494,6 +554,16 @@ body.dark-mode .testimonial {
     outline: none;
 }
 
+#email a {
+    color: var(--primary-color); /* Uses your green #00a000 */
+    text-decoration: none; /* Optional: removes underline */
+}
+
+#email a:hover,
+#email a:focus {
+    text-decoration: underline; /* Optional: adds underline on hover/focus */
+}
+
 /* Footer */
 footer {
     margin-top: 40px;
@@ -501,6 +571,24 @@ footer {
     background: rgba(34, 34, 34, 0.9);
     color: white;
     text-align: center;
+}
+
+.social-links {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.social-links a {
+    color: white;
+    font-size: 1.5em;
+    transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+    color: var(--primary-color);
+    transform: scale(1.2);
 }
 
 /* Scrolling text */
@@ -528,8 +616,8 @@ footer {
 /* Responsive design */
 @media (max-width: 768px) {
     header {
-        position: relative; /* Remove sticky on mobile */
-        padding: 10px; /* Reduce padding */
+        position: relative;
+        padding: 10px;
     }
 
     nav ul {
@@ -538,7 +626,7 @@ footer {
     }
 
     .nav-link {
-        padding: 6px 10px; /* Smaller buttons */
+        padding: 6px 10px;
     }
 
     .welcome, .events, .services, .testimonials, .about, .contact {

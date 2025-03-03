@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
         emailLink.addEventListener("click", (e) => {
             e.preventDefault();
             window.location.href = `mailto:${emailConfig.getEmail()}`;
+            playSound('click');
         });
     }
 
@@ -48,6 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 icon.classList.toggle("fa-sun");
             }
             localStorage.setItem("darkMode", body.classList.contains("dark-mode") ? "enabled" : null);
+            playSound('click');
         });
 
         if (localStorage.getItem("darkMode") === "enabled") {
@@ -68,10 +70,11 @@ document.addEventListener("DOMContentLoaded", function () {
             const targetElement = document.getElementById(targetId);
             if (targetElement) {
                 window.scrollTo({
-                    top: targetElement.offsetTop,
+                    top: targetElement.offsetTop - 80, // Adjust for smaller header
                     behavior: "smooth"
                 });
             }
+            playSound('scroll');
         });
     });
 
@@ -118,10 +121,11 @@ document.addEventListener("DOMContentLoaded", function () {
             } else {
                 weatherText.innerHTML = "Geolocation not supported";
             }
+            playSound('click');
         });
     }
 
-    // Particles.js
+    // Particles.js with enhanced interactivity
     if (document.getElementById("particles-js")) {
         particlesJS("particles-js", {
             particles: {
@@ -130,13 +134,28 @@ document.addEventListener("DOMContentLoaded", function () {
                 shape: { type: "circle" },
                 opacity: { value: 0.5, random: true },
                 size: { value: 4, random: true },
-                line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.4, width: 1 },
-                move: { enable: true, speed: 8, direction: "none", random: false, straight: false, out_mode: "out", bounce: false }
+                line_linked: { 
+                    enable: true, 
+                    distance: 150, 
+                    color: "#ffffff", 
+                    opacity: 0.4, 
+                    width: 1 
+                },
+                move: { 
+                    enable: true, 
+                    speed: 6, 
+                    direction: "none", 
+                    random: false, 
+                    straight: false, 
+                    out_mode: "out", 
+                    bounce: false,
+                    attract: { enable: true, rotateX: 600, rotateY: 1200 }
+                }
             },
             interactivity: {
                 detect_on: "canvas",
                 events: {
-                    onhover: { enable: true, mode: "repulse" },
+                    onhover: { enable: true, mode: "grab", parallax: { enable: true, force: 60 } },
                     onclick: { enable: true, mode: "push" },
                     resize: true
                 }
@@ -157,12 +176,13 @@ document.addEventListener("DOMContentLoaded", function () {
             .openPopup();
     }
 
-    // Testimonial carousel
+    // Testimonial carousel with 3D flip
     const testimonials = document.querySelectorAll(".testimonial");
     let currentTestimonial = 0;
     function showTestimonial() {
         testimonials.forEach((t, i) => {
             t.style.opacity = i === currentTestimonial ? "1" : "0";
+            t.style.transform = i === currentTestimonial ? "rotateY(0deg)" : "rotateY(-180deg)";
             t.style.position = i === currentTestimonial ? "relative" : "absolute";
         });
         currentTestimonial = (currentTestimonial + 1) % testimonials.length;
@@ -194,7 +214,7 @@ document.addEventListener("DOMContentLoaded", function () {
         observer.observe(stat);
     });
 
-    // Custom cursor effect
+    // Custom cursor effect with trail
     const cursor = document.querySelector(".cursor");
     let trailTimeout;
     document.addEventListener("mousemove", (e) => {
@@ -212,7 +232,7 @@ document.addEventListener("DOMContentLoaded", function () {
         cursor.style.display = "none";
     }
 
-    // Service modals
+    // Service modals with sound
     const services = document.querySelectorAll(".service");
     const modals = document.querySelectorAll(".modal");
     const closeButtons = document.querySelectorAll(".modal-close");
@@ -223,6 +243,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const modal = document.getElementById(modalId);
             if (modal) {
                 modal.style.display = "flex";
+                playSound('click');
             }
         });
     });
@@ -230,25 +251,48 @@ document.addEventListener("DOMContentLoaded", function () {
     closeButtons.forEach(button => {
         button.addEventListener("click", () => {
             button.closest(".modal").style.display = "none";
+            playSound('click');
         });
     });
 
     document.addEventListener("click", (e) => {
         if (e.target.classList.contains("modal")) {
             e.target.style.display = "none";
+            playSound('click');
         }
     });
 
-    // Scroll animations
-    const parallaxSections = document.querySelectorAll(".parallax");
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add("visible");
+    // Scroll animations with GSAP
+    gsap.registerPlugin(ScrollTrigger);
+    const sections = document.querySelectorAll(".section-animation");
+    sections.forEach(section => {
+        gsap.from(section, {
+            opacity: 0,
+            y: 50,
+            duration: 1,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: section,
+                start: "top 80%",
+                toggleActions: "play none none reverse"
             }
         });
-    }, { threshold: 0.1 });
-    parallaxSections.forEach(section => observer.observe(section));
+    });
+
+    // Parallax effect for sections
+    const parallaxSections = document.querySelectorAll(".parallax");
+    parallaxSections.forEach(section => {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("visible");
+                } else {
+                    entry.target.classList.remove("visible");
+                }
+            });
+        }, { threshold: 0.1 });
+        observer.observe(section);
+    });
 
     // 3D tilt effect on service cards
     services.forEach(card => {
@@ -261,6 +305,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const tiltX = (y - centerY) / 10;
             const tiltY = -(x - centerX) / 10;
             card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-10px)`;
+            playSound('hover');
         });
 
         card.addEventListener("mouseleave", () => {
@@ -268,7 +313,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // Chatbot toggle and basic functionality
+    // Chatbot toggle and basic functionality with sound
     const chatbotBtn = document.querySelector(".chatbot-btn");
     const chatbotWindow = document.querySelector(".chatbot-window");
     const chatbotInput = document.querySelector(".chatbot-input");
@@ -277,6 +322,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (chatbotBtn && chatbotWindow) {
         chatbotBtn.addEventListener("click", () => {
             chatbotWindow.style.display = chatbotWindow.style.display === "block" ? "none" : "block";
+            playSound('click');
         });
 
         chatbotInput.addEventListener("keypress", (e) => {
@@ -284,11 +330,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 const userMessage = document.createElement("p");
                 userMessage.textContent = `You: ${chatbotInput.value}`;
                 chatbotMessages.appendChild(userMessage);
+                playSound('type');
 
                 // Simple bot response
                 const botMessage = document.createElement("p");
                 botMessage.textContent = "Bot: Thanks for your message! How can I assist you further?";
-                setTimeout(() => chatbotMessages.appendChild(botMessage), 500);
+                setTimeout(() => {
+                    chatbotMessages.appendChild(botMessage);
+                    playSound('response');
+                }, 500);
 
                 chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
                 chatbotInput.value = "";
@@ -301,10 +351,11 @@ document.addEventListener("DOMContentLoaded", function () {
     if (heroVideo) {
         heroVideo.addEventListener("error", () => {
             heroVideo.style.display = "none"; // Fallback to gradient if video fails
+            playSound('error');
         });
     }
 
-    // Gallery lightbox
+    // Gallery lightbox with sound
     const galleryItems = document.querySelectorAll(".gallery-item");
     const lightbox = document.querySelector(".lightbox");
     const lightboxImg = lightbox.querySelector("img");
@@ -315,18 +366,25 @@ document.addEventListener("DOMContentLoaded", function () {
             const src = item.getAttribute("data-src");
             lightboxImg.src = src;
             lightbox.style.display = "flex";
+            playSound('click');
         });
     });
 
-    lightboxClose.addEventListener("click", () => {
-        lightbox.style.display = "none";
-    });
-
-    lightbox.addEventListener("click", (e) => {
-        if (e.target === lightbox) {
+    if (lightboxClose) {
+        lightboxClose.addEventListener("click", () => {
             lightbox.style.display = "none";
-        }
-    });
+            playSound('click');
+        });
+    }
+
+    if (lightbox) {
+        lightbox.addEventListener("click", (e) => {
+            if (e.target === lightbox) {
+                lightbox.style.display = "none";
+                playSound('click');
+            }
+        });
+    }
 
     // Scroll progress bar
     const scrollProgress = document.querySelector(".scroll-progress");
@@ -335,5 +393,49 @@ document.addEventListener("DOMContentLoaded", function () {
         const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
         const scrollPercent = (scrollTop / docHeight) * 100;
         scrollProgress.style.width = `${scrollPercent}%`;
+        playSound('scroll', 0.1); // Subtle scroll sound
     });
+
+    // Skill bar animations
+    const skillBars = document.querySelectorAll(".skill-bar-fill");
+    skillBars.forEach(bar => {
+        const percent = bar.getAttribute("data-percent");
+        bar.style.setProperty('--percent', `${percent}%`);
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("visible");
+                    observer.disconnect();
+                }
+            });
+        }, { threshold: 0.5 });
+        observer.observe(bar);
+    });
+
+    // Audio feedback
+    function playSound(type, volume = 0.5) {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+
+        oscillator.type = 'sine';
+        oscillator.frequency.value = type === 'click' ? 440 : type === 'scroll' ? 220 : type === 'hover' ? 330 : type === 'type' ? 250 : type === 'response' ? 350 : 200;
+        gainNode.gain.value = volume;
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        oscillator.start();
+        setTimeout(() => {
+            oscillator.stop();
+            oscillator.disconnect();
+            gainNode.disconnect();
+        }, 100);
+    }
+
+    // Prevent audio context suspension on mobile
+    document.addEventListener("click", () => {
+        if (typeof AudioContext !== "undefined" && !audioContext) {
+            audioContext.resume();
+        }
+    }, { once: true });
 });

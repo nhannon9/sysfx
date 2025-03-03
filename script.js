@@ -34,6 +34,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Enhanced typing effect with Typed.js (stabilized for navbar)
     if (document.getElementById("typing-effect")) {
+        const typingWrapper = document.createElement("div");
+        typingWrapper.style.minHeight = "20px"; // Fixed height to prevent layout shifts
+        const typingElement = document.getElementById("typing-effect");
+        typingElement.parentNode.replaceChild(typingWrapper, typingElement);
+        typingWrapper.appendChild(typingElement);
+
         new Typed("#typing-effect", {
             strings: [
                 "Providing next-gen tech solutions.",
@@ -181,16 +187,28 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Interactive Leaflet map
+    // Interactive Leaflet map with clickable markers
     const mapElement = document.getElementById("map");
     if (mapElement && typeof L !== "undefined") {
         const map = L.map("map").setView([41.2788, -72.5276], 13); // Clinton, CT
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
             attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
-        L.marker([41.2788, -72.5276]).addTo(map)
-            .bindPopup("sysfx - 123 Main Street, Clinton, CT")
-            .openPopup();
+
+        const markers = [
+            { lat: 41.2788, lon: -72.5276, popup: "sysfx HQ - Click for Contact", url: "#contact" },
+            { lat: 41.2800, lon: -72.5300, popup: "Service Center - Learn About Repairs", url: "#services" },
+            { lat: 41.2776, lon: -72.5250, popup: "Support Office - Get IT Help", url: "#support" }
+        ];
+
+        markers.forEach(markerData => {
+            const marker = L.marker([markerData.lat, markerData.lon]).addTo(map)
+                .bindPopup(markerData.popup)
+                .on('click', () => {
+                    window.location.href = markerData.url;
+                    playSound('click');
+                });
+        });
     }
 
     // Testimonial carousel
@@ -207,7 +225,7 @@ document.addEventListener("DOMContentLoaded", function () {
     showTestimonial();
     setInterval(showTestimonial, 5000);
 
-    // Animated stats counters
+    // Animated stats counters with parallax
     const statNumbers = document.querySelectorAll(".stat-number");
     statNumbers.forEach(stat => {
         const target = parseInt(stat.getAttribute("data-count"));
@@ -229,6 +247,19 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }, { threshold: 0.5 });
         observer.observe(stat);
+
+        // Parallax effect for stats
+        gsap.to(stat.closest(".stat-item"), {
+            y: -20,
+            ease: "power1.inOut",
+            scrollTrigger: {
+                trigger: stat.closest(".stat-item"),
+                start: "top 80%",
+                end: "bottom 20%",
+                scrub: true,
+                toggleActions: "play none none none" // Stay visible
+            }
+        });
     });
 
     // Custom cursor effect with trail
@@ -279,7 +310,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Scroll animations with GSAP
+    // Scroll animations with GSAP (3D elements stay faded in)
     gsap.registerPlugin(ScrollTrigger);
     const sections = document.querySelectorAll(".section-animation");
     sections.forEach(section => {
@@ -291,7 +322,7 @@ document.addEventListener("DOMContentLoaded", function () {
             scrollTrigger: {
                 trigger: section,
                 start: "top 80%",
-                toggleActions: "play none none reverse"
+                toggleActions: "play none none none" // Stay visible after animation
             }
         });
     });
@@ -309,6 +340,22 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }, { threshold: 0.1 });
         observer.observe(section);
+    });
+
+    // Parallax effect for testimonials
+    const testimonialItems = document.querySelectorAll(".testimonial");
+    testimonialItems.forEach(testimonial => {
+        gsap.to(testimonial, {
+            y: -20,
+            ease: "power1.inOut",
+            scrollTrigger: {
+                trigger: testimonial,
+                start: "top 80%",
+                end: "bottom 20%",
+                scrub: true,
+                toggleActions: "play none none none" // Stay visible
+            }
+        });
     });
 
     // 3D rotation effect on service cards
@@ -329,39 +376,6 @@ document.addEventListener("DOMContentLoaded", function () {
             card.style.transform = "perspective(1000px) rotateY(0deg) rotateX(0deg)";
         });
     });
-
-    // Chatbot toggle and basic functionality with sound
-    const chatbotBtn = document.querySelector(".chatbot-btn");
-    const chatbotWindow = document.querySelector(".chatbot-window");
-    const chatbotInput = document.querySelector(".chatbot-input");
-    const chatbotMessages = document.querySelector(".chatbot-messages");
-
-    if (chatbotBtn && chatbotWindow) {
-        chatbotBtn.addEventListener("click", () => {
-            chatbotWindow.style.display = chatbotWindow.style.display === "block" ? "none" : "block";
-            playSound('click');
-        });
-
-        chatbotInput.addEventListener("keypress", (e) => {
-            if (e.key === "Enter" && chatbotInput.value.trim()) {
-                const userMessage = document.createElement("p");
-                userMessage.textContent = `You: ${chatbotInput.value}`;
-                chatbotMessages.appendChild(userMessage);
-                playSound('type');
-
-                // Simple bot response
-                const botMessage = document.createElement("p");
-                botMessage.textContent = "Bot: Thanks for your message! How can I assist you further?";
-                setTimeout(() => {
-                    chatbotMessages.appendChild(botMessage);
-                    playSound('response');
-                }, 500);
-
-                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-                chatbotInput.value = "";
-            }
-        });
-    }
 
     // Video background fallback
     const heroVideo = document.querySelector(".hero-video");

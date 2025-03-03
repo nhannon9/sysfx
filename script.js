@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Enhanced typing effect with Typed.js
+    // Enhanced typing effect with Typed.js (stabilized for navbar)
     if (document.getElementById("typing-effect")) {
         new Typed("#typing-effect", {
             strings: [
@@ -43,7 +43,14 @@ document.addEventListener("DOMContentLoaded", function () {
             typeSpeed: 50,
             backSpeed: 30,
             backDelay: 2000,
-            loop: true
+            loop: true,
+            onComplete: (self) => {
+                // Ensure header height remains stable
+                const header = document.querySelector("header");
+                if (header) {
+                    header.style.minHeight = "120px"; // Match styles.css for consistency
+                }
+            }
         });
     }
 

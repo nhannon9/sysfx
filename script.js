@@ -296,11 +296,44 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Video background fallback (if video fails, gradient remains)
+    // Video background fallback
     const heroVideo = document.querySelector(".hero-video");
     if (heroVideo) {
         heroVideo.addEventListener("error", () => {
             heroVideo.style.display = "none"; // Fallback to gradient if video fails
         });
     }
+
+    // Gallery lightbox
+    const galleryItems = document.querySelectorAll(".gallery-item");
+    const lightbox = document.querySelector(".lightbox");
+    const lightboxImg = lightbox.querySelector("img");
+    const lightboxClose = lightbox.querySelector(".lightbox-close");
+
+    galleryItems.forEach(item => {
+        item.addEventListener("click", () => {
+            const src = item.getAttribute("data-src");
+            lightboxImg.src = src;
+            lightbox.style.display = "flex";
+        });
+    });
+
+    lightboxClose.addEventListener("click", () => {
+        lightbox.style.display = "none";
+    });
+
+    lightbox.addEventListener("click", (e) => {
+        if (e.target === lightbox) {
+            lightbox.style.display = "none";
+        }
+    });
+
+    // Scroll progress bar
+    const scrollProgress = document.querySelector(".scroll-progress");
+    window.addEventListener("scroll", () => {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrollPercent = (scrollTop / docHeight) * 100;
+        scrollProgress.style.width = `${scrollPercent}%`;
+    });
 });

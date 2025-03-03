@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12" defer></script>
     <script src="script.js" defer></script>
 </head>
 
@@ -45,63 +46,76 @@
     </div>
 
     <main role="main">
-        <section class="welcome glass-morphism">
-            <h2 class="gradient-text">Welcome to sysfx!</h2>
-            <p>We provide expert tech solutions, including repairs, security, web development, and networking.</p>
-            <p>At Sys Fix, our mission is to bring suitable technology to our clients with precision and expertise.</p>
-            <p>Contact us for support at: <span id="email" aria-label="Contact email"></span></p>
-            <div class="button-container">
-                <button id="darkModeToggle" class="modern-button" aria-label="Toggle dark mode">
-                    <i class="fas fa-moon" aria-hidden="true"></i> <span class="sr-only">Toggle Dark Mode</span>
-                </button>
-                <button class="modern-button primary" onclick="location.href='#contact'">
-                    <i class="fas fa-paper-plane" aria-hidden="true"></i> Get Started
-                </button>
+        <section class="hero parallax">
+            <div class="hero-content glass-morphism">
+                <h2 class="gradient-text">Welcome to sysfx!</h2>
+                <p>Unlock cutting-edge technology with Sys Fix—your trusted partner in repairs, security, web development, and more.</p>
+                <div class="button-container">
+                    <button class="modern-button primary" onclick="location.href='#contact'">
+                        <i class="fas fa-paper-plane" aria-hidden="true"></i> Get Started
+                    </button>
+                    <button id="darkModeToggle" class="modern-button" aria-label="Toggle dark mode">
+                        <i class="fas fa-moon" aria-hidden="true"></i> <span class="sr-only">Toggle Dark Mode</span>
+                    </button>
+                </div>
             </div>
         </section>
 
-        <section id="location" class="glass-morphism">
+        <section class="welcome glass-morphism parallax">
+            <h2 class="gradient-text">Why Choose Us?</h2>
+            <p>We provide expert tech solutions, including repairs, security, web development, and networking.</p>
+            <p>At Sys Fix, our mission is to bring suitable technology to our clients with precision and expertise.</p>
+            <p>Contact us for support at: <span id="email" aria-label="Contact email"></span></p>
+        </section>
+
+        <section id="location" class="glass-morphism parallax">
             <h2 class="gradient-text">Find Us in Clinton, CT</h2>
             <div id="map" style="height: 300px; width: 100%; border-radius: 10px;" aria-label="Map showing sysfx location in Clinton, CT"></div>
         </section>
 
-        <section id="services" class="services glass-morphism">
+        <section id="services" class="services glass-morphism parallax">
             <h2 class="gradient-text">Our Services</h2>
             <div class="service-grid">
                 <article class="service card-hover">
                     <i class="fas fa-laptop" aria-hidden="true"></i>
                     <h3>Computer Repair</h3>
-                    <p>Fast and reliable repairs for all types of computers.</p>
+                    <p>Fast and reliable repairs for all types of computers, from hardware fixes to software optimization.</p>
+                    <p class="extra-info">Our certified technicians ensure your devices run like new, with same-day service available.</p>
                 </article>
                 <article class="service card-hover">
                     <i class="fas fa-shield-alt" aria-hidden="true"></i>
                     <h3>Cybersecurity</h3>
-                    <p>Protect your data with our comprehensive security solutions.</p>
+                    <p>Protect your data with our comprehensive security solutions, including threat detection and prevention.</p>
+                    <p class="extra-info">We offer customized plans to safeguard your business from evolving cyber threats.</p>
                 </article>
                 <article class="service card-hover">
                     <i class="fas fa-code" aria-hidden="true"></i>
                     <h3>Web Development</h3>
-                    <p>Create a stunning online presence with our web development services.</p>
+                    <p>Create a stunning online presence with our web development services, tailored to your brand.</p>
+                    <p class="extra-info">From responsive designs to e-commerce platforms, we build sites that convert.</p>
                 </article>
                 <article class="service card-hover">
                     <i class="fas fa-network-wired" aria-hidden="true"></i>
                     <h3>Networking</h3>
-                    <p>Set up and maintain a robust and secure network for your business.</p>
+                    <p>Set up and maintain a robust and secure network for your business, ensuring seamless connectivity.</p>
+                    <p class="extra-info">We specialize in enterprise-grade solutions for optimal performance.</p>
                 </article>
                 <article class="service card-hover">
                     <i class="fas fa-cloud" aria-hidden="true"></i>
                     <h3>Cloud Solutions</h3>
-                    <p>Migrate to the cloud and optimize your IT infrastructure.</p>
+                    <p>Migrate to the cloud and optimize your IT infrastructure with scalable, secure systems.</p>
+                    <p class="extra-info">Our cloud experts streamline your workflow with cutting-edge technology.</p>
                 </article>
                 <article class="service card-hover">
                     <i class="fas fa-phone" aria-hidden="true"></i>
                     <h3>IT Support</h3>
-                    <p>24/7 IT support to keep your systems running smoothly.</p>
+                    <p>24/7 IT support to keep your systems running smoothly, no matter the challenge.</p>
+                    <p class="extra-info">Round-the-clock assistance with remote and on-site options available.</p>
                 </article>
             </div>
         </section>
 
-        <section id="events" class="events glass-morphism">
+        <section id="events" class="events glass-morphism parallax">
             <h2 class="gradient-text">Events & Workshops</h2>
             <p>Join our upcoming sessions on cybersecurity, web development, and more. Stay ahead in the tech world!</p>
             <div class="event-timeline">
@@ -109,27 +123,30 @@
                     <div class="event-date">March 10</div>
                     <div class="event-content">
                         <h3>Cybersecurity 101</h3>
-                        <p>Learn the basics of protecting your digital assets</p>
+                        <p>Learn the basics of protecting your digital assets in this beginner-friendly workshop.</p>
+                        <p class="extra-info">Includes hands-on demos and Q&A with our security experts.</p>
                     </div>
                 </article>
                 <article class="event-card">
                     <div class="event-date">March 15</div>
                     <div class="event-content">
                         <h3>Intro to Web Dev</h3>
-                        <p>Start your journey in web development</p>
+                        <p>Start your journey in web development with practical coding exercises.</p>
+                        <p class="extra-info">Perfect for aspiring developers—bring your laptop!</p>
                     </div>
                 </article>
                 <article class="event-card">
                     <div class="event-date">March 22</div>
                     <div class="event-content">
                         <h3>Networking Essentials</h3>
-                        <p>Master the fundamentals of networking</p>
+                        <p>Master the fundamentals of networking with real-world applications.</p>
+                        <p class="extra-info">Covers routers, switches, and network security basics.</p>
                     </div>
                 </article>
             </div>
         </section>
 
-        <section id="testimonials" class="testimonials glass-morphism">
+        <section id="testimonials" class="testimonials glass-morphism parallax">
             <h2 class="gradient-text">Testimonials</h2>
             <div class="testimonial-slider">
                 <article class="testimonial card-hover">
@@ -149,12 +166,12 @@
             </div>
         </section>
 
-        <section id="about" class="about glass-morphism">
+        <section id="about" class="about glass-morphism parallax">
             <h2 class="gradient-text">About Us</h2>
             <p>Sysfx is a team of experienced tech professionals dedicated to providing top-notch solutions to our clients. We are passionate about technology and committed to delivering exceptional service.</p>
         </section>
 
-        <section id="contact" class="contact glass-morphism">
+        <section id="contact" class="contact glass-morphism parallax">
             <h2 class="gradient-text">Contact Us</h2>
             <div class="contact-grid">
                 <div class="contact-info">

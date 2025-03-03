@@ -146,4 +146,47 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     showTestimonial();
     setInterval(showTestimonial, 5000);
+
+    // Animated stats counters
+    const statNumbers = document.querySelectorAll(".stat-number");
+    statNumbers.forEach(stat => {
+        const target = parseInt(stat.getAttribute("data-count"));
+        let count = 0;
+        const increment = target / 100;
+        const updateCount = () => {
+            if (count < target) {
+                count += increment;
+                stat.textContent = Math.round(count);
+                requestAnimationFrame(updateCount);
+            } else {
+                stat.textContent = target;
+            }
+        };
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                updateCount();
+                observer.disconnect();
+            }
+        }, { threshold: 0.5 });
+        observer.observe(stat);
+    });
+
+    // Custom cursor effect
+    const cursor = document.querySelector(".cursor");
+    let trailTimeout;
+    document.addEventListener("mousemove", (e) => {
+        cursor.style.left = `${e.clientX}px`;
+        cursor.style.top = `${e.clientY}px`;
+        cursor.classList.add("trail");
+
+        clearTimeout(trailTimeout);
+        trailTimeout = setTimeout(() => {
+            cursor.classList.remove("trail");
+        }, 100);
+    });
+
+    // Hide cursor on mobile
+    if (window.innerWidth <= 768) {
+        cursor.style.display = "none";
+    }
 });

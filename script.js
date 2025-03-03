@@ -21,22 +21,22 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Typing effect
-    const text = "Providing next-gen tech solutions.";
-    let index = 0;
-    const typingEffectElement = document.getElementById("typing-effect");
-    if (typingEffectElement) {
-        function typeEffect() {
-            if (index < text.length) {
-                typingEffectElement.innerHTML += text.charAt(index);
-                index++;
-                setTimeout(typeEffect, 50);
-            }
-        }
-        typeEffect();
+    // Enhanced typing effect with Typed.js
+    if (document.getElementById("typing-effect")) {
+        new Typed("#typing-effect", {
+            strings: [
+                "Providing next-gen tech solutions.",
+                "Empowering your digital future.",
+                "Precision tech expertise."
+            ],
+            typeSpeed: 50,
+            backSpeed: 30,
+            backDelay: 2000,
+            loop: true
+        });
     }
 
-    // Enhanced dark mode toggle with icon and localStorage
+    // Dark mode toggle with localStorage
     const darkModeToggle = document.getElementById("darkModeToggle");
     const body = document.body;
     if (darkModeToggle) {
@@ -50,7 +50,6 @@ document.addEventListener("DOMContentLoaded", function () {
             localStorage.setItem("darkMode", body.classList.contains("dark-mode") ? "enabled" : null);
         });
 
-        // Check dark mode preference on load
         if (localStorage.getItem("darkMode") === "enabled") {
             body.classList.add("dark-mode");
             const icon = darkModeToggle.querySelector("i");
@@ -87,23 +86,10 @@ document.addEventListener("DOMContentLoaded", function () {
     updateClock();
     setInterval(updateClock, 1000);
 
-    // Weather widget (placeholder with option for real API)
+    // Weather widget
     function updateWeather() {
         const weatherElement = document.getElementById("weather-widget");
         if (weatherElement) {
-            // Uncomment and configure for real weather data using OpenWeatherMap
-            /*
-            const apiKey = "YOUR_API_KEY"; // Replace with your OpenWeatherMap API key
-            fetch(`https://api.openweathermap.org/data/2.5/weather?q=Clinton,CT,US&units=imperial&appid=${apiKey}`)
-                .then(response => response.json())
-                .then(data => {
-                    weatherElement.innerHTML = `<i class="fas fa-cloud-sun" aria-hidden="true"></i> ${data.main.temp}°F in Clinton, CT`;
-                })
-                .catch(() => {
-                    weatherElement.innerHTML = "Weather unavailable";
-                });
-            */
-            // Current mock weather
             const mockWeather = {
                 temp: Math.round(65 + Math.random() * 15),
                 condition: "Partly Cloudy"
@@ -112,19 +98,19 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
     updateWeather();
-    setInterval(updateWeather, 300000); // Update every 5 minutes
+    setInterval(updateWeather, 300000);
 
-    // Initialize particles.js
+    // Particles.js
     if (document.getElementById("particles-js")) {
         particlesJS("particles-js", {
             particles: {
-                number: { value: 80, density: { enable: true, value_area: 800 } },
+                number: { value: 100, density: { enable: true, value_area: 800 } },
                 color: { value: "#ffffff" },
                 shape: { type: "circle" },
-                opacity: { value: 0.5, random: false },
-                size: { value: 3, random: true },
+                opacity: { value: 0.5, random: true },
+                size: { value: 4, random: true },
                 line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.4, width: 1 },
-                move: { enable: true, speed: 6, direction: "none", random: false, straight: false, out_mode: "out", bounce: false }
+                move: { enable: true, speed: 8, direction: "none", random: false, straight: false, out_mode: "out", bounce: false }
             },
             interactivity: {
                 detect_on: "canvas",
@@ -147,4 +133,17 @@ document.addEventListener("DOMContentLoaded", function () {
             </div>
         `;
     }
+
+    // Testimonial carousel
+    const testimonials = document.querySelectorAll(".testimonial");
+    let currentTestimonial = 0;
+    function showTestimonial() {
+        testimonials.forEach((t, i) => {
+            t.style.opacity = i === currentTestimonial ? "1" : "0";
+            t.style.position = i === currentTestimonial ? "relative" : "absolute";
+        });
+        currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+    }
+    showTestimonial();
+    setInterval(showTestimonial, 5000);
 });

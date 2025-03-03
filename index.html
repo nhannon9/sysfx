@@ -8,8 +8,10 @@
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12" defer></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
     <script src="script.js" defer></script>
 </head>
 
@@ -20,7 +22,8 @@
         <div class="status-bar">
             <div id="current-time" aria-live="polite"></div>
             <div id="weather-widget" aria-live="polite">
-                <i class="fas fa-spinner fa-spin"></i> Loading weather...
+                <span id="weather-text"><i class="fas fa-spinner fa-spin"></i> Loading weather...</span>
+                <button id="local-weather-btn" class="modern-button" style="margin-left: 10px;">Tap for Local Weather</button>
             </div>
         </div>
         
@@ -77,37 +80,37 @@
         <section id="services" class="services glass-morphism parallax">
             <h2 class="gradient-text">Our Services</h2>
             <div class="service-grid">
-                <article class="service card-hover">
+                <article class="service card-hover" data-modal="computer-repair">
                     <i class="fas fa-laptop" aria-hidden="true"></i>
                     <h3>Computer Repair</h3>
                     <p>Fast and reliable repairs for all types of computers, from hardware fixes to software optimization.</p>
                     <p class="extra-info">Our certified technicians ensure your devices run like new, with same-day service available.</p>
                 </article>
-                <article class="service card-hover">
+                <article class="service card-hover" data-modal="cybersecurity">
                     <i class="fas fa-shield-alt" aria-hidden="true"></i>
                     <h3>Cybersecurity</h3>
                     <p>Protect your data with our comprehensive security solutions, including threat detection and prevention.</p>
                     <p class="extra-info">We offer customized plans to safeguard your business from evolving cyber threats.</p>
                 </article>
-                <article class="service card-hover">
+                <article class="service card-hover" data-modal="web-development">
                     <i class="fas fa-code" aria-hidden="true"></i>
                     <h3>Web Development</h3>
                     <p>Create a stunning online presence with our web development services, tailored to your brand.</p>
                     <p class="extra-info">From responsive designs to e-commerce platforms, we build sites that convert.</p>
                 </article>
-                <article class="service card-hover">
+                <article class="service card-hover" data-modal="networking">
                     <i class="fas fa-network-wired" aria-hidden="true"></i>
                     <h3>Networking</h3>
                     <p>Set up and maintain a robust and secure network for your business, ensuring seamless connectivity.</p>
                     <p class="extra-info">We specialize in enterprise-grade solutions for optimal performance.</p>
                 </article>
-                <article class="service card-hover">
+                <article class="service card-hover" data-modal="cloud-solutions">
                     <i class="fas fa-cloud" aria-hidden="true"></i>
                     <h3>Cloud Solutions</h3>
                     <p>Migrate to the cloud and optimize your IT infrastructure with scalable, secure systems.</p>
                     <p class="extra-info">Our cloud experts streamline your workflow with cutting-edge technology.</p>
                 </article>
-                <article class="service card-hover">
+                <article class="service card-hover" data-modal="it-support">
                     <i class="fas fa-phone" aria-hidden="true"></i>
                     <h3>IT Support</h3>
                     <p>24/7 IT support to keep your systems running smoothly, no matter the challenge.</p>
@@ -213,6 +216,55 @@
 
     <footer class="glass-morphism" role="contentinfo">
         <p>© 2025 sysfx. All rights reserved.</p>
+        <div class="social-links">
+            <a href="https://twitter.com" target="_blank" aria-label="Follow us on Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="https://facebook.com" target="_blank" aria-label="Follow us on Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="https://linkedin.com" target="_blank" aria-label="Follow us on LinkedIn"><i class="fab fa-linkedin"></i></a>
+        </div>
     </footer>
+
+    <!-- Service Modals -->
+    <div id="computer-repair-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h3>Computer Repair</h3>
+            <p>Expert repairs for desktops, laptops, and more. We handle everything from hardware diagnostics to software troubleshooting.</p>
+        </div>
+    </div>
+    <div id="cybersecurity-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h3>Cybersecurity</h3>
+            <p>Advanced protection against cyber threats with tailored security audits, firewalls, and monitoring solutions.</p>
+        </div>
+    </div>
+    <div id="web-development-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h3>Web Development</h3>
+            <p>Custom websites built with the latest tech—responsive, fast, and optimized for your business goals.</p>
+        </div>
+    </div>
+    <div id="networking-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h3>Networking</h3>
+            <p>Reliable network setups for small businesses to large enterprises, ensuring speed and security.</p>
+        </div>
+    </div>
+    <div id="cloud-solutions-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h3>Cloud Solutions</h3>
+            <p>Seamless cloud migration and management to boost efficiency and scalability for your operations.</p>
+        </div>
+    </div>
+    <div id="it-support-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h3>IT Support</h3>
+            <p>24/7 support with proactive maintenance to keep your tech running smoothly, anytime, anywhere.</p>
+        </div>
+    </div>
 </body>
 </html>

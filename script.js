@@ -150,7 +150,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (mapElement && typeof L !== "undefined") {
         const map = L.map("map").setView([41.2788, -72.5276], 13); // Clinton, CT
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
         L.marker([41.2788, -72.5276]).addTo(map)
             .bindPopup("sysfx - 123 Main Street, Clinton, CT")
@@ -267,4 +267,40 @@ document.addEventListener("DOMContentLoaded", function () {
             card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg)";
         });
     });
+
+    // Chatbot toggle and basic functionality
+    const chatbotBtn = document.querySelector(".chatbot-btn");
+    const chatbotWindow = document.querySelector(".chatbot-window");
+    const chatbotInput = document.querySelector(".chatbot-input");
+    const chatbotMessages = document.querySelector(".chatbot-messages");
+
+    if (chatbotBtn && chatbotWindow) {
+        chatbotBtn.addEventListener("click", () => {
+            chatbotWindow.style.display = chatbotWindow.style.display === "block" ? "none" : "block";
+        });
+
+        chatbotInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter" && chatbotInput.value.trim()) {
+                const userMessage = document.createElement("p");
+                userMessage.textContent = `You: ${chatbotInput.value}`;
+                chatbotMessages.appendChild(userMessage);
+
+                // Simple bot response
+                const botMessage = document.createElement("p");
+                botMessage.textContent = "Bot: Thanks for your message! How can I assist you further?";
+                setTimeout(() => chatbotMessages.appendChild(botMessage), 500);
+
+                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+                chatbotInput.value = "";
+            }
+        });
+    }
+
+    // Video background fallback (if video fails, gradient remains)
+    const heroVideo = document.querySelector(".hero-video");
+    if (heroVideo) {
+        heroVideo.addEventListener("error", () => {
+            heroVideo.style.display = "none"; // Fallback to gradient if video fails
+        });
+    }
 });

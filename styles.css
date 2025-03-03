@@ -407,12 +407,12 @@ body.dark-mode .skill-bar {
     overflow: hidden;
     border-radius: 10px;
     cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, rotate 0.5s ease;
 }
 
 .gallery-item:hover {
-    transform: scale(1.05);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
 }
 
 .gallery-item img {
@@ -506,7 +506,7 @@ body.dark-mode .skill-bar {
 }
 
 .modern-button {
-    background-color: #4CAF50;
+    background: linear-gradient(45deg, #00a000, #4CAF50);
     border: none;
     color: white;
     padding: 12px 24px;
@@ -516,11 +516,12 @@ body.dark-mode .skill-bar {
     align-items: center;
     gap: 8px;
     font-size: 16px;
-    border-radius: 5px;
+    border-radius: 25px; /* Rounded corners for modern look */
     cursor: pointer;
-    transition: all 0.3s ease, transform 0.3s ease;
+    transition: all 0.3s ease, transform 0.3s ease, background 0.3s ease;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 160, 0, 0.3);
     animation: buttonPulse 2s infinite ease-in-out;
 }
 
@@ -547,7 +548,8 @@ body.dark-mode .skill-bar {
 
 .modern-button:hover {
     transform: translateY(-2px) scale(1.05);
-    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3), 0 0 15px rgba(0, 160, 0, 0.5);
+    background: linear-gradient(45deg, #4CAF50, #00a000);
+    box-shadow: 0 6px 20px rgba(0, 160, 0, 0.5);
 }
 
 .modern-button:focus {
@@ -556,11 +558,36 @@ body.dark-mode .skill-bar {
 }
 
 .modern-button.primary {
-    background: var(--text-gradient);
+    background: linear-gradient(45deg, #00a000, #4CAF50);
+    padding: 14px 28px;
+    font-weight: bold;
 }
 
-body.dark-mode .modern-button {
-    background-color: #45a049;
+.modern-button.primary:hover {
+    background: linear-gradient(45deg, #4CAF50, #00a000);
+}
+
+#darkModeToggle {
+    background: linear-gradient(45deg, #ffeb3b, #f44336); /* Sun/moon gradient */
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+#darkModeToggle:hover {
+    background: linear-gradient(45deg, #f44336, #ffeb3b);
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(244, 67, 54, 0.5);
+}
+
+body.dark-mode #darkModeToggle {
+    background: linear-gradient(45deg, #ff9800, #f57c00); /* Moon gradient */
+}
+
+body.dark-mode #darkModeToggle:hover {
+    background: linear-gradient(45deg, #f57c00, #ff9800);
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(245, 124, 0, 0.5);
 }
 
 /* Floating contact button */
@@ -623,18 +650,18 @@ body.dark-mode .service {
 }
 
 .card-hover {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.6s ease, box-shadow 0.3s ease;
 }
 
 .card-hover:hover {
-    transform: translateY(-10px) rotateX(10deg) rotateY(10deg) scale(1.05);
-    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.2);
-    animation: pulse 0.5s infinite alternate;
+    transform: rotateY(180deg) translateZ(20px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    animation: rotatePulse 1s infinite alternate;
 }
 
-@keyframes pulse {
-    0% { transform: translateY(-10px) scale(1.05); }
-    100% { transform: translateY(-12px) scale(1.07); }
+@keyframes rotatePulse {
+    0% { transform: rotateY(180deg) translateZ(20px) scale(1.05); }
+    100% { transform: rotateY(180deg) translateZ(20px) scale(1.07); }
 }
 
 .service i {
@@ -804,6 +831,14 @@ body.dark-mode .testimonial {
     color: #fff;
 }
 
+.testimonial.card-hover {
+    transition: transform 0.5s ease;
+}
+
+.testimonial.card-hover:hover {
+    transform: rotateY(180deg);
+}
+
 .quote-icon {
     color: var(--primary-color);
     font-size: 1.5em;
@@ -815,19 +850,6 @@ body.dark-mode .testimonial {
     font-style: italic;
     color: var(--primary-color);
     background: transparent;
-}
-
-.testimonial.card-hover {
-    transition: transform 0.5s ease;
-}
-
-.testimonial.card-hover:hover {
-    transform: rotateY(180deg);
-    background: linear-gradient(45deg, rgba(255, 255, 255, 0.9), rgba(0, 160, 0, 0.2));
-}
-
-body.dark-mode .testimonial.card-hover:hover {
-    background: linear-gradient(45deg, rgba(51, 51, 51, 0.9), rgba(0, 160, 0, 0.2));
 }
 
 /* Contact section */
@@ -871,6 +893,50 @@ body.dark-mode .testimonial.card-hover:hover {
     text-decoration: underline; /* Optional: adds underline on hover/focus */
 }
 
+/* Contact Sidebar */
+.contact-sidebar {
+    display: none;
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    width: 250px;
+    background: var(--glass-bg);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+}
+
+@media (min-width: 769px) {
+    .contact-sidebar {
+        display: block;
+    }
+}
+
+.contact-sidebar h3 {
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.contact-sidebar p {
+    margin: 10px 0;
+    color: #333;
+}
+
+body.dark-mode .contact-sidebar p {
+    color: #eee;
+}
+
+.contact-sidebar .email-link {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.contact-sidebar .email-link:hover,
+.contact-sidebar .email-link:focus {
+    text-decoration: underline;
+}
+
 /* Footer */
 footer {
     margin-top: 40px;
@@ -899,6 +965,13 @@ body.dark-mode footer p {
     color: #333;
     font-size: 1.5em;
     transition: all 0.3s ease;
+    animation: socialPulse 3s infinite ease-in-out;
+}
+
+@keyframes socialPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
 }
 
 body.dark-mode .social-links a {
@@ -1088,5 +1161,9 @@ body.dark-mode .chatbot-window {
         width: 80%;
         height: 50vh;
         bottom: 130px;
+    }
+
+    .contact-sidebar {
+        display: none;
     }
 }

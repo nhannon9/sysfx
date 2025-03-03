@@ -22,6 +22,16 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    // Set email link in sidebar
+    const sidebarEmailLink = document.getElementById("sidebar-email-link");
+    if (sidebarEmailLink) {
+        sidebarEmailLink.addEventListener("click", (e) => {
+            e.preventDefault();
+            window.location.href = `mailto:${emailConfig.getEmail()}`;
+            playSound('click');
+        });
+    }
+
     // Enhanced typing effect with Typed.js
     if (document.getElementById("typing-effect")) {
         new Typed("#typing-effect", {
@@ -74,7 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     behavior: "smooth"
                 });
             }
-            playSound('scroll');
+            playSound('click');
         });
     });
 
@@ -125,15 +135,15 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Particles.js with enhanced interactivity
+    // Particles.js with star-like effects and trails
     if (document.getElementById("particles-js")) {
         particlesJS("particles-js", {
             particles: {
-                number: { value: 100, density: { enable: true, value_area: 800 } },
+                number: { value: 80, density: { enable: true, value_area: 800 } },
                 color: { value: "#ffffff" },
-                shape: { type: "circle" },
+                shape: { type: "star" },
                 opacity: { value: 0.5, random: true },
-                size: { value: 4, random: true },
+                size: { value: 3, random: true },
                 line_linked: { 
                     enable: true, 
                     distance: 150, 
@@ -145,7 +155,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     enable: true, 
                     speed: 6, 
                     direction: "none", 
-                    random: false, 
+                    random: true, 
                     straight: false, 
                     out_mode: "out", 
                     bounce: false,
@@ -176,7 +186,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .openPopup();
     }
 
-    // Testimonial carousel with 3D flip
+    // Testimonial carousel
     const testimonials = document.querySelectorAll(".testimonial");
     let currentTestimonial = 0;
     function showTestimonial() {
@@ -294,7 +304,7 @@ document.addEventListener("DOMContentLoaded", function () {
         observer.observe(section);
     });
 
-    // 3D tilt effect on service cards
+    // 3D rotation effect on service cards
     services.forEach(card => {
         card.addEventListener("mousemove", (e) => {
             const rect = card.getBoundingClientRect();
@@ -302,14 +312,14 @@ document.addEventListener("DOMContentLoaded", function () {
             const y = e.clientY - rect.top;
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
-            const tiltX = (y - centerY) / 10;
-            const tiltY = -(x - centerX) / 10;
-            card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-10px)`;
+            const tiltX = (y - centerY) / 20;
+            const tiltY = -(x - centerX) / 20;
+            card.style.transform = `perspective(1000px) rotateY(${tiltY}deg) rotateX(${tiltX}deg) translateZ(20px)`;
             playSound('hover');
         });
 
         card.addEventListener("mouseleave", () => {
-            card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg)";
+            card.style.transform = "perspective(1000px) rotateY(0deg) rotateX(0deg)";
         });
     });
 
@@ -355,7 +365,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Gallery lightbox with sound
+    // Gallery lightbox with sound and hover effects
     const galleryItems = document.querySelectorAll(".gallery-item");
     const lightbox = document.querySelector(".lightbox");
     const lightboxImg = lightbox.querySelector("img");
@@ -367,6 +377,15 @@ document.addEventListener("DOMContentLoaded", function () {
             lightboxImg.src = src;
             lightbox.style.display = "flex";
             playSound('click');
+        });
+
+        item.addEventListener("mouseover", () => {
+            item.style.transform = "scale(1.1) rotate(5deg)";
+            playSound('hover', 0.3);
+        });
+
+        item.addEventListener("mouseout", () => {
+            item.style.transform = "scale(1)";
         });
     });
 
@@ -386,14 +405,13 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Scroll progress bar
+    // Scroll progress bar (no sound)
     const scrollProgress = document.querySelector(".scroll-progress");
     window.addEventListener("scroll", () => {
         const scrollTop = window.scrollY;
         const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
         const scrollPercent = (scrollTop / docHeight) * 100;
         scrollProgress.style.width = `${scrollPercent}%`;
-        playSound('scroll', 0.1); // Subtle scroll sound
     });
 
     // Skill bar animations
@@ -412,14 +430,14 @@ document.addEventListener("DOMContentLoaded", function () {
         observer.observe(bar);
     });
 
-    // Audio feedback
+    // Audio feedback (excluding scroll)
     function playSound(type, volume = 0.5) {
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         const oscillator = audioContext.createOscillator();
         const gainNode = audioContext.createGain();
 
         oscillator.type = 'sine';
-        oscillator.frequency.value = type === 'click' ? 440 : type === 'scroll' ? 220 : type === 'hover' ? 330 : type === 'type' ? 250 : type === 'response' ? 350 : 200;
+        oscillator.frequency.value = type === 'click' ? 440 : type === 'hover' ? 330 : type === 'type' ? 250 : type === 'response' ? 350 : 200;
         gainNode.gain.value = volume;
         oscillator.connect(gainNode);
         gainNode.connect(audioContext.destination);

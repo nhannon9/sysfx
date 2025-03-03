@@ -86,19 +86,40 @@ document.addEventListener("DOMContentLoaded", function () {
     updateClock();
     setInterval(updateClock, 1000);
 
-    // Weather widget
-    function updateWeather() {
-        const weatherElement = document.getElementById("weather-widget");
-        if (weatherElement) {
-            const mockWeather = {
-                temp: Math.round(65 + Math.random() * 15),
-                condition: "Partly Cloudy"
-            };
-            weatherElement.innerHTML = `<i class="fas fa-cloud-sun" aria-hidden="true"></i> ${mockWeather.temp}°F in Clinton, CT`;
-        }
+    // Weather widget with OpenWeatherMap API
+    const weatherText = document.getElementById("weather-text");
+    const localWeatherBtn = document.getElementById("local-weather-btn");
+    const apiKey = "YOUR_OPENWEATHERMAP_API_KEY"; // Replace with your OpenWeatherMap API key
+
+    function updateWeather(lat = 41.2788, lon = -72.5276) { // Default to Clinton, CT
+        fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`)
+            .then(response => response.json())
+            .then(data => {
+                weatherText.innerHTML = `<i class="fas fa-cloud-sun" aria-hidden="true"></i> ${Math.round(data.main.temp)}°F in ${data.name}`;
+            })
+            .catch(() => {
+                weatherText.innerHTML = "Weather unavailable";
+            });
     }
-    updateWeather();
-    setInterval(updateWeather, 300000);
+    updateWeather(); // Initial load with Clinton, CT
+
+    if (localWeatherBtn) {
+        localWeatherBtn.addEventListener("click", () => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const { latitude, longitude } = position.coords;
+                        updateWeather(latitude, longitude);
+                    },
+                    () => {
+                        weatherText.innerHTML = "Location access denied";
+                    }
+                );
+            } else {
+                weatherText.innerHTML = "Geolocation not supported";
+            }
+        });
+    }
 
     // Particles.js
     if (document.getElementById("particles-js")) {
@@ -124,14 +145,16 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Simple map placeholder
+    // Interactive Leaflet map
     const mapElement = document.getElementById("map");
-    if (mapElement) {
-        mapElement.innerHTML = `
-            <div style="background: #eee; height: 100%; display: flex; align-items: center; justify-content: center;">
-                <p>Map of Clinton, CT (Replace with real map)</p>
-            </div>
-        `;
+    if (mapElement && typeof L !== "undefined") {
+        const map = L.map("map").setView([41.2788, -72.5276], 13); // Clinton, CT
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        L.marker([41.2788, -72.5276]).addTo(map)
+            .bindPopup("sysfx - 123 Main Street, Clinton, CT")
+            .openPopup();
     }
 
     // Testimonial carousel
@@ -178,7 +201,6 @@ document.addEventListener("DOMContentLoaded", function () {
         cursor.style.left = `${e.clientX}px`;
         cursor.style.top = `${e.clientY}px`;
         cursor.classList.add("trail");
-
         clearTimeout(trailTimeout);
         trailTimeout = setTimeout(() => {
             cursor.classList.remove("trail");
@@ -189,4 +211,60 @@ document.addEventListener("DOMContentLoaded", function () {
     if (window.innerWidth <= 768) {
         cursor.style.display = "none";
     }
+
+    // Service modals
+    const services = document.querySelectorAll(".service");
+    const modals = document.querySelectorAll(".modal");
+    const closeButtons = document.querySelectorAll(".modal-close");
+
+    services.forEach(service => {
+        service.addEventListener("click", () => {
+            const modalId = service.getAttribute("data-modal") + "-modal";
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = "flex";
+            }
+        });
+    });
+
+    closeButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            button.closest(".modal").style.display = "none";
+        });
+    });
+
+    document.addEventListener("click", (e) => {
+        if (e.target.classList.contains("modal")) {
+            e.target.style.display = "none";
+        }
+    });
+
+    // Scroll animations
+    const parallaxSections = document.querySelectorAll(".parallax");
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+            }
+        });
+    }, { threshold: 0.1 });
+    parallaxSections.forEach(section => observer.observe(section));
+
+    // 3D tilt effect on service cards
+    services.forEach(card => {
+        card.addEventListener("mousemove", (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const tiltX = (y - centerY) / 10;
+            const tiltY = -(x - centerX) / 10;
+            card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-10px)`;
+        });
+
+        card.addEventListener("mouseleave", () => {
+            card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg)";
+        });
+    });
 });

@@ -37,6 +37,24 @@ body.dark-mode {
     border: 0;
 }
 
+/* Custom cursor */
+.cursor {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease;
+    transform: scale(1);
+}
+
+.cursor.trail {
+    opacity: 0.5;
+    transition: all 0.3s ease;
+}
+
 /* Particles background */
 .particles-container {
     position: fixed;
@@ -63,12 +81,34 @@ body.dark-mode {
     background: linear-gradient(135deg, #00a000, #4CAF50);
     padding: 60px 20px;
     text-align: center;
-    color: white;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border: 2px solid transparent;
+    border-radius: 15px;
+    animation: glowing-border 3s infinite;
+}
+
+@keyframes glowing-border {
+    0% { border-color: rgba(255, 255, 255, 0); }
+    50% { border-color: rgba(255, 255, 255, 0.5); }
+    100% { border-color: rgba(255, 255, 255, 0); }
 }
 
 .hero-content {
     max-width: 800px;
     margin: 0 auto;
+    position: relative;
+    z-index: 2;
 }
 
 /* Parallax effect */
@@ -77,6 +117,14 @@ body.dark-mode {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+}
+
+.services.parallax {
+    background-image: url('https://via.placeholder.com/1920x1080?text=Tech+Services');
+}
+
+.events.parallax {
+    background-image: url('https://via.placeholder.com/1920x1080?text=Tech+Events');
 }
 
 /* Header styles */
@@ -138,7 +186,7 @@ nav ul li {
 }
 
 .nav-link {
-    color: white;
+    color: #333; /* Default to dark for light mode */
     text-decoration: none;
     font-weight: 500;
     padding: 8px 15px;
@@ -149,6 +197,10 @@ nav ul li {
     gap: 5px;
     position: relative;
     overflow: hidden;
+}
+
+body.dark-mode .nav-link {
+    color: white; /* White in dark mode */
 }
 
 .nav-link::after {
@@ -198,6 +250,35 @@ nav ul li {
     padding: 30px;
     width: 80%;
     transition: transform 0.3s ease;
+}
+
+/* Stats section */
+.stats {
+    padding: 40px 20px;
+    text-align: center;
+    background: var(--text-gradient);
+    color: white;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.stat-item {
+    padding: 20px;
+}
+
+.stat-number {
+    font-size: 2.5em;
+    font-weight: bold;
+}
+
+.stat-label {
+    font-size: 1.1em;
 }
 
 /* Button styles */
@@ -294,6 +375,13 @@ body.dark-mode .service {
     font-size: 3em;
     margin-bottom: 15px;
     color: var(--primary-color);
+    animation: float 3s infinite ease-in-out;
+}
+
+@keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
 }
 
 .extra-info {
@@ -345,13 +433,15 @@ body.dark-mode .event-card {
     margin-top: 30px;
     position: relative;
     overflow: hidden;
+    height: 250px; /* Fixed height for carousel */
 }
 
 .testimonial {
     background-color: rgba(255, 255, 255, 0.9);
     padding: 25px;
     border-radius: 8px;
-    position: relative;
+    position: absolute;
+    width: 100%;
     color: #333;
     transition: opacity 0.5s ease;
 }
@@ -404,16 +494,6 @@ body.dark-mode .testimonial {
     outline: none;
 }
 
-#email a {
-    color: var(--primary-color);
-    text-decoration: none; /* Optional: removes underline */
-}
-
-#email a:hover,
-#email a:focus {
-    text-decoration: underline; /* Optional: adds underline on hover/focus */
-}
-
 /* Footer */
 footer {
     margin-top: 40px;
@@ -447,9 +527,18 @@ footer {
 
 /* Responsive design */
 @media (max-width: 768px) {
+    header {
+        position: relative; /* Remove sticky on mobile */
+        padding: 10px; /* Reduce padding */
+    }
+
     nav ul {
         flex-direction: column;
         align-items: center;
+    }
+
+    .nav-link {
+        padding: 6px 10px; /* Smaller buttons */
     }
 
     .welcome, .events, .services, .testimonials, .about, .contact {

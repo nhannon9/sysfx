@@ -1,448 +1,276 @@
-document.addEventListener("DOMContentLoaded", function () {
-    // Email configuration
+document.addEventListener("DOMContentLoaded", () => {
+    // Email Configuration
     const emailConfig = {
         user: "nick",
         domain: "sysfx.net",
-        getEmail: function() { return `${this.user}@${this.domain}`; }
+        getEmail: function () { return `${this.user}@${this.domain}`; }
     };
 
-    // Set email in welcome section
-    const emailElement = document.getElementById("email");
-    if (emailElement) {
-        emailElement.innerHTML = `<a href="mailto:${emailConfig.getEmail()}">${emailConfig.getEmail()}</a>`;
+    // Utility: Set Email Links
+    const setEmailLink = (id) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.href = `mailto:${emailConfig.getEmail()}`;
+            element.textContent = emailConfig.getEmail();
+            element.addEventListener("click", () => playSound("click"));
+        }
+    };
+    setEmailLink("email-link");
+    setEmailLink("sidebar-email-link");
+    const emailSpan = document.getElementById("email");
+    if (emailSpan) {
+        emailSpan.innerHTML = `<a href="mailto:${emailConfig.getEmail()}">${emailConfig.getEmail()}</a>`;
     }
 
-    // Set email link in contact section
-    const emailLink = document.getElementById("email-link");
-    if (emailLink) {
-        emailLink.addEventListener("click", (e) => {
-            e.preventDefault();
-            window.location.href = `mailto:${emailConfig.getEmail()}`;
-            playSound('click');
-        });
-    }
-
-    // Set email link in sidebar
-    const sidebarEmailLink = document.getElementById("sidebar-email-link");
-    if (sidebarEmailLink) {
-        sidebarEmailLink.addEventListener("click", (e) => {
-            e.preventDefault();
-            window.location.href = `mailto:${emailConfig.getEmail()}`;
-            playSound('click');
-        });
-    }
-
-    // Enhanced typing effect with Typed.js (stabilized for navbar)
-    if (document.getElementById("typing-effect")) {
-        const typingWrapper = document.createElement("div");
-        typingWrapper.style.minHeight = "30px"; // Fixed height to prevent layout shifts
-        typingWrapper.style.overflow = "hidden"; // Contain any overflow
-        const typingElement = document.getElementById("typing-effect");
-        typingElement.parentNode.replaceChild(typingWrapper, typingElement);
-        typingWrapper.appendChild(typingElement);
-
+    // Typing Effect with Typed.js
+    const typingElement = document.getElementById("typing-effect");
+    if (typingElement && typeof Typed !== "undefined") {
+        typingElement.style.minHeight = "30px"; // Prevent layout shift
         new Typed("#typing-effect", {
             strings: [
-                "Providing next-gen tech solutions.",
-                "Empowering your digital future.",
-                "Precision tech expertise."
+                "Next-gen tech solutions.",
+                "Empowering your future.",
+                "Precision expertise."
             ],
             typeSpeed: 50,
             backSpeed: 30,
             backDelay: 2000,
-            loop: true,
-            onComplete: () => {
-                const header = document.querySelector("header");
-                if (header) {
-                    header.style.minHeight = "120px"; // Consistent with styles.css
-                }
-            }
+            loop: true
         });
     }
 
-    // Dark mode toggle with localStorage
+    // Dark Mode Toggle
     const darkModeToggle = document.getElementById("darkModeToggle");
-    const body = document.body;
     if (darkModeToggle) {
-        darkModeToggle.addEventListener("click", () => {
-            body.classList.toggle("dark-mode");
+        const toggleDarkMode = () => {
+            document.body.classList.toggle("dark-mode");
             const icon = darkModeToggle.querySelector("i");
-            if (icon) {
-                icon.classList.toggle("fa-moon");
-                icon.classList.toggle("fa-sun");
-            }
-            localStorage.setItem("darkMode", body.classList.contains("dark-mode") ? "enabled" : null);
-            playSound('click');
-        });
-
-        if (localStorage.getItem("darkMode") === "enabled") {
-            body.classList.add("dark-mode");
-            const icon = darkModeToggle.querySelector("i");
-            if (icon) {
-                icon.classList.remove("fa-moon");
-                icon.classList.add("fa-sun");
-            }
-        }
+            icon?.classList.toggle("fa-moon");
+            icon?.classList.toggle("fa-sun");
+            localStorage.setItem("darkMode", document.body.classList.contains("dark-mode") ? "enabled" : "disabled");
+            playSound("click");
+        };
+        darkModeToggle.addEventListener("click", toggleDarkMode);
+        if (localStorage.getItem("darkMode") === "enabled") toggleDarkMode();
     }
 
-    // Smooth scrolling
-    document.querySelectorAll("nav a").forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
+    // Mobile Navigation Toggle
+    const navToggle = document.querySelector(".nav-toggle");
+    const navUl = document.querySelector("nav ul");
+    if (navToggle && navUl) {
+        navToggle.addEventListener("click", () => {
+            navUl.classList.toggle("show");
+            navToggle.setAttribute("aria-expanded", navUl.classList.contains("show"));
+            playSound("click");
+        });
+    }
+
+    // Smooth Scrolling for Nav Links
+    document.querySelectorAll(".nav-link").forEach(anchor => {
+        anchor.addEventListener("click", (e) => {
             e.preventDefault();
-            const targetId = this.getAttribute("href").substring(1);
-            const targetElement = document.getElementById(targetId);
-            if (targetElement) {
-                window.scrollTo({
-                    top: targetElement.offsetTop - 80,
-                    behavior: "smooth"
-                });
+            const targetId = anchor.getAttribute("href").substring(1);
+            const target = document.getElementById(targetId);
+            if (target) {
+                target.scrollIntoView({ behavior: "smooth", block: "start" });
+                playSound("click");
+                if (navUl?.classList.contains("show")) navUl.classList.remove("show"); // Close mobile nav
             }
-            playSound('click');
         });
     });
 
-    // Real-time clock
-    function updateClock() {
-        const clockElement = document.getElementById("current-time");
-        if (clockElement) {
-            const now = new Date();
-            clockElement.innerHTML = `<i class="fas fa-clock" aria-hidden="true"></i> ${now.toLocaleTimeString()}`;
-        }
-    }
+    // Real-Time Clock
+    const updateClock = () => {
+        const clock = document.getElementById("current-time");
+        if (clock) clock.innerHTML = `<i class="fas fa-clock" aria-hidden="true"></i> ${new Date().toLocaleTimeString()}`;
+    };
     updateClock();
     setInterval(updateClock, 1000);
 
-    // Weather widget with OpenWeatherMap API
+    // Weather Widget
     const weatherText = document.getElementById("weather-text");
     const localWeatherBtn = document.getElementById("local-weather-btn");
-    const apiKey = "YOUR_OPENWEATHERMAP_API_KEY"; // Replace with your OpenWeatherMap API key
-
-    function updateWeather(lat = 41.2788, lon = -72.5276) { // Default to Clinton, CT
+    const apiKey = "YOUR_OPENWEATHERMAP_API_KEY"; // Replace with your key
+    const fetchWeather = (lat = 41.2788, lon = -72.5276) => {
         fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`)
-            .then(response => response.json())
+            .then(res => res.json())
             .then(data => {
                 weatherText.innerHTML = `<i class="fas fa-cloud-sun" aria-hidden="true"></i> ${Math.round(data.main.temp)}°F in ${data.name}`;
             })
             .catch(() => {
                 weatherText.innerHTML = "Weather unavailable";
             });
-    }
-    updateWeather();
-
+    };
+    if (weatherText) fetchWeather();
     if (localWeatherBtn) {
         localWeatherBtn.addEventListener("click", () => {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const { latitude, longitude } = position.coords;
-                        updateWeather(latitude, longitude);
-                    },
-                    () => {
-                        weatherText.innerHTML = "Location access denied";
-                    }
-                );
-            } else {
-                weatherText.innerHTML = "Geolocation not supported";
-            }
-            playSound('click');
+            navigator.geolocation?.getCurrentPosition(
+                pos => fetchWeather(pos.coords.latitude, pos.coords.longitude),
+                () => { weatherText.innerHTML = "Location denied"; },
+                { timeout: 5000 }
+            );
+            playSound("click");
         });
     }
 
-    // Particles.js with star-like effects and trails
-    if (document.getElementById("particles-js")) {
+    // Particles.js
+    if (document.getElementById("particles-js") && typeof particlesJS !== "undefined") {
         particlesJS("particles-js", {
             particles: {
-                number: { value: 80, density: { enable: true, value_area: 800 } },
+                number: { value: 60, density: { enable: true, value_area: 800 } },
                 color: { value: "#ffffff" },
                 shape: { type: "star" },
                 opacity: { value: 0.5, random: true },
                 size: { value: 3, random: true },
-                line_linked: { 
-                    enable: true, 
-                    distance: 150, 
-                    color: "#ffffff", 
-                    opacity: 0.4, 
-                    width: 1 
-                },
-                move: { 
-                    enable: true, 
-                    speed: 6, 
-                    direction: "none", 
-                    random: true, 
-                    straight: false, 
-                    out_mode: "out", 
-                    bounce: false,
-                    attract: { enable: true, rotateX: 600, rotateY: 1200 }
-                }
+                line_linked: { enable: true, distance: 120, color: "#ffffff", opacity: 0.3, width: 1 },
+                move: { speed: 4, direction: "none", random: true, out_mode: "out" }
             },
             interactivity: {
-                detect_on: "canvas",
-                events: {
-                    onhover: { enable: true, mode: "grab", parallax: { enable: true, force: 60 } },
-                    onclick: { enable: true, mode: "push" },
-                    resize: true
-                }
+                events: { onhover: { enable: true, mode: "grab" }, onclick: { enable: true, mode: "push" }, resize: true }
             },
             retina_detect: true
         });
     }
 
-    // Interactive Leaflet map with clickable markers
+    // Leaflet Map
     const mapElement = document.getElementById("map");
     if (mapElement && typeof L !== "undefined") {
         const map = L.map("map").setView([41.2788, -72.5276], 13);
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-            attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
-
-        const markers = [
-            { lat: 41.2788, lon: -72.5276, popup: "sysfx HQ - Click for Contact", url: "#contact" },
-            { lat: 41.2800, lon: -72.5300, popup: "Service Center - Learn About Repairs", url: "#services" },
-            { lat: 41.2776, lon: -72.5250, popup: "Support Office - Get IT Help", url: "#support" }
-        ];
-
-        markers.forEach(markerData => {
-            const marker = L.marker([markerData.lat, markerData.lon]).addTo(map)
-                .bindPopup(markerData.popup)
-                .on('click', () => {
-                    window.location.href = markerData.url;
-                    playSound('click');
-                });
-        });
+        L.marker([41.2788, -72.5276])
+            .addTo(map)
+            .bindPopup("sysfx HQ - <a href='#contact'>Contact Us</a>")
+            .on("click", () => playSound("click"));
     }
 
-    // Testimonial carousel
-    const testimonials = document.querySelectorAll(".testimonial");
-    let currentTestimonial = 0;
-    function showTestimonial() {
-        testimonials.forEach((t, i) => {
-            t.style.opacity = i === currentTestimonial ? "1" : "0";
-            t.style.transform = i === currentTestimonial ? "rotateY(0deg)" : "rotateY(-180deg)";
-            t.style.position = i === currentTestimonial ? "relative" : "absolute";
-        });
-        currentTestimonial = (currentTestimonial + 1) % testimonials.length;
-    }
-    showTestimonial();
-    setInterval(showTestimonial, 5000);
+    // Gallery Lightbox
+    const galleryItems = document.querySelectorAll(".gallery-item");
+    const lightbox = document.querySelector(".lightbox");
+    const lightboxImg = lightbox?.querySelector("img");
+    const lightboxClose = lightbox?.querySelector(".lightbox-close");
 
-    // Animated stats counters with parallax
-    const statNumbers = document.querySelectorAll(".stat-number");
-    statNumbers.forEach(stat => {
-        const target = parseInt(stat.getAttribute("data-count"));
-        let count = 0;
-        const increment = target / 100;
-        const updateCount = () => {
-            if (count < target) {
-                count += increment;
-                stat.textContent = Math.round(count);
-                requestAnimationFrame(updateCount);
-            } else {
-                stat.textContent = target;
-            }
-        };
-        const observer = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting) {
-                updateCount();
-                observer.disconnect();
-            }
-        }, { threshold: 0.5 });
-        observer.observe(stat);
-
-        gsap.to(stat.closest(".stat-item"), {
-            y: -20,
-            ease: "power1.inOut",
-            scrollTrigger: {
-                trigger: stat.closest(".stat-item"),
-                start: "top 80%",
-                end: "bottom 20%",
-                scrub: true
-            }
+    galleryItems.forEach(item => {
+        item.addEventListener("click", () => {
+            lightboxImg.src = item.getAttribute("data-src");
+            lightbox.style.display = "flex";
+            playSound("click");
         });
     });
-
-    // Custom cursor effect with trail
-    const cursor = document.querySelector(".cursor");
-    let trailTimeout;
-    document.addEventListener("mousemove", (e) => {
-        cursor.style.left = `${e.clientX}px`;
-        cursor.style.top = `${e.clientY}px`;
-        cursor.classList.add("trail");
-        clearTimeout(trailTimeout);
-        trailTimeout = setTimeout(() => {
-            cursor.classList.remove("trail");
-        }, 100);
+    lightboxClose?.addEventListener("click", () => {
+        lightbox.style.display = "none";
+        playSound("click");
     });
-
-    if (window.innerWidth <= 768) {
-        cursor.style.display = "none";
-    }
-
-    // Service modals with sound
-    const services = document.querySelectorAll(".service");
-    const modals = document.querySelectorAll(".modal");
-    const closeButtons = document.querySelectorAll(".modal-close");
-
-    services.forEach(service => {
-        service.addEventListener("click", () => {
-            const modalId = service.getAttribute("data-modal") + "-modal";
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.style.display = "flex";
-                playSound('click');
-            }
-        });
-    });
-
-    closeButtons.forEach(button => {
-        button.addEventListener("click", () => {
-            button.closest(".modal").style.display = "none";
-            playSound('click');
-        });
-    });
-
-    document.addEventListener("click", (e) => {
-        if (e.target.classList.contains("modal")) {
-            e.target.style.display = "none";
-            playSound('click');
+    lightbox?.addEventListener("click", e => {
+        if (e.target === lightbox) {
+            lightbox.style.display = "none";
+            playSound("click");
         }
     });
 
-    // Scroll animations with GSAP (3D elements stay faded in)
-    gsap.registerPlugin(ScrollTrigger);
-    const sections = document.querySelectorAll(".parallax, .section-animation");
-    sections.forEach(section => {
-        gsap.fromTo(section, 
-            { opacity: 0, y: 50 },
-            {
-                opacity: 1,
-                y: 0,
+    // Custom Cursor
+    const cursor = document.querySelector(".cursor");
+    if (cursor && window.innerWidth > 768) {
+        document.addEventListener("mousemove", e => {
+            cursor.style.left = `${e.clientX}px`;
+            cursor.style.top = `${e.clientY}px`;
+            cursor.classList.add("trail");
+            setTimeout(() => cursor.classList.remove("trail"), 100);
+        });
+    } else if (cursor) {
+        cursor.style.display = "none";
+    }
+
+    // Scroll Progress
+    const scrollProgress = document.querySelector(".scroll-progress");
+    const debounce = (func, wait) => {
+        let timeout;
+        return (...args) => {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func(...args), wait);
+        };
+    };
+    window.addEventListener("scroll", debounce(() => {
+        const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - document.documentElement.clientHeight)) * 100;
+        scrollProgress.style.width = `${scrollPercent}%`;
+    }, 10));
+
+    // GSAP Animations
+    if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
+        gsap.registerPlugin(ScrollTrigger);
+        document.querySelectorAll(".parallax").forEach(section => {
+            gsap.from(section, {
+                opacity: 0,
+                y: 50,
                 duration: 1,
                 ease: "power2.out",
                 scrollTrigger: {
                     trigger: section,
                     start: "top 80%",
-                    toggleActions: "play none none none" // Stay visible after animation
+                    toggleActions: "play none none none"
                 }
-            }
-        );
-    });
-
-    // Parallax effect for testimonials
-    const testimonialItems = document.querySelectorAll(".testimonial");
-    testimonialItems.forEach(testimonial => {
-        gsap.to(testimonial, {
-            y: -20,
-            ease: "power1.inOut",
-            scrollTrigger: {
-                trigger: testimonial,
-                start: "top 80%",
-                end: "bottom 20%",
-                scrub: true
-            }
-        });
-    });
-
-    // 3D rotation effect on service cards
-    services.forEach(card => {
-        card.addEventListener("mousemove", (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            const tiltX = (y - centerY) / 20;
-            const tiltY = -(x - centerX) / 20;
-            card.style.transform = `perspective(1000px) rotateY(${tiltY}deg) rotateX(${tiltX}deg) translateZ(20px)`;
-            playSound('hover');
+            });
         });
 
-        card.addEventListener("mouseleave", () => {
-            card.style.transform = "perspective(1000px) rotateY(0deg) rotateX(0deg)";
-        });
-    });
-
-    // Video background fallback
-    const heroVideo = document.querySelector(".hero-video");
-    if (heroVideo) {
-        heroVideo.addEventListener("error", () => {
-            heroVideo.style.display = "none";
-            playSound('error');
+        // Stats Animation
+        document.querySelectorAll(".stat-number").forEach(stat => {
+            const target = parseInt(stat.getAttribute("data-count"));
+            gsap.fromTo(stat, { textContent: 0 }, {
+                textContent: target,
+                duration: 2,
+                snap: { textContent: 1 },
+                ease: "power1.out",
+                scrollTrigger: {
+                    trigger: stat,
+                    start: "top 80%",
+                    toggleActions: "play none none none"
+                }
+            });
         });
     }
 
-    // Gallery lightbox with sound and hover effects
-    const galleryItems = document.querySelectorAll(".gallery-item");
-    const lightbox = document.querySelector(".lightbox");
-    const lightboxImg = lightbox.querySelector("img");
-    const lightboxClose = lightbox.querySelector(".lightbox-close");
+    // Contact Form Validation
+    const contactForm = document.querySelector(".contact-form");
+    if (contactForm) {
+        contactForm.addEventListener("submit", e => {
+            e.preventDefault();
+            const name = contactForm.querySelector("#name").value.trim();
+            const email = contactForm.querySelector("#email").value.trim();
+            const message = contactForm.querySelector("#message").value.trim();
 
-    galleryItems.forEach(item => {
-        item.addEventListener("click", () => {
-            const src = item.getAttribute("data-src");
-            lightboxImg.src = src;
-            lightbox.style.display = "flex";
-            playSound('click');
-        });
-
-        item.addEventListener("mouseover", () => {
-            item.style.transform = "scale(1.1) rotate(5deg)";
-            playSound('hover', 0.3);
-        });
-
-        item.addEventListener("mouseout", () => {
-            item.style.transform = "scale(1)";
-        });
-    });
-
-    if (lightboxClose) {
-        lightboxClose.addEventListener("click", () => {
-            lightbox.style.display = "none";
-            playSound('click');
-        });
-    }
-
-    if (lightbox) {
-        lightbox.addEventListener("click", (e) => {
-            if (e.target === lightbox) {
-                lightbox.style.display = "none";
-                playSound('click');
+            if (!name || !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) || !message) {
+                alert("Please fill out all fields correctly.");
+                playSound("error");
+                return;
             }
+
+            window.location.href = `mailto:${emailConfig.getEmail()}?subject=Contact from ${name}&body=${encodeURIComponent(message)}`;
+            contactForm.reset();
+            playSound("click");
         });
     }
 
-    // Scroll progress bar
-    const scrollProgress = document.querySelector(".scroll-progress");
-    window.addEventListener("scroll", () => {
-        const scrollTop = window.scrollY;
-        const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const scrollPercent = (scrollTop / docHeight) * 100;
-        scrollProgress.style.width = `${scrollPercent}%`;
+    // FAQ Accordion Accessibility
+    document.querySelectorAll(".faq-grid details").forEach(detail => {
+        detail.addEventListener("toggle", () => {
+            detail.setAttribute("aria-expanded", detail.open);
+            playSound("click");
+        });
     });
 
-    // Audio feedback
-    function playSound(type, volume = 0.5) {
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    // Audio Feedback
+    let audioContext;
+    const playSound = (type, volume = 0.5) => {
+        if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
         const oscillator = audioContext.createOscillator();
         const gainNode = audioContext.createGain();
-
-        oscillator.type = 'sine';
-        oscillator.frequency.value = type === 'click' ? 440 : type === 'hover' ? 330 : type === 'error' ? 200 : 350;
+        oscillator.type = "sine";
+        oscillator.frequency.value = type === "click" ? 440 : type === "hover" ? 330 : 200;
         gainNode.gain.value = volume;
         oscillator.connect(gainNode);
         gainNode.connect(audioContext.destination);
-
         oscillator.start();
-        setTimeout(() => {
-            oscillator.stop();
-            oscillator.disconnect();
-            gainNode.disconnect();
-        }, 100);
-    }
-
-    // Prevent audio context suspension on mobile
-    document.addEventListener("click", () => {
-        if (typeof AudioContext !== "undefined" && !audioContext) {
-            audioContext.resume();
-        }
-    }, { once: true });
+        setTimeout(() => oscillator.stop(), 100);
+    };
 });

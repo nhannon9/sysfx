@@ -22,13 +22,17 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Typing effect with GSAP (replacing Typed.js for stability)
+    // Typing effect with GSAP
     const typingElement = document.getElementById("typing-effect");
     if (typingElement) {
         const phrases = [
             "Providing next-gen tech solutions.",
             "Empowering your digital future.",
-            "Precision tech expertise."
+            "Precision tech expertise.",
+            "Your IT partner in Clinton, CT.",
+            "Innovating for business success.",
+            "Securing your tech, 24/7.",
+            "Building the web of tomorrow."
         ];
         let currentPhrase = 0;
 
@@ -46,10 +50,10 @@ document.addEventListener("DOMContentLoaded", function () {
                             ease: "none",
                             onComplete: () => {
                                 currentPhrase = (currentPhrase + 1) % phrases.length;
-                                setTimeout(typePhrase, 2000);
+                                setTimeout(typePhrase, 1500); // Reduced delay for smoother flow
                             }
                         });
-                    }, 2000);
+                    }, 1500);
                 }
             });
         }
@@ -152,7 +156,7 @@ document.addEventListener("DOMContentLoaded", function () {
             particles: {
                 number: { value: 80, density: { enable: true, value_area: 800 } },
                 color: { value: isDarkMode ? "#ffffff" : "#00a000" },
-                shape: { type: "polygon", polygon: { nb_sides: 6 } }, // Hexagons for uniqueness
+                shape: { type: "polygon", polygon: { nb_sides: 6 } },
                 opacity: { value: isDarkMode ? 0.8 : 0.3, random: true },
                 size: { value: 4, random: true },
                 line_linked: { 
@@ -191,7 +195,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (mapElement && typeof L !== "undefined") {
         const map = L.map("map", { 
             scrollWheelZoom: false, 
-            dragging: !L.Browser.mobile, // Disable drag on mobile
+            dragging: !L.Browser.mobile,
             touchZoom: false 
         }).setView([41.2788, -72.5276], 13);
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -226,7 +230,7 @@ document.addEventListener("DOMContentLoaded", function () {
         currentTestimonial = (currentTestimonial + 1) % testimonials.length;
     }
     showTestimonial();
-    setInterval(showTestimonial, 5000);
+    setInterval(showTestimonial, 4000); // Faster carousel
 
     // Animated stats counters with parallax
     const statNumbers = document.querySelectorAll(".stat-number");
@@ -332,11 +336,11 @@ document.addEventListener("DOMContentLoaded", function () {
             {
                 opacity: 1,
                 y: 0,
-                duration: 1,
+                duration: 0.8, // Slightly faster
                 ease: "power2.out",
                 scrollTrigger: {
                     trigger: section,
-                    start: "top 80%",
+                    start: "top 85%", // Adjusted trigger point
                     toggleActions: "play none none none"
                 }
             }
@@ -347,11 +351,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const testimonialItems = document.querySelectorAll(".testimonial");
     testimonialItems.forEach(testimonial => {
         gsap.to(testimonial, {
-            y: -20,
+            y: -15, // Reduced movement
             ease: "power1.inOut",
             scrollTrigger: {
                 trigger: testimonial,
-                start: "top 80%",
+                start: "top 85%",
                 end: "bottom 20%",
                 scrub: true
             }
@@ -440,24 +444,77 @@ document.addEventListener("DOMContentLoaded", function () {
         if (audioContext && audioContext.state === "suspended") audioContext.resume();
     }, { once: true });
 
-    // Unique sticky note effect
+    // Music toggle
+    const musicToggle = document.getElementById("music-toggle");
+    const welcomeMusic = document.getElementById("welcome-music");
+    if (musicToggle && welcomeMusic) {
+        welcomeMusic.volume = 0.5; // Default volume
+        let isPlaying = false;
+
+        musicToggle.addEventListener("click", () => {
+            if (isPlaying) {
+                welcomeMusic.pause();
+                musicToggle.classList.add("muted");
+            } else {
+                welcomeMusic.play().catch(() => console.log("Music playback blocked until user interaction"));
+                musicToggle.classList.remove("muted");
+            }
+            isPlaying = !isPlaying;
+            playSound('click');
+        });
+
+        // Auto-play on first interaction if not already playing
+        document.addEventListener("click", () => {
+            if (!isPlaying) {
+                welcomeMusic.play().catch(() => {});
+                isPlaying = true;
+                musicToggle.classList.remove("muted");
+            }
+        }, { once: true });
+    }
+
+    // Sticky note with tech tips
+    const techTips = [
+        "Tech Tip: Regular updates keep your systems secure!",
+        "Tech Tip: Back up your data weekly to avoid loss.",
+        "Tech Tip: Use strong passwords for better protection.",
+        "Tech Tip: Restarting can fix many tech glitches.",
+        "Tech Tip: Clear cache to boost browser speed.",
+        "Tech Tip: Keep software patched against vulnerabilities.",
+        "Tech Tip: Monitor your network for unusual activity."
+    ];
+    let tipIndex = 0;
+
     const stickyNote = document.createElement("div");
     stickyNote.className = "sticky-note";
-    stickyNote.innerHTML = "Tech Tip: Regular updates keep your systems secure!";
+    stickyNote.innerHTML = techTips[tipIndex];
     document.body.appendChild(stickyNote);
+
     gsap.fromTo(".sticky-note", 
         { opacity: 0, y: -50, rotation: -5 },
-        { opacity: 1, y: 10, rotation: 0, duration: 1, delay: 2, ease: "elastic.out(1, 0.5)" }
+        { opacity: 1, y: window.innerWidth <= 768 ? 80 : 10, rotation: 0, duration: 1, delay: 2, ease: "elastic.out(1, 0.5)" }
     );
+
+    setInterval(() => {
+        tipIndex = (tipIndex + 1) % techTips.length;
+        gsap.to(".sticky-note", {
+            opacity: 0,
+            duration: 0.5,
+            onComplete: () => {
+                stickyNote.innerHTML = techTips[tipIndex];
+                gsap.to(".sticky-note", { opacity: 1, duration: 0.5 });
+            }
+        });
+    }, 5000); // Rotate tips every 5 seconds
 });
 
-// Sticky note styles (injected via JS for uniqueness)
+// Sticky note styles (injected via JS)
 const style = document.createElement("style");
 style.textContent = `
     .sticky-note {
         position: fixed;
         top: 10px;
-        right: 10px;
+        right: 110px; /* Adjusted to avoid weather button on desktop */
         background: #ffeb3b;
         padding: 10px 15px;
         border-radius: 5px;
@@ -466,12 +523,16 @@ style.textContent = `
         color: #333;
         z-index: 1000;
         transform: rotate(-5deg);
+        max-width: 200px;
+        text-align: center;
     }
     @media (max-width: 768px) {
         .sticky-note {
+            top: 80px;
+            right: 5px;
             font-size: 12px;
             padding: 8px 12px;
-            right: 5px;
+            max-width: 150px;
         }
     }
 `;

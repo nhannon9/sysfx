@@ -96,12 +96,8 @@ body.dark-mode .bodyGradient {
     transition: opacity 0.3s ease;
 }
 
-body.dark-mode #particles-js canvas {
-    opacity: 0.5;
-}
-
-.particles-js-canvas-el {
-    transition: opacity 0.3s ease;
+body.dark-mode #particles-js {
+    opacity: 0.6; /* Increased visibility in dark mode */
 }
 
 /* Glassmorphism effect */
@@ -114,7 +110,7 @@ body.dark-mode #particles-js canvas {
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
 }
 
-/* Hero section with gradient */
+/* Hero section with shortened gradient */
 .hero {
     position: relative;
     padding: 40px 20px;
@@ -122,7 +118,7 @@ body.dark-mode #particles-js canvas {
     color: #fff;
     overflow: hidden;
     background: linear-gradient(135deg, #00a000 0%, #4CAF50 50%, #00a000 100%);
-    min-height: 400px;
+    min-height: 300px; /* Reduced from 400px to shorten vertical length */
     animation: heroGradient 10s infinite ease-in-out;
 }
 
@@ -172,6 +168,15 @@ body.dark-mode .hero {
     z-index: 2;
 }
 
+.hero-text {
+    color: #333; /* Readable in light mode */
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.8); /* Subtle glow for contrast */
+}
+
+body.dark-mode .hero-text {
+    color: #fff; /* Readable in dark mode */
+}
+
 /* Parallax effect */
 .parallax {
     background-attachment: fixed;
@@ -203,7 +208,7 @@ header {
     position: sticky;
     top: 0;
     z-index: 100;
-    min-height: 120px;
+    min-height: 150px; /* Increased to accommodate typing effect */
     transition: padding 0.3s ease;
     box-sizing: border-box;
 }
@@ -374,11 +379,11 @@ body.dark-mode .nav-link {
     overflow: hidden;
     border-radius: 10px;
     cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, rotate 0.5s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .gallery-item:hover {
-    transform: scale(1.1) rotate(5deg);
+    transform: scale(1.1); /* Simplified hover effect */
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
 }
 
@@ -639,7 +644,7 @@ body.dark-mode .service {
 }
 
 .card-hover {
-    transition: transform 0.6s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Removed rotateY */
 }
 
 .card-hover.visible {
@@ -648,14 +653,8 @@ body.dark-mode .service {
 }
 
 .card-hover:hover {
-    transform: rotateY(180deg) translateZ(20px);
+    transform: scale(1.05); /* Replaced rotateY with scale */
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-    animation: rotatePulse 1s infinite alternate;
-}
-
-@keyframes rotatePulse {
-    0% { transform: rotateY(180deg) translateZ(20px) scale(1.05); }
-    100% { transform: rotateY(180deg) translateZ(20px) scale(1.07); }
 }
 
 .service i {
@@ -809,7 +808,7 @@ body.dark-mode .event-card {
     margin-top: 30px;
     position: relative;
     overflow: hidden;
-    height: 250px;
+    height: 280px; /* Increased height for mobile readability */
 }
 
 .testimonial {
@@ -820,7 +819,6 @@ body.dark-mode .event-card {
     width: 100%;
     color: #333;
     transition: opacity 0.5s ease, transform 0.5s ease;
-    transform-style: preserve-3d;
 }
 
 body.dark-mode .testimonial {
@@ -829,7 +827,7 @@ body.dark-mode .testimonial {
 }
 
 .testimonial.card-hover {
-    transition: transform 0.5s ease;
+    transition: transform 0.3s ease; /* Removed rotateY */
 }
 
 .testimonial.card-hover.visible {
@@ -838,7 +836,7 @@ body.dark-mode .testimonial {
 }
 
 .testimonial.card-hover:hover {
-    transform: rotateY(180deg);
+    transform: scale(1.05); /* Replaced rotateY with scale */
 }
 
 .quote-icon {
@@ -911,6 +909,11 @@ body.dark-mode .team-member {
 
 .cta p {
     color: white;
+}
+
+.cta-title {
+    color: #fff; /* White text for readability */
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Subtle shadow for contrast */
 }
 
 /* Contact section */
@@ -1090,6 +1093,7 @@ body.dark-mode .social-links a {
     header {
         position: relative;
         padding: 10px;
+        min-height: 180px; /* Adjusted for mobile */
     }
 
     nav ul {
@@ -1134,7 +1138,7 @@ body.dark-mode .social-links a {
 
     .hero {
         padding: 40px 10px;
-        min-height: 300px;
+        min-height: 250px; /* Further reduced for mobile */
     }
 
     .contact-btn {

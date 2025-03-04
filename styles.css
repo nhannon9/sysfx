@@ -190,19 +190,19 @@ body.dark-mode .hero-text {
 /* Header styles */
 header {
     background-color: rgba(34, 34, 34, 0.9);
-    padding: 10px 20px;
+    padding: 15px 20px; /* Increased padding */
     text-align: center;
     position: sticky;
     top: 0;
     z-index: 100;
-    min-height: 200px; /* Increased to accommodate typing animation */
+    min-height: 200px;
     transition: padding 0.3s ease;
     box-sizing: border-box;
 }
 
 @media (min-width: 769px) {
     header {
-        padding: 10px 20px;
+        padding: 15px 20px;
     }
 }
 
@@ -316,7 +316,7 @@ body.dark-mode .nav-link {
 
 /* Map container and section */
 .location-section {
-    max-width: 700px; /* Locks entire section width */
+    max-width: 700px;
     margin: 30px auto;
 }
 
@@ -341,8 +341,13 @@ body.dark-mode .nav-link {
 }
 
 .compact-section {
-    width: 70%; /* Smaller width for compact sections */
-    padding: 20px; /* Reduced padding */
+    width: 70%;
+    padding: 20px;
+}
+
+.tiny-section {
+    width: 60%; /* Smaller for contact */
+    padding: 15px;
 }
 
 .section-animation {
@@ -358,8 +363,27 @@ body.dark-mode .nav-link {
 
 /* Services text */
 .services-text {
-    color: #fff; /* White for readability on dark background */
-    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Contrast enhancement */
+    color: #fff;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Supported badges */
+.supported-badges {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.badge {
+    width: 50px;
+    height: 50px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    transition: transform 0.3s ease;
+}
+
+.badge:hover {
+    transform: scale(1.1);
 }
 
 /* Gallery section */
@@ -608,6 +632,32 @@ body.dark-mode #darkModeToggle:hover {
     box-shadow: 0 0 15px rgba(0, 160, 0, 0.5);
 }
 
+/* Music button */
+.music-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.music-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(0, 160, 0, 0.5);
+}
+
+.music-btn.muted i:before {
+    content: "\f6a9"; /* fa-volume-mute */
+}
+
 /* Services grid */
 .service-grid {
     display: grid;
@@ -731,14 +781,15 @@ body.dark-mode .modal-content {
     gap: 25px;
     margin-top: 30px;
     position: relative;
-    padding-left: 50px;
+    padding-left: 40px; /* Reduced from 50px */
+    max-width: 100%; /* Prevent overflow */
 }
 
 .event-timeline::before {
     content: '';
     position: absolute;
     top: 0;
-    left: 25px;
+    left: 20px; /* Adjusted from 25px */
     width: 2px;
     height: 100%;
     background: var(--primary-color);
@@ -747,11 +798,11 @@ body.dark-mode .modal-content {
 
 @media (max-width: 768px) {
     .event-timeline {
-        padding-left: 30px;
+        padding-left: 25px; /* Reduced from 30px */
     }
 
     .event-timeline::before {
-        left: 15px;
+        left: 12px; /* Adjusted from 15px */
     }
 }
 
@@ -762,8 +813,8 @@ body.dark-mode .modal-content {
 
 .event-card {
     display: grid;
-    grid-template-columns: 100px 1fr;
-    gap: 20px;
+    grid-template-columns: 80px 1fr; /* Reduced date width */
+    gap: 15px; /* Reduced gap */
     padding: 15px;
     background: rgba(255, 255, 255, 0.05);
     border-radius: 12px;
@@ -794,21 +845,22 @@ body.dark-mode .event-card {
     color: var(--primary-color);
     text-align: center;
     padding-top: 10px;
+    font-size: 0.9em; /* Slightly smaller */
 }
 
 /* Testimonials */
 .testimonial-slider {
     display: grid;
     gap: 20px;
-    margin-top: 30px;
+    margin-top: 20px; /* Reduced from 30px */
     position: relative;
     overflow: hidden;
-    height: 280px;
+    height: 240px; /* Reduced from 280px */
 }
 
 .testimonial {
     background-color: rgba(255, 255, 255, 0.9);
-    padding: 25px;
+    padding: 20px; /* Reduced from 25px */
     border-radius: 12px;
     position: absolute;
     width: 100%;
@@ -841,7 +893,7 @@ body.dark-mode .testimonial {
 }
 
 .testimonial-author {
-    margin-top: 15px;
+    margin-top: 10px; /* Reduced from 15px */
     font-style: italic;
     color: var(--primary-color);
     background: transparent;
@@ -914,7 +966,7 @@ body.dark-mode .team-member {
 /* Contact section */
 .contact-grid {
     display: grid;
-    gap: 20px;
+    gap: 15px; /* Reduced from 20px */
     max-width: 600px;
     margin: 0 auto;
 }
@@ -1030,15 +1082,19 @@ body.dark-mode .social-links a {
 
 /* Unique hover glow effect */
 .glass-morphism:hover {
-    box-shadow: 0 0 20px rgba(0, 160, 0, 0.5); /* Subtle glow on hover */
+    box-shadow: 0 0 20px rgba(0, 160, 0, 0.5);
 }
 
 /* Responsive design */
 @media (max-width: 768px) {
+    body {
+        overflow-x: hidden; /* Reinforce no horizontal scroll */
+    }
+
     header {
         position: relative;
-        padding: 10px;
-        min-height: 220px; /* Adjusted for mobile */
+        padding: 15px;
+        min-height: 220px;
     }
 
     nav ul {
@@ -1052,11 +1108,17 @@ body.dark-mode .social-links a {
 
     .welcome, .events, .services, .testimonials, .about, .contact, .case-studies, .team, .cta {
         width: 90%;
-        padding: 20px;
+        padding: 25px; /* Increased padding for mobile */
+        margin: 20px auto; /* Reduced margin */
     }
 
     .compact-section {
-        width: 85%; /* Slightly larger on mobile */
+        width: 85%;
+        padding: 20px;
+    }
+
+    .tiny-section {
+        width: 75%; /* Adjusted for contact */
         padding: 15px;
     }
 
@@ -1065,16 +1127,18 @@ body.dark-mode .social-links a {
     }
 
     .event-card {
-        grid-template-columns: 1fr;
+        grid-template-columns: 70px 1fr; /* Further reduced date width */
         text-align: center;
     }
 
     .event-timeline {
-        padding-left: 30px;
+        padding-left: 25px;
+        width: 100%; /* Ensure it fits container */
+        box-sizing: border-box; /* Include padding in width */
     }
 
     .event-timeline::before {
-        left: 15px;
+        left: 12px;
     }
 
     .button-container {
@@ -1087,7 +1151,7 @@ body.dark-mode .social-links a {
     }
 
     .hero {
-        padding: 40px 10px;
+        padding: 40px 15px; /* Adjusted padding */
         min-height: 250px;
     }
 
@@ -1096,11 +1160,30 @@ body.dark-mode .social-links a {
         left: 10px;
     }
 
+    .music-btn {
+        bottom: 10px;
+        right: 10px;
+    }
+
     .map-container {
         height: 250px;
     }
 
     .location-section {
-        max-width: 100%; /* Full width on mobile */
+        max-width: 100%;
+    }
+
+    .supported-badges {
+        gap: 15px;
+    }
+
+    .badge {
+        width: 40px;
+        height: 40px;
+    }
+
+    .sticky-note {
+        top: 80px; /* Adjusted to avoid weather button */
+        right: 5px;
     }
 }

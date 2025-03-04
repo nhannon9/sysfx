@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico"> <!-- Added favicon placeholder -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12" defer></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
@@ -89,7 +90,7 @@
         <section id="location" class="glass-morphism parallax">
             <h2 class="gradient-text">Find Us in Clinton, CT</h2>
             <p>Visit our headquarters at 123 Main Street, Clinton, CT, or reach out for remote support. We serve clients across the region with top-tier tech solutions.</p>
-            <div id="map" style="height: 300px; width: 100%; border-radius: 10px;" aria-label="Map showing sysfx location in Clinton, CT"></div>
+            <div id="map" class="map-container" aria-label="Map showing sysfx location in Clinton, CT"></div>
             <button class="modern-button" onclick="location.href='#contact'">Get Directions</button>
         </section>
 
@@ -239,7 +240,6 @@
             <button class="modern-button" onclick="location.href='#contact'">View All Events</button>
         </section>
 
-        <!-- New Case Studies Section -->
         <section id="case-studies" class="case-studies glass-morphism parallax">
             <h2 class="gradient-text">Case Studies</h2>
             <p>Discover how sysfx has transformed businesses with our tailored tech solutions.</p>
@@ -286,7 +286,6 @@
             <button class="modern-button" onclick="location.href='#contact'">Share Your Story</button>
         </section>
 
-        <!-- New Team Section -->
         <section id="team" class="team glass-morphism parallax">
             <h2 class="gradient-text">Meet Our Team</h2>
             <p>Our skilled professionals are dedicated to delivering top-tier tech solutions.</p>
@@ -312,7 +311,6 @@
             <button class="modern-button" onclick="location.href='#contact'">Contact Us Today</button>
         </section>
 
-        <!-- New Call to Action Banner -->
         <section id="cta" class="cta glass-morphism parallax">
             <h2 class="cta-title">Ready to Transform Your Tech?</h2>
             <p>Partner with sysfx for innovative solutions that drive your business forward.</p>

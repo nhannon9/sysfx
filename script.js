@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             ease: "none",
                             onComplete: () => {
                                 currentPhrase = (currentPhrase + 1) % phrases.length;
-                                setTimeout(typePhrase, 1500); // Reduced delay for smoother flow
+                                setTimeout(typePhrase, 1500);
                             }
                         });
                     }, 1500);
@@ -230,7 +230,7 @@ document.addEventListener("DOMContentLoaded", function () {
         currentTestimonial = (currentTestimonial + 1) % testimonials.length;
     }
     showTestimonial();
-    setInterval(showTestimonial, 4000); // Faster carousel
+    setInterval(showTestimonial, 4000);
 
     // Animated stats counters with parallax
     const statNumbers = document.querySelectorAll(".stat-number");
@@ -251,11 +251,11 @@ document.addEventListener("DOMContentLoaded", function () {
         observer.observe(stat);
 
         gsap.to(stat.closest(".stat-item"), {
-            y: -20,
+            y: -15,
             ease: "power1.inOut",
             scrollTrigger: {
                 trigger: stat.closest(".stat-item"),
-                start: "top 80%",
+                start: "top 85%",
                 end: "bottom 20%",
                 scrub: true
             }
@@ -336,11 +336,11 @@ document.addEventListener("DOMContentLoaded", function () {
             {
                 opacity: 1,
                 y: 0,
-                duration: 0.8, // Slightly faster
+                duration: 0.8,
                 ease: "power2.out",
                 scrollTrigger: {
                     trigger: section,
-                    start: "top 85%", // Adjusted trigger point
+                    start: "top 85%",
                     toggleActions: "play none none none"
                 }
             }
@@ -351,7 +351,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const testimonialItems = document.querySelectorAll(".testimonial");
     testimonialItems.forEach(testimonial => {
         gsap.to(testimonial, {
-            y: -15, // Reduced movement
+            y: -15,
             ease: "power1.inOut",
             scrollTrigger: {
                 trigger: testimonial,
@@ -419,15 +419,18 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Audio feedback
+    // Audio feedback with mute control
     let audioContext;
+    let isMuted = false; // Global mute state
+
     function playSound(type, volume = 0.5) {
+        if (isMuted) return;
         if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
         const oscillator = audioContext.createOscillator();
         const gainNode = audioContext.createGain();
 
         oscillator.type = 'sine';
-        oscillator.frequency.value = type === 'click' ? 440 : type === 'hover' ? 330 : type === 'error' ? 200 : 350;
+        oscillator.frequency.value = type === 'click' ? 440 : type === 'hover' ? 330 : type === 'error' ? 200 : type === 'beep' ? 880 : 350; // Added 'beep'
         gainNode.gain.value = volume;
         oscillator.connect(gainNode);
         gainNode.connect(audioContext.destination);
@@ -441,31 +444,32 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     document.addEventListener("click", () => {
-        if (audioContext && audioContext.state === "suspended") audioContext.resume();
+        if (audioContext && audioContext.state === "suspended" && !isMuted) audioContext.resume();
     }, { once: true });
 
-    // Music toggle
+    // Music toggle with mute control
     const musicToggle = document.getElementById("music-toggle");
     const welcomeMusic = document.getElementById("welcome-music");
     if (musicToggle && welcomeMusic) {
-        welcomeMusic.volume = 0.5; // Default volume
+        welcomeMusic.volume = 0.5;
         let isPlaying = false;
 
         musicToggle.addEventListener("click", () => {
             if (isPlaying) {
                 welcomeMusic.pause();
+                isMuted = true;
                 musicToggle.classList.add("muted");
             } else {
                 welcomeMusic.play().catch(() => console.log("Music playback blocked until user interaction"));
+                isMuted = false;
                 musicToggle.classList.remove("muted");
             }
             isPlaying = !isPlaying;
             playSound('click');
         });
 
-        // Auto-play on first interaction if not already playing
         document.addEventListener("click", () => {
-            if (!isPlaying) {
+            if (!isPlaying && !isMuted) {
                 welcomeMusic.play().catch(() => {});
                 isPlaying = true;
                 musicToggle.classList.remove("muted");
@@ -473,7 +477,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }, { once: true });
     }
 
-    // Sticky note with tech tips
+    // Tech tip with close button
     const techTips = [
         "Tech Tip: Regular updates keep your systems secure!",
         "Tech Tip: Back up your data weekly to avoid loss.",
@@ -484,55 +488,133 @@ document.addEventListener("DOMContentLoaded", function () {
         "Tech Tip: Monitor your network for unusual activity."
     ];
     let tipIndex = 0;
+    const techTipText = document.getElementById("tech-tip-text");
+    const closeTechTip = document.getElementById("close-tech-tip");
+    const stickyNote = document.querySelector(".sticky-note");
 
-    const stickyNote = document.createElement("div");
-    stickyNote.className = "sticky-note";
-    stickyNote.innerHTML = techTips[tipIndex];
-    document.body.appendChild(stickyNote);
+    if (techTipText && stickyNote) {
+        techTipText.textContent = techTips[tipIndex];
+        gsap.fromTo(".sticky-note", 
+            { opacity: 0, y: -50, rotation: -5 },
+            { opacity: 1, y: 0, rotation: 0, duration: 1, delay: 2, ease: "elastic.out(1, 0.5)" }
+        );
 
-    gsap.fromTo(".sticky-note", 
-        { opacity: 0, y: -50, rotation: -5 },
-        { opacity: 1, y: window.innerWidth <= 768 ? 80 : 10, rotation: 0, duration: 1, delay: 2, ease: "elastic.out(1, 0.5)" }
-    );
+        setInterval(() => {
+            if (stickyNote.style.display !== "none") {
+                tipIndex = (tipIndex + 1) % techTips.length;
+                gsap.to(".sticky-note", {
+                    opacity: 0,
+                    duration: 0.5,
+                    onComplete: () => {
+                        techTipText.textContent = techTips[tipIndex];
+                        gsap.to(".sticky-note", { opacity: 1, duration: 0.5 });
+                    }
+                });
+            }
+        }, 5000);
 
-    setInterval(() => {
-        tipIndex = (tipIndex + 1) % techTips.length;
-        gsap.to(".sticky-note", {
-            opacity: 0,
-            duration: 0.5,
-            onComplete: () => {
-                stickyNote.innerHTML = techTips[tipIndex];
-                gsap.to(".sticky-note", { opacity: 1, duration: 0.5 });
+        if (closeTechTip) {
+            closeTechTip.addEventListener("click", () => {
+                gsap.to(".sticky-note", {
+                    opacity: 0,
+                    y: -50,
+                    duration: 0.5,
+                    onComplete: () => stickyNote.style.display = "none"
+                });
+                playSound('click');
+            });
+        }
+    }
+
+    // New Feature 1: Chat Bubble Toggle
+    const chatBubble = document.getElementById("chat-bubble");
+    if (chatBubble) {
+        setTimeout(() => chatBubble.classList.add("visible"), 3000); // Show after 3s
+        chatBubble.addEventListener("click", () => {
+            alert("Chat feature coming soon! Contact us at nick@sysfx.net for now.");
+            playSound('beep');
+        });
+    }
+
+    // New Feature 2: Scroll-to-Top Button
+    const scrollTopBtn = document.querySelector(".scroll-top-btn");
+    if (scrollTopBtn) {
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > 300) {
+                scrollTopBtn.classList.add("visible");
+            } else {
+                scrollTopBtn.classList.remove("visible");
             }
         });
-    }, 5000); // Rotate tips every 5 seconds
+
+        scrollTopBtn.addEventListener("click", () => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            playSound('click');
+        });
+    }
+
+    // New Feature 3: Random Service Highlight
+    const serviceGrid = document.querySelector(".service-grid");
+    if (serviceGrid) {
+        const services = serviceGrid.querySelectorAll(".service");
+        setInterval(() => {
+            const randomIndex = Math.floor(Math.random() * services.length);
+            services.forEach((s, i) => {
+                s.style.border = i === randomIndex ? "2px solid var(--highlight-color)" : "none";
+            });
+        }, 10000); // Highlight a random service every 10s
+    }
+
+    // New Feature 4: Floating Service Icon
+    const floatingIcon = document.createElement("div");
+    floatingIcon.className = "floating-icon";
+    floatingIcon.innerHTML = '<i class="fas fa-cogs"></i>';
+    document.body.appendChild(floatingIcon);
+    gsap.to(".floating-icon", {
+        y: -20,
+        duration: 2,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut"
+    });
+
+    // New Feature 5: Dynamic Background Tint
+    const tintOverlay = document.createElement("div");
+    tintOverlay.className = "tint-overlay";
+    document.body.appendChild(tintOverlay);
+    setInterval(() => {
+        const hue = Math.random() * 360;
+        tintOverlay.style.background = `hsl(${hue}, 20%, 50%, 0.1)`;
+    }, 15000); // Change tint every 15s
 });
 
-// Sticky note styles (injected via JS)
+// Inject styles for new features
 const style = document.createElement("style");
 style.textContent = `
-    .sticky-note {
+    .floating-icon {
         position: fixed;
-        top: 10px;
-        right: 110px; /* Adjusted to avoid weather button on desktop */
-        background: #ffeb3b;
-        padding: 10px 15px;
-        border-radius: 5px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        font-size: 14px;
-        color: #333;
-        z-index: 1000;
-        transform: rotate(-5deg);
-        max-width: 200px;
-        text-align: center;
+        bottom: 140px;
+        left: 20px;
+        color: var(--primary-color);
+        font-size: 2em;
+        z-index: 998;
+        opacity: 0.7;
+    }
+    .tint-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -1;
+        transition: background 2s ease;
     }
     @media (max-width: 768px) {
-        .sticky-note {
-            top: 80px;
-            right: 5px;
-            font-size: 12px;
-            padding: 8px 12px;
-            max-width: 150px;
+        .floating-icon {
+            bottom: 130px;
+            left: 10px;
+            font-size: 1.5em;
         }
     }
 `;

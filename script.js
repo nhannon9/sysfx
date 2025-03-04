@@ -32,11 +32,11 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Enhanced typing effect with Typed.js (stabilized for navbar)
+    // Enhanced typing effect with Typed.js
     if (document.getElementById("typing-effect")) {
         const typingWrapper = document.createElement("div");
-        typingWrapper.style.minHeight = "30px"; // Fixed height to prevent layout shifts
-        typingWrapper.style.overflow = "hidden"; // Contain any overflow
+        typingWrapper.style.minHeight = "40px"; // Fixed height to prevent layout shifts
+        typingWrapper.style.overflow = "hidden";
         const typingElement = document.getElementById("typing-effect");
         typingElement.parentNode.replaceChild(typingWrapper, typingElement);
         typingWrapper.appendChild(typingElement);
@@ -51,12 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
             backSpeed: 30,
             backDelay: 2000,
             loop: true,
-            onComplete: () => {
-                const header = document.querySelector("header");
-                if (header) {
-                    header.style.minHeight = "120px"; // Consistent with styles.css
-                }
-            }
+            smartBackspace: true, // Prevents extra backspacing
         });
     }
 
@@ -73,6 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             localStorage.setItem("darkMode", body.classList.contains("dark-mode") ? "enabled" : null);
             playSound('click');
+            updateParticles(); // Update particles on mode change
         });
 
         if (localStorage.getItem("darkMode") === "enabled") {
@@ -148,19 +144,20 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Particles.js with star-like effects and trails
-    if (document.getElementById("particles-js")) {
+    // Particles.js with dynamic dark mode update
+    function updateParticles() {
+        const isDarkMode = body.classList.contains("dark-mode");
         particlesJS("particles-js", {
             particles: {
                 number: { value: 80, density: { enable: true, value_area: 800 } },
-                color: { value: "#ffffff" },
+                color: { value: isDarkMode ? "#ffffff" : "#00a000" }, // White in dark mode, green in light
                 shape: { type: "star" },
-                opacity: { value: 0.5, random: true },
+                opacity: { value: isDarkMode ? 0.6 : 0.3, random: true },
                 size: { value: 3, random: true },
                 line_linked: { 
                     enable: true, 
                     distance: 150, 
-                    color: "#ffffff", 
+                    color: isDarkMode ? "#ffffff" : "#00a000",
                     opacity: 0.4, 
                     width: 1 
                 },
@@ -186,6 +183,7 @@ document.addEventListener("DOMContentLoaded", function () {
             retina_detect: true
         });
     }
+    updateParticles(); // Initial call
 
     // Interactive Leaflet map with clickable markers
     const mapElement = document.getElementById("map");
@@ -217,7 +215,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function showTestimonial() {
         testimonials.forEach((t, i) => {
             t.style.opacity = i === currentTestimonial ? "1" : "0";
-            t.style.transform = i === currentTestimonial ? "rotateY(0deg)" : "rotateY(-180deg)";
+            t.style.transform = i === currentTestimonial ? "scale(1)" : "scale(0.95)"; // Simplified transition
             t.style.position = i === currentTestimonial ? "relative" : "absolute";
         });
         currentTestimonial = (currentTestimonial + 1) % testimonials.length;
@@ -307,7 +305,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Scroll animations with GSAP (3D elements stay faded in)
+    // Scroll animations with GSAP
     gsap.registerPlugin(ScrollTrigger);
     const sections = document.querySelectorAll(".parallax, .section-animation");
     sections.forEach(section => {
@@ -321,7 +319,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 scrollTrigger: {
                     trigger: section,
                     start: "top 80%",
-                    toggleActions: "play none none none" // Stay visible after animation
+                    toggleActions: "play none none none"
                 }
             }
         );
@@ -342,7 +340,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // 3D rotation effect on service cards
+    // 3D tilt effect on service cards (simplified)
     services.forEach(card => {
         card.addEventListener("mousemove", (e) => {
             const rect = card.getBoundingClientRect();
@@ -352,12 +350,12 @@ document.addEventListener("DOMContentLoaded", function () {
             const centerY = rect.height / 2;
             const tiltX = (y - centerY) / 20;
             const tiltY = -(x - centerX) / 20;
-            card.style.transform = `perspective(1000px) rotateY(${tiltY}deg) rotateX(${tiltX}deg) translateZ(20px)`;
+            card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.05)`;
             playSound('hover');
         });
 
         card.addEventListener("mouseleave", () => {
-            card.style.transform = "perspective(1000px) rotateY(0deg) rotateX(0deg)";
+            card.style.transform = "perspective(1000px) scale(1)";
         });
     });
 
@@ -370,7 +368,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Gallery lightbox with sound and hover effects
+    // Gallery lightbox with sound
     const galleryItems = document.querySelectorAll(".gallery-item");
     const lightbox = document.querySelector(".lightbox");
     const lightboxImg = lightbox.querySelector("img");
@@ -385,7 +383,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         item.addEventListener("mouseover", () => {
-            item.style.transform = "scale(1.1) rotate(5deg)";
+            item.style.transform = "scale(1.1)";
             playSound('hover', 0.3);
         });
 
@@ -420,8 +418,11 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Audio feedback
+    let audioContext;
     function playSound(type, volume = 0.5) {
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        if (!audioContext) {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
         const oscillator = audioContext.createOscillator();
         const gainNode = audioContext.createGain();
 
@@ -439,9 +440,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 100);
     }
 
-    // Prevent audio context suspension on mobile
+    // Resume audio context on user interaction
     document.addEventListener("click", () => {
-        if (typeof AudioContext !== "undefined" && !audioContext) {
+        if (audioContext && audioContext.state === "suspended") {
             audioContext.resume();
         }
     }, { once: true });

@@ -35,7 +35,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // Enhanced typing effect with Typed.js (stabilized for navbar)
     if (document.getElementById("typing-effect")) {
         const typingWrapper = document.createElement("div");
-        typingWrapper.style.minHeight = "20px"; // Fixed height to prevent layout shifts
+        typingWrapper.style.minHeight = "30px"; // Fixed height to prevent layout shifts
+        typingWrapper.style.overflow = "hidden"; // Contain any overflow
         const typingElement = document.getElementById("typing-effect");
         typingElement.parentNode.replaceChild(typingWrapper, typingElement);
         typingWrapper.appendChild(typingElement);
@@ -50,11 +51,10 @@ document.addEventListener("DOMContentLoaded", function () {
             backSpeed: 30,
             backDelay: 2000,
             loop: true,
-            onComplete: (self) => {
-                // Ensure header height remains stable
+            onComplete: () => {
                 const header = document.querySelector("header");
                 if (header) {
-                    header.style.minHeight = "120px"; // Match styles.css for consistency
+                    header.style.minHeight = "120px"; // Consistent with styles.css
                 }
             }
         });
@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const targetElement = document.getElementById(targetId);
             if (targetElement) {
                 window.scrollTo({
-                    top: targetElement.offsetTop - 80, // Adjust for smaller header
+                    top: targetElement.offsetTop - 80,
                     behavior: "smooth"
                 });
             }
@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 weatherText.innerHTML = "Weather unavailable";
             });
     }
-    updateWeather(); // Initial load with Clinton, CT
+    updateWeather();
 
     if (localWeatherBtn) {
         localWeatherBtn.addEventListener("click", () => {
@@ -190,7 +190,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Interactive Leaflet map with clickable markers
     const mapElement = document.getElementById("map");
     if (mapElement && typeof L !== "undefined") {
-        const map = L.map("map").setView([41.2788, -72.5276], 13); // Clinton, CT
+        const map = L.map("map").setView([41.2788, -72.5276], 13);
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
             attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
@@ -248,7 +248,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }, { threshold: 0.5 });
         observer.observe(stat);
 
-        // Parallax effect for stats
         gsap.to(stat.closest(".stat-item"), {
             y: -20,
             ease: "power1.inOut",
@@ -256,8 +255,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 trigger: stat.closest(".stat-item"),
                 start: "top 80%",
                 end: "bottom 20%",
-                scrub: true,
-                toggleActions: "play none none none" // Stay visible
+                scrub: true
             }
         });
     });
@@ -275,7 +273,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 100);
     });
 
-    // Hide cursor on mobile
     if (window.innerWidth <= 768) {
         cursor.style.display = "none";
     }
@@ -312,34 +309,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Scroll animations with GSAP (3D elements stay faded in)
     gsap.registerPlugin(ScrollTrigger);
-    const sections = document.querySelectorAll(".section-animation");
+    const sections = document.querySelectorAll(".parallax, .section-animation");
     sections.forEach(section => {
-        gsap.from(section, {
-            opacity: 0,
-            y: 50,
-            duration: 1,
-            ease: "power2.out",
-            scrollTrigger: {
-                trigger: section,
-                start: "top 80%",
-                toggleActions: "play none none none" // Stay visible after animation
-            }
-        });
-    });
-
-    // Parallax effect for sections
-    const parallaxSections = document.querySelectorAll(".parallax");
-    parallaxSections.forEach(section => {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add("visible");
-                } else {
-                    entry.target.classList.remove("visible");
+        gsap.fromTo(section, 
+            { opacity: 0, y: 50 },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: section,
+                    start: "top 80%",
+                    toggleActions: "play none none none" // Stay visible after animation
                 }
-            });
-        }, { threshold: 0.1 });
-        observer.observe(section);
+            }
+        );
     });
 
     // Parallax effect for testimonials
@@ -352,8 +337,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 trigger: testimonial,
                 start: "top 80%",
                 end: "bottom 20%",
-                scrub: true,
-                toggleActions: "play none none none" // Stay visible
+                scrub: true
             }
         });
     });
@@ -381,7 +365,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const heroVideo = document.querySelector(".hero-video");
     if (heroVideo) {
         heroVideo.addEventListener("error", () => {
-            heroVideo.style.display = "none"; // Fallback to gradient if video fails
+            heroVideo.style.display = "none";
             playSound('error');
         });
     }
@@ -426,7 +410,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Scroll progress bar (no sound)
+    // Scroll progress bar
     const scrollProgress = document.querySelector(".scroll-progress");
     window.addEventListener("scroll", () => {
         const scrollTop = window.scrollY;
@@ -435,30 +419,14 @@ document.addEventListener("DOMContentLoaded", function () {
         scrollProgress.style.width = `${scrollPercent}%`;
     });
 
-    // Skill bar animations
-    const skillBars = document.querySelectorAll(".skill-bar-fill");
-    skillBars.forEach(bar => {
-        const percent = bar.getAttribute("data-percent");
-        bar.style.setProperty('--percent', `${percent}%`);
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add("visible");
-                    observer.disconnect();
-                }
-            });
-        }, { threshold: 0.5 });
-        observer.observe(bar);
-    });
-
-    // Audio feedback (excluding scroll)
+    // Audio feedback
     function playSound(type, volume = 0.5) {
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         const oscillator = audioContext.createOscillator();
         const gainNode = audioContext.createGain();
 
         oscillator.type = 'sine';
-        oscillator.frequency.value = type === 'click' ? 440 : type === 'hover' ? 330 : type === 'type' ? 250 : type === 'response' ? 350 : 200;
+        oscillator.frequency.value = type === 'click' ? 440 : type === 'hover' ? 330 : type === 'error' ? 200 : 350;
         gainNode.gain.value = volume;
         oscillator.connect(gainNode);
         gainNode.connect(audioContext.destination);

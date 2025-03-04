@@ -34,13 +34,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Enhanced typing effect with Typed.js
     if (document.getElementById("typing-effect")) {
-        const typingWrapper = document.createElement("div");
-        typingWrapper.style.minHeight = "40px"; // Fixed height to prevent layout shifts
-        typingWrapper.style.overflow = "hidden";
         const typingElement = document.getElementById("typing-effect");
-        typingElement.parentNode.replaceChild(typingWrapper, typingElement);
-        typingWrapper.appendChild(typingElement);
-
+        typingElement.style.display = "inline-block"; // Ensure consistent width
+        typingElement.style.minWidth = "300px"; // Fixed width to prevent jump
         new Typed("#typing-effect", {
             strings: [
                 "Providing next-gen tech solutions.",
@@ -51,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
             backSpeed: 30,
             backDelay: 2000,
             loop: true,
-            smartBackspace: true, // Prevents extra backspacing
+            smartBackspace: true,
         });
     }
 
@@ -68,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             localStorage.setItem("darkMode", body.classList.contains("dark-mode") ? "enabled" : null);
             playSound('click');
-            updateParticles(); // Update particles on mode change
+            updateParticles();
         });
 
         if (localStorage.getItem("darkMode") === "enabled") {
@@ -113,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const localWeatherBtn = document.getElementById("local-weather-btn");
     const apiKey = "YOUR_OPENWEATHERMAP_API_KEY"; // Replace with your OpenWeatherMap API key
 
-    function updateWeather(lat = 41.2788, lon = -72.5276) { // Default to Clinton, CT
+    function updateWeather(lat = 41.2788, lon = -72.5276) {
         fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`)
             .then(response => response.json())
             .then(data => {
@@ -149,21 +145,21 @@ document.addEventListener("DOMContentLoaded", function () {
         const isDarkMode = body.classList.contains("dark-mode");
         particlesJS("particles-js", {
             particles: {
-                number: { value: 80, density: { enable: true, value_area: 800 } },
-                color: { value: isDarkMode ? "#ffffff" : "#00a000" }, // White in dark mode, green in light
-                shape: { type: "star" },
-                opacity: { value: isDarkMode ? 0.6 : 0.3, random: true },
-                size: { value: 3, random: true },
+                number: { value: 100, density: { enable: true, value_area: 800 } }, // More particles
+                color: { value: isDarkMode ? "#ffffff" : "#00a000" },
+                shape: { type: "circle" }, // Changed to circles for fun
+                opacity: { value: isDarkMode ? 0.8 : 0.3, random: true },
+                size: { value: 4, random: true }, // Slightly larger
                 line_linked: { 
                     enable: true, 
-                    distance: 150, 
+                    distance: 120, 
                     color: isDarkMode ? "#ffffff" : "#00a000",
                     opacity: 0.4, 
                     width: 1 
                 },
                 move: { 
                     enable: true, 
-                    speed: 6, 
+                    speed: 4, // Slower for smoother effect
                     direction: "none", 
                     random: true, 
                     straight: false, 
@@ -175,7 +171,7 @@ document.addEventListener("DOMContentLoaded", function () {
             interactivity: {
                 detect_on: "canvas",
                 events: {
-                    onhover: { enable: true, mode: "grab", parallax: { enable: true, force: 60 } },
+                    onhover: { enable: true, mode: "repulse" }, // Fun repulse effect
                     onclick: { enable: true, mode: "push" },
                     resize: true
                 }
@@ -183,12 +179,12 @@ document.addEventListener("DOMContentLoaded", function () {
             retina_detect: true
         });
     }
-    updateParticles(); // Initial call
+    updateParticles();
 
-    // Interactive Leaflet map with clickable markers
+    // Interactive Leaflet map
     const mapElement = document.getElementById("map");
     if (mapElement && typeof L !== "undefined") {
-        const map = L.map("map").setView([41.2788, -72.5276], 13);
+        const map = L.map("map", { scrollWheelZoom: false }).setView([41.2788, -72.5276], 13); // Disabled scroll zoom
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
             attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
@@ -215,7 +211,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function showTestimonial() {
         testimonials.forEach((t, i) => {
             t.style.opacity = i === currentTestimonial ? "1" : "0";
-            t.style.transform = i === currentTestimonial ? "scale(1)" : "scale(0.95)"; // Simplified transition
+            t.style.transform = i === currentTestimonial ? "scale(1)" : "scale(0.95)";
             t.style.position = i === currentTestimonial ? "relative" : "absolute";
         });
         currentTestimonial = (currentTestimonial + 1) % testimonials.length;
@@ -260,22 +256,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Custom cursor effect with trail
     const cursor = document.querySelector(".cursor");
+    let lastX = 0, lastY = 0;
     let trailTimeout;
-    document.addEventListener("mousemove", (e) => {
-        cursor.style.left = `${e.clientX}px`;
-        cursor.style.top = `${e.clientY}px`;
+    function updateCursor(e) {
+        const x = e.clientX;
+        const y = e.clientY;
+        cursor.style.left = `${x}px`;
+        cursor.style.top = `${y}px`;
         cursor.classList.add("trail");
         clearTimeout(trailTimeout);
         trailTimeout = setTimeout(() => {
             cursor.classList.remove("trail");
         }, 100);
-    });
-
+        lastX = x;
+        lastY = y;
+    }
+    document.addEventListener("mousemove", (e) => requestAnimationFrame(() => updateCursor(e)));
     if (window.innerWidth <= 768) {
         cursor.style.display = "none";
     }
 
-    // Service modals with sound
+    // Service modals without hover sound
     const services = document.querySelectorAll(".service");
     const modals = document.querySelectorAll(".modal");
     const closeButtons = document.querySelectorAll(".modal-close");
@@ -288,6 +289,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 modal.style.display = "flex";
                 playSound('click');
             }
+        });
+
+        // Removed hover sound by not adding mousemove event
+        service.addEventListener("mouseleave", () => {
+            service.style.transform = "perspective(1000px) scale(1)";
         });
     });
 
@@ -351,7 +357,6 @@ document.addEventListener("DOMContentLoaded", function () {
             const tiltX = (y - centerY) / 20;
             const tiltY = -(x - centerX) / 20;
             card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.05)`;
-            playSound('hover');
         });
 
         card.addEventListener("mouseleave", () => {

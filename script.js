@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
         }
-        typePhrase(); // Start the animation
+        typePhrase();
     }
 
     // Dark mode toggle with localStorage
@@ -86,6 +86,18 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    // Hamburger menu toggle
+    const hamburger = document.querySelector(".hamburger");
+    const navUl = document.querySelector("nav ul");
+    if (hamburger && navUl) {
+        hamburger.addEventListener("click", () => {
+            navUl.classList.toggle("active");
+            hamburger.querySelector("i").classList.toggle("fa-bars");
+            hamburger.querySelector("i").classList.toggle("fa-times");
+            playSound('click');
+        });
+    }
+
     // Smooth scrolling
     document.querySelectorAll("nav a").forEach(anchor => {
         anchor.addEventListener("click", function (e) {
@@ -97,6 +109,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     top: targetElement.offsetTop - 80,
                     behavior: "smooth"
                 });
+                if (window.innerWidth <= 768) {
+                    navUl.classList.remove("active");
+                    hamburger.querySelector("i").classList.remove("fa-times");
+                    hamburger.querySelector("i").classList.add("fa-bars");
+                }
             }
             playSound('click');
         });
@@ -116,7 +133,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Weather widget with OpenWeatherMap API
     const weatherText = document.getElementById("weather-text");
     const localWeatherBtn = document.getElementById("local-weather-btn");
-    const apiKey = "YOUR_OPENWEATHERMAP_API_KEY"; // Replace with your OpenWeatherMap API key
+    const apiKey = "YOUR_OPENWEATHERMAP_API_KEY";
 
     function updateWeather(lat = 41.2788, lon = -72.5276) {
         fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`)
@@ -282,10 +299,11 @@ document.addEventListener("DOMContentLoaded", function () {
         if (window.innerWidth <= 768) cursor.style.display = "none";
     }
 
-    // Service modals without hover sound
+    // Service modals with fixed button functionality
     const services = document.querySelectorAll(".service");
     const modals = document.querySelectorAll(".modal");
     const closeButtons = document.querySelectorAll(".modal-close");
+    const modalActions = document.querySelectorAll(".modal-action");
 
     services.forEach(service => {
         service.addEventListener("click", () => {
@@ -315,7 +333,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     closeButtons.forEach(button => {
         button.addEventListener("click", () => {
-            button.closest(".modal").style.display = "none";
+            const modal = button.closest(".modal");
+            modal.style.display = "none";
             playSound('click');
         });
     });
@@ -325,6 +344,15 @@ document.addEventListener("DOMContentLoaded", function () {
             e.target.style.display = "none";
             playSound('click');
         }
+    });
+
+    modalActions.forEach(action => {
+        action.addEventListener("click", (e) => {
+            e.stopPropagation(); // Prevent modal close
+            const href = action.getAttribute("onclick").match(/location\.href='([^']+)'/)[1];
+            window.location.href = href;
+            playSound('click');
+        });
     });
 
     // Scroll animations with GSAP
@@ -421,7 +449,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Audio feedback with mute control
     let audioContext;
-    let isMuted = false; // Global mute state
+    let isMuted = false;
 
     function playSound(type, volume = 0.5) {
         if (isMuted) return;
@@ -430,7 +458,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const gainNode = audioContext.createGain();
 
         oscillator.type = 'sine';
-        oscillator.frequency.value = type === 'click' ? 440 : type === 'hover' ? 330 : type === 'error' ? 200 : type === 'beep' ? 880 : 350; // Added 'beep'
+        oscillator.frequency.value = type === 'click' ? 440 : type === 'hover' ? 330 : type === 'error' ? 200 : type === 'beep' ? 880 : 350;
         gainNode.gain.value = volume;
         oscillator.connect(gainNode);
         gainNode.connect(audioContext.destination);
@@ -477,7 +505,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }, { once: true });
     }
 
-    // Tech tip with close button
+    // Single tech tip per load
     const techTips = [
         "Tech Tip: Regular updates keep your systems secure!",
         "Tech Tip: Back up your data weekly to avoid loss.",
@@ -487,31 +515,17 @@ document.addEventListener("DOMContentLoaded", function () {
         "Tech Tip: Keep software patched against vulnerabilities.",
         "Tech Tip: Monitor your network for unusual activity."
     ];
-    let tipIndex = 0;
     const techTipText = document.getElementById("tech-tip-text");
     const closeTechTip = document.getElementById("close-tech-tip");
     const stickyNote = document.querySelector(".sticky-note");
 
     if (techTipText && stickyNote) {
-        techTipText.textContent = techTips[tipIndex];
+        const randomTip = techTips[Math.floor(Math.random() * techTips.length)];
+        techTipText.textContent = randomTip;
         gsap.fromTo(".sticky-note", 
             { opacity: 0, y: -50, rotation: -5 },
             { opacity: 1, y: 0, rotation: 0, duration: 1, delay: 2, ease: "elastic.out(1, 0.5)" }
         );
-
-        setInterval(() => {
-            if (stickyNote.style.display !== "none") {
-                tipIndex = (tipIndex + 1) % techTips.length;
-                gsap.to(".sticky-note", {
-                    opacity: 0,
-                    duration: 0.5,
-                    onComplete: () => {
-                        techTipText.textContent = techTips[tipIndex];
-                        gsap.to(".sticky-note", { opacity: 1, duration: 0.5 });
-                    }
-                });
-            }
-        }, 5000);
 
         if (closeTechTip) {
             closeTechTip.addEventListener("click", () => {
@@ -526,17 +540,17 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // New Feature 1: Chat Bubble Toggle
+    // Chat Bubble Toggle
     const chatBubble = document.getElementById("chat-bubble");
     if (chatBubble) {
-        setTimeout(() => chatBubble.classList.add("visible"), 3000); // Show after 3s
+        setTimeout(() => chatBubble.classList.add("visible"), 3000);
         chatBubble.addEventListener("click", () => {
             alert("Chat feature coming soon! Contact us at nick@sysfx.net for now.");
             playSound('beep');
         });
     }
 
-    // New Feature 2: Scroll-to-Top Button
+    // Scroll-to-Top Button
     const scrollTopBtn = document.querySelector(".scroll-top-btn");
     if (scrollTopBtn) {
         window.addEventListener("scroll", () => {
@@ -553,7 +567,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // New Feature 3: Random Service Highlight
+    // New Feature 1: Random Service Highlight
     const serviceGrid = document.querySelector(".service-grid");
     if (serviceGrid) {
         const services = serviceGrid.querySelectorAll(".service");
@@ -562,60 +576,112 @@ document.addEventListener("DOMContentLoaded", function () {
             services.forEach((s, i) => {
                 s.style.border = i === randomIndex ? "2px solid var(--highlight-color)" : "none";
             });
-        }, 10000); // Highlight a random service every 10s
+        }, 10000);
     }
 
-    // New Feature 4: Floating Service Icon
-    const floatingIcon = document.createElement("div");
-    floatingIcon.className = "floating-icon";
-    floatingIcon.innerHTML = '<i class="fas fa-cogs"></i>';
-    document.body.appendChild(floatingIcon);
-    gsap.to(".floating-icon", {
-        y: -20,
-        duration: 2,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut"
+    // New Feature 2: Easter Egg
+    const easterEggTrigger = document.querySelector(".easter-egg-trigger");
+    if (easterEggTrigger) {
+        let clickCount = 0;
+        easterEggTrigger.addEventListener("click", () => {
+            clickCount++;
+            if (clickCount === 3) {
+                const egg = document.createElement("div");
+                egg.className = "easter-egg";
+                egg.textContent = "🎉 Secret Unlocked! Enjoy a retro surprise!";
+                document.body.appendChild(egg);
+                gsap.fromTo(".easter-egg", 
+                    { opacity: 0, y: -50 },
+                    { opacity: 1, y: 0, duration: 1, ease: "bounce.out" }
+                );
+                setTimeout(() => {
+                    gsap.to(".easter-egg", {
+                        opacity: 0,
+                        y: -50,
+                        duration: 1,
+                        onComplete: () => egg.remove()
+                    });
+                }, 3000);
+                playSound('beep');
+                clickCount = 0;
+            }
+        });
+    }
+
+    // New Feature 3: Dynamic Welcome Message
+    const welcomeMessage = document.querySelector(".hero-text");
+    if (welcomeMessage) {
+        const messages = [
+            "Unlock cutting-edge technology with Sys Fix—your trusted partner in repairs, security, web development, networking, cloud solutions, and IT support.",
+            "Transform your business with sysfx’s innovative tech solutions, tailored just for you.",
+            "From fixes to future-proofing, sysfx is your all-in-one tech ally in Clinton, CT."
+        ];
+        let messageIndex = 0;
+        setInterval(() => {
+            messageIndex = (messageIndex + 1) % messages.length;
+            gsap.to(welcomeMessage, {
+                opacity: 0,
+                duration: 0.5,
+                onComplete: () => {
+                    welcomeMessage.textContent = messages[messageIndex];
+                    gsap.to(welcomeMessage, { opacity: 1, duration: 0.5 });
+                }
+            });
+        }, 8000);
+    }
+
+    // New Feature 4: Scroll Reveal for Timeline Items
+    const timelineItems = document.querySelectorAll(".timeline-item");
+    timelineItems.forEach(item => {
+        gsap.fromTo(item, 
+            { opacity: 0, x: -50 },
+            {
+                opacity: 1,
+                x: 0,
+                duration: 0.8,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: item,
+                    start: "top 90%",
+                    toggleActions: "play none none none"
+                }
+            }
+        );
     });
 
-    // New Feature 5: Dynamic Background Tint
-    const tintOverlay = document.createElement("div");
-    tintOverlay.className = "tint-overlay";
-    document.body.appendChild(tintOverlay);
-    setInterval(() => {
-        const hue = Math.random() * 360;
-        tintOverlay.style.background = `hsl(${hue}, 20%, 50%, 0.1)`;
-    }, 15000); // Change tint every 15s
+    // New Feature 5: Interactive Map Pin Animation
+    if (mapElement && typeof L !== "undefined") {
+        const pinAnimation = () => {
+            const pins = document.querySelectorAll(".leaflet-marker-icon");
+            pins.forEach(pin => {
+                gsap.to(pin, {
+                    y: -10,
+                    duration: 0.5,
+                    repeat: 1,
+                    yoyo: true,
+                    ease: "power1.inOut"
+                });
+            });
+        };
+        setInterval(pinAnimation, 5000);
+    }
 });
 
 // Inject styles for new features
 const style = document.createElement("style");
 style.textContent = `
-    .floating-icon {
+    .easter-egg {
         position: fixed;
-        bottom: 140px;
-        left: 20px;
-        color: var(--primary-color);
-        font-size: 2em;
-        z-index: 998;
-        opacity: 0.7;
-    }
-    .tint-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: -1;
-        transition: background 2s ease;
-    }
-    @media (max-width: 768px) {
-        .floating-icon {
-            bottom: 130px;
-            left: 10px;
-            font-size: 1.5em;
-        }
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: var(--primary-color);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 160, 0, 0.5);
+        z-index: 1001;
+        font-size: 1.2em;
     }
 `;
 document.head.appendChild(style);

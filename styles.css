@@ -5,7 +5,7 @@
     --glass-bg: rgba(255, 255, 255, 0.8);
     --glass-border: rgba(255, 255, 255, 0.18);
     --secondary-color: #4CAF50;
-    --highlight-color: #ffeb3b; /* Fun new accent color */
+    --highlight-color: #ffeb3b;
 }
 
 body {
@@ -21,7 +21,7 @@ body {
 }
 
 body.dark-mode {
-    background: #222; /* Solid dark background for particle visibility */
+    background: #222;
     color: #eee;
     --glass-bg: rgba(51, 51, 51, 0.8);
     --glass-border: rgba(255, 255, 255, 0.08);
@@ -46,7 +46,7 @@ body.dark-mode {
     left: 0;
     width: 0;
     height: 4px;
-    background: var(--highlight-color); /* Fun yellow accent */
+    background: var(--highlight-color);
     z-index: 1001;
     transition: width 0.3s ease;
 }
@@ -60,14 +60,14 @@ body.dark-mode {
     border-radius: 50%;
     pointer-events: none;
     z-index: 9999;
-    transition: transform 0.05s ease, opacity 0.2s ease; /* Smoother transition */
-    transform: translate(-50%, -50%); /* Center cursor */
+    transition: transform 0.05s ease, opacity 0.2s ease;
+    transform: translate(-50%, -50%);
     box-shadow: 0 0 10px rgba(0, 160, 0, 0.5);
 }
 
 .cursor.trail {
     opacity: 0.7;
-    transform: translate(-50%, -50%) scale(1.5); /* Larger trail */
+    transform: translate(-50%, -50%) scale(1.5);
     box-shadow: 0 0 20px rgba(0, 160, 0, 0.8);
 }
 
@@ -84,7 +84,7 @@ body.dark-mode {
 }
 
 body.dark-mode .particles-container {
-    opacity: 0.8; /* Stronger visibility in dark mode */
+    opacity: 0.8;
 }
 
 /* Glassmorphism effect */
@@ -93,7 +93,7 @@ body.dark-mode .particles-container {
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     border: 1px solid var(--glass-border);
-    border-radius: 15px; /* Softer corners */
+    border-radius: 15px;
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
 }
 
@@ -195,7 +195,7 @@ header {
     position: sticky;
     top: 0;
     z-index: 100;
-    min-height: 160px; /* Adjusted for typing effect stability */
+    min-height: 200px; /* Increased to accommodate typing animation */
     transition: padding 0.3s ease;
     box-sizing: border-box;
 }
@@ -224,7 +224,7 @@ body.dark-mode header h1 {
     border-radius: 5px;
     margin-bottom: 10px;
     font-size: 0.8em;
-    color: #fff; /* Better visibility */
+    color: #fff;
 }
 
 /* Logo animation */
@@ -242,7 +242,7 @@ body.dark-mode header h1 {
     animation: spinAndPulse 4s infinite ease-in-out;
     border-radius: 50%;
     transform-style: preserve-3d;
-    box-shadow: 0 0 15px var(--highlight-color); /* Fun glow */
+    box-shadow: 0 0 15px var(--highlight-color);
 }
 
 @keyframes spinAndPulse {
@@ -261,7 +261,7 @@ nav ul {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 15px; /* More spacing */
+    gap: 15px;
 }
 
 nav ul li {
@@ -273,7 +273,7 @@ nav ul li {
     text-decoration: none;
     font-weight: 500;
     padding: 8px 16px;
-    border-radius: 20px; /* Rounded for fun */
+    border-radius: 20px;
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
@@ -311,28 +311,38 @@ body.dark-mode .nav-link {
     background-clip: text;
     color: transparent;
     display: inline-block;
-    font-weight: 700; /* Bolder for impact */
+    font-weight: 700;
 }
 
-/* Map container */
+/* Map container and section */
+.location-section {
+    max-width: 700px; /* Locks entire section width */
+    margin: 30px auto;
+}
+
 .map-container {
     width: 100%;
-    height: 300px; /* Fixed size */
-    max-width: 600px; /* Limits horizontal stretch */
+    height: 300px;
+    max-width: 600px;
     margin: 20px auto;
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Professional shadow */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 /* Sections */
 .welcome, .events, .services, .testimonials, .about, .contact, .case-studies, .team, .cta {
-    margin: 30px auto; /* More breathing room */
+    margin: 30px auto;
     padding: 30px;
-    width: 85%; /* Slightly wider */
+    width: 85%;
     transition: transform 0.3s ease;
     position: relative;
     overflow: hidden;
+}
+
+.compact-section {
+    width: 70%; /* Smaller width for compact sections */
+    padding: 20px; /* Reduced padding */
 }
 
 .section-animation {
@@ -346,6 +356,12 @@ body.dark-mode .nav-link {
     transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
+/* Services text */
+.services-text {
+    color: #fff; /* White for readability on dark background */
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Contrast enhancement */
+}
+
 /* Gallery section */
 .gallery {
     padding: 40px 20px;
@@ -354,7 +370,7 @@ body.dark-mode .nav-link {
 
 .gallery-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Larger items */
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 25px;
     max-width: 1200px;
     margin: 0 auto;
@@ -418,7 +434,7 @@ body.dark-mode .nav-link {
 }
 
 .lightbox-close:hover {
-    color: var(--highlight-color); /* Fun yellow */
+    color: var(--highlight-color);
 }
 
 /* Stats section */
@@ -466,7 +482,7 @@ body.dark-mode .nav-link {
 /* Button styles */
 .button-container {
     display: flex;
-    gap: 20px; /* More spacing */
+    gap: 20px;
     justify-content: center;
     margin-top: 20px;
     flex-wrap: wrap;
@@ -483,7 +499,7 @@ body.dark-mode .nav-link {
     align-items: center;
     gap: 8px;
     font-size: 16px;
-    border-radius: 8px; /* Less rounded, more modern */
+    border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease, transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
     position: relative;
@@ -603,7 +619,7 @@ body.dark-mode #darkModeToggle:hover {
 .service {
     background-color: rgba(255, 255, 255, 0.9);
     padding: 25px;
-    border-radius: 12px; /* Softer corners */
+    border-radius: 12px;
     text-align: center;
     transition: all 0.3s ease;
     transform-style: preserve-3d;
@@ -674,7 +690,7 @@ body.dark-mode .extra-info {
 
 .modal-content {
     background: var(--glass-bg);
-    padding: 25px; /* More padding */
+    padding: 25px;
     border-radius: 15px;
     max-width: 500px;
     text-align: center;
@@ -701,7 +717,7 @@ body.dark-mode .modal-content {
 }
 
 .modal-close:hover {
-    color: var(--highlight-color); /* Fun yellow */
+    color: var(--highlight-color);
 }
 
 /* Event timeline */
@@ -923,7 +939,7 @@ body.dark-mode .team-member {
 .email-link:hover,
 .email-link:focus {
     text-decoration: underline;
-    color: var(--highlight-color); /* Fun yellow */
+    color: var(--highlight-color);
     outline: none;
 }
 
@@ -934,51 +950,6 @@ body.dark-mode .team-member {
 
 #email a:hover,
 #email a:focus {
-    text-decoration: underline;
-    color: var(--highlight-color);
-}
-
-/* Contact Sidebar */
-.contact-sidebar {
-    display: none;
-    position: fixed;
-    top: 100px;
-    right: 20px;
-    width: 250px;
-    background: var(--glass-bg);
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-    z-index: 100;
-}
-
-@media (min-width: 769px) {
-    .contact-sidebar {
-        display: block;
-    }
-}
-
-.contact-sidebar h3 {
-    color: var(--primary-color);
-    margin-bottom: 15px;
-}
-
-.contact-sidebar p {
-    margin: 10px 0;
-    color: #333;
-}
-
-body.dark-mode .contact-sidebar p {
-    color: #eee;
-}
-
-.contact-sidebar .email-link {
-    color: var(--primary-color);
-    text-decoration: none;
-}
-
-.contact-sidebar .email-link:hover,
-.contact-sidebar .email-link:focus {
     text-decoration: underline;
     color: var(--highlight-color);
 }
@@ -1004,7 +975,7 @@ body.dark-mode footer p {
     margin-top: 10px;
     display: flex;
     justify-content: center;
-    gap: 25px; /* More spacing */
+    gap: 25px;
 }
 
 .social-links a {
@@ -1019,7 +990,7 @@ body.dark-mode .social-links a {
 
 .social-links a:hover {
     color: var(--highlight-color);
-    transform: scale(1.2) rotate(15deg); /* Fun twist */
+    transform: scale(1.2) rotate(15deg);
 }
 
 @keyframes footerGradient {
@@ -1057,12 +1028,17 @@ body.dark-mode .social-links a {
     100% { transform: translateX(-100%); }
 }
 
+/* Unique hover glow effect */
+.glass-morphism:hover {
+    box-shadow: 0 0 20px rgba(0, 160, 0, 0.5); /* Subtle glow on hover */
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
     header {
         position: relative;
         padding: 10px;
-        min-height: 180px;
+        min-height: 220px; /* Adjusted for mobile */
     }
 
     nav ul {
@@ -1077,6 +1053,11 @@ body.dark-mode .social-links a {
     .welcome, .events, .services, .testimonials, .about, .contact, .case-studies, .team, .cta {
         width: 90%;
         padding: 20px;
+    }
+
+    .compact-section {
+        width: 85%; /* Slightly larger on mobile */
+        padding: 15px;
     }
 
     .service-grid, .gallery-grid, .case-study-grid, .team-grid {
@@ -1115,11 +1096,11 @@ body.dark-mode .social-links a {
         left: 10px;
     }
 
-    .contact-sidebar {
-        display: none;
+    .map-container {
+        height: 250px;
     }
 
-    .map-container {
-        height: 250px; /* Smaller on mobile */
+    .location-section {
+        max-width: 100%; /* Full width on mobile */
     }
 }

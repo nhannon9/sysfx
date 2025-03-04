@@ -241,7 +241,7 @@ body.dark-mode header h1 {
 
 .spinning-logo {
     width: 120px;
-    animation: flipAndPulse 2s infinite ease-in-out;
+    animation: flipAndPulse 5s infinite ease-in-out;
     border-radius: 50%;
     box-shadow: 0 0 15px var(--highlight-color);
     transform-style: preserve-3d; /* Ensure 3D transform */

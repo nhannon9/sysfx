@@ -37,6 +37,7 @@
         </div>
         <h1>sysfx</h1>
         <h3 id="typing-effect" class="gradient-text"></h3>
+        <button class="hamburger" aria-label="Toggle Navigation"><i class="fas fa-bars"></i></button>
         <nav role="navigation">
             <ul>
                 <li><a href="#home" class="nav-link"><i class="fas fa-home"></i> Home</a></li>
@@ -163,7 +164,7 @@
                 <div class="gallery-item" data-src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80">
                     <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Cybersecurity implementation" loading="lazy">
                 </div>
-                <div class="gallery-item" data-src="https://images.unsplash.com/photo-1454165804606-c3d57bc подписывайтесь на наш канал860?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80">
+                <div class="gallery-item" data-src="https://images.unsplash.com/photo-1454165804606-c3d57bc860?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80">
                     <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc860?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Cloud solution deployment" loading="lazy">
                 </div>
                 <div class="gallery-item" data-src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80">
@@ -313,6 +314,10 @@
             <p>Our mission is to empower businesses with innovative technology, ensuring precision, reliability, and exceptional customer service. Located in Clinton, CT, we serve clients across the region, helping them thrive in a digital-first world.</p>
             <p>Our core values include innovation, integrity, and client satisfaction, driving us to exceed expectations with every project.</p>
             <button class="modern-button" onclick="location.href='#contact'">Contact Us Today</button>
+            <div class="tech-trivia">
+                <h3>Tech Trivia</h3>
+                <p>Did you know the first computer "bug" was an actual insect? In 1947, engineers found a malfunction in the Harvard Mark II caused by a moth stuck in a relay!</p>
+            </div>
         </section>
 
         <section id="cta" class="cta glass-morphism parallax compact-section">
@@ -349,6 +354,43 @@
             </div>
             <button class="modern-button" onclick="location.href='mailto:nick@sysfx.net'">Send Email</button>
         </section>
+
+        <section class="blog-teaser glass-morphism parallax">
+            <h2 class="gradient-text">Tech Insights</h2>
+            <p>Get a sneak peek at our latest blog posts for tips, tricks, and industry news.</p>
+            <div class="blog-preview">
+                <article>
+                    <h3>5 Ways to Boost Your Network Speed</h3>
+                    <p>Learn simple tweaks to optimize your network performance, from QoS settings to hardware upgrades.</p>
+                    <button class="modern-button small" onclick="alert('Blog coming soon!')">Read More</button>
+                </article>
+                <article>
+                    <h3>The Future of Cloud Computing</h3>
+                    <p>Explore how edge computing and AI are shaping the next era of cloud solutions.</p>
+                    <button class="modern-button small" onclick="alert('Blog coming soon!')">Read More</button>
+                </article>
+            </div>
+        </section>
+
+        <!-- New Section: Tech Timeline -->
+        <section class="tech-timeline glass-morphism parallax">
+            <h2 class="gradient-text">Our Tech Journey</h2>
+            <p>A brief history of sysfx’s evolution in the tech world.</p>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <span class="year">2010</span>
+                    <p>Founded as N-TEC, focusing on local PC repairs.</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="year">2015</span>
+                    <p>Expanded into cybersecurity and networking solutions.</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="year">2020</span>
+                    <p>Rebranded to sysfx, adding web development and cloud services.</p>
+                </div>
+            </div>
+        </section>
     </main>
 
     <footer class="glass-morphism" role="contentinfo">
@@ -367,7 +409,7 @@
             <span class="modal-close">×</span>
             <h3>Computer Repair Services</h3>
             <p>Our computer repair services cover desktops, laptops, and more, addressing hardware issues, software optimization, and urgent needs with same-day service options. Trust our certified technicians to restore your devices to peak performance using state-of-the-art tools.</p>
-            <button class="modern-button small" onclick="location.href='#contact'">Request Repair</button>
+            <button class="modern-button small modal-action" onclick="location.href='#contact'">Request Repair</button>
         </div>
     </div>
     <div id="cybersecurity-modal" class="modal">
@@ -375,7 +417,7 @@
             <span class="modal-close">×</span>
             <h3>Cybersecurity Solutions</h3>
             <p>Protect your business with sysfx’s advanced cybersecurity solutions, featuring threat detection, firewalls, and continuous monitoring to shield against cyber threats. We offer tailored plans to secure your data and ensure compliance with industry standards.</p>
-            <button class="modern-button small" onclick="location.href='#contact'">Secure My Business</button>
+            <button class="modern-button small modal-action" onclick="location.href='#contact'">Secure My Business</button>
         </div>
     </div>
     <div id="web-development-modal" class="modal">
@@ -383,7 +425,7 @@
             <span class="modal-close">×</span>
             <h3>Web Development Services</h3>
             <p>Create a powerful online presence with sysfx’s web development services. We build custom, responsive websites with e-commerce capabilities, optimized for speed and SEO to drive traffic and conversions for your business.</p>
-            <button class="modern-button small" onclick="location.href='#contact'">Build My Website</button>
+            <button class="modern-button small modal-action" onclick="location.href='#contact'">Build My Website</button>
         </div>
     </div>
     <div id="networking-modal" class="modal">
@@ -391,7 +433,7 @@
             <span class="modal-close">×</span>
             <h3>Networking Solutions</h3>
             <p>sysfx provides robust networking solutions for seamless connectivity, from small business setups to large enterprise systems. Our experts ensure speed, security, and reliability with enterprise-grade technology.</p>
-            <button class="modern-button small" onclick="location.href='#contact'">Enhance My Network</button>
+            <button class="modern-button small modal-action" onclick="location.href='#contact'">Enhance My Network</button>
         </div>
     </div>
     <div id="cloud-solutions-modal" class="modal">
@@ -399,7 +441,7 @@
             <span class="modal-close">×</span>
             <h3>Cloud Solutions</h3>
             <p>Migrate to the cloud with sysfx’s scalable, secure cloud solutions to optimize your IT infrastructure. Our experts streamline your workflow, enhancing efficiency and flexibility for business growth.</p>
-            <button class="modern-button small" onclick="location.href='#contact'">Migrate to Cloud</button>
+            <button class="modern-button small modal-action" onclick="location.href='#contact'">Migrate to Cloud</button>
         </div>
     </div>
     <div id="it-support-modal" class="modal">
@@ -407,16 +449,13 @@
             <span class="modal-close">×</span>
             <h3>IT Support Services</h3>
             <p>Get 24/7 IT support from sysfx to keep your systems running smoothly. Our proactive maintenance and remote/on-site assistance resolve issues quickly, ensuring peak performance anytime, anywhere.</p>
-            <button class="modern-button small" onclick="location.href='#contact'">Get IT Help</button>
+            <button class="modern-button small modal-action" onclick="location.href='#contact'">Get IT Help</button>
         </div>
     </div>
 
-    <!-- Floating Contact Button -->
-    <button class="contact-btn" aria-label="Quick Contact" onclick="location.href='#contact'"><i class="fas fa-envelope"></i></button>
-    
     <!-- Audio Player -->
     <audio id="welcome-music" preload="auto">
-        <source src="https://cdn.x.ai/assets/windows-xp-welcome.mp3" type="audio/mpeg"> <!-- Replace with your hosted URL -->
+        <source src="https://ia802208.us.archive.org/30/items/title_20240514_0432/title.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
     <button id="music-toggle" class="music-btn" aria-label="Toggle Music"><i class="fas fa-volume-up"></i></button>
@@ -434,5 +473,8 @@
 
     <!-- New Feature: Scroll-to-Top Button -->
     <button class="scroll-top-btn" aria-label="Scroll to Top"><i class="fas fa-arrow-up"></i></button>
+
+    <!-- New Feature: Easter Egg Trigger -->
+    <div class="easter-egg-trigger" aria-hidden="true"></div>
 </body>
 </html>

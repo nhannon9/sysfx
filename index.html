@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12" defer></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
@@ -141,6 +140,11 @@
                     <button class="modern-button small" onclick="location.href='#contact'">Get Support</button>
                 </article>
             </div>
+            <div class="supported-badges">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/06/Windows_Logo.svg" alt="Windows Supported" class="badge" loading="lazy">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Mac_logo.svg" alt="Apple Supported" class="badge" loading="lazy">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/3/35/Tux.svg" alt="Linux Supported" class="badge" loading="lazy">
+            </div>
         </section>
 
         <section class="gallery">
@@ -257,7 +261,7 @@
             </div>
         </section>
 
-        <section id="testimonials" class="testimonials glass-morphism parallax">
+        <section id="testimonials" class="testimonials glass-morphism parallax compact-section">
             <h2 class="gradient-text">What Our Clients Say</h2>
             <p>Hear from businesses like yours who’ve transformed their tech with sysfx’s expertise.</p>
             <div class="testimonial-slider">
@@ -324,7 +328,7 @@
             </div>
         </section>
 
-        <section id="contact" class="contact glass-morphism parallax compact-section">
+        <section id="contact" class="contact glass-morphism parallax tiny-section">
             <h2 class="gradient-text">Contact Us</h2>
             <p>Ready to elevate your tech with sysfx? Contact our team for a free consultation, quote, or support. We’re here to help 24/7!</p>
             <div class="contact-grid">
@@ -409,5 +413,12 @@
 
     <!-- Floating Contact Button -->
     <button class="contact-btn" aria-label="Quick Contact" onclick="location.href='#contact'"><i class="fas fa-envelope"></i></button>
+    
+    <!-- Audio Player -->
+    <audio id="welcome-music" preload="auto">
+        <source src="https://cdn.x.ai/assets/windows-xp-welcome.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <button id="music-toggle" class="music-btn" aria-label="Toggle Music"><i class="fas fa-volume-up"></i></button>
 </body>
 </html>

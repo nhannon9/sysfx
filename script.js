@@ -22,33 +22,38 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Set email link in sidebar
-    const sidebarEmailLink = document.getElementById("sidebar-email-link");
-    if (sidebarEmailLink) {
-        sidebarEmailLink.addEventListener("click", (e) => {
-            e.preventDefault();
-            window.location.href = `mailto:${emailConfig.getEmail()}`;
-            playSound('click');
-        });
-    }
+    // Typing effect with GSAP (replacing Typed.js for stability)
+    const typingElement = document.getElementById("typing-effect");
+    if (typingElement) {
+        const phrases = [
+            "Providing next-gen tech solutions.",
+            "Empowering your digital future.",
+            "Precision tech expertise."
+        ];
+        let currentPhrase = 0;
 
-    // Enhanced typing effect with Typed.js
-    if (document.getElementById("typing-effect")) {
-        const typingElement = document.getElementById("typing-effect");
-        typingElement.style.display = "inline-block"; // Ensure consistent width
-        typingElement.style.minWidth = "300px"; // Fixed width to prevent jump
-        new Typed("#typing-effect", {
-            strings: [
-                "Providing next-gen tech solutions.",
-                "Empowering your digital future.",
-                "Precision tech expertise."
-            ],
-            typeSpeed: 50,
-            backSpeed: 30,
-            backDelay: 2000,
-            loop: true,
-            smartBackspace: true,
-        });
+        function typePhrase() {
+            const text = phrases[currentPhrase];
+            gsap.to(typingElement, {
+                text: { value: text, delimiter: "" },
+                duration: text.length * 0.05,
+                ease: "none",
+                onComplete: () => {
+                    setTimeout(() => {
+                        gsap.to(typingElement, {
+                            text: { value: "", delimiter: "" },
+                            duration: text.length * 0.03,
+                            ease: "none",
+                            onComplete: () => {
+                                currentPhrase = (currentPhrase + 1) % phrases.length;
+                                setTimeout(typePhrase, 2000);
+                            }
+                        });
+                    }, 2000);
+                }
+            });
+        }
+        typePhrase(); // Start the animation
     }
 
     // Dark mode toggle with localStorage
@@ -98,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const clockElement = document.getElementById("current-time");
         if (clockElement) {
             const now = new Date();
-            clockElement.innerHTML = `<i class="fas fa-clock" aria-hidden="true"></i> ${now.toLocaleTimeString()}`;
+            clockElement.innerHTML = `<i class="fas fa-clock" aria-hidden="true"></i> ${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}`;
         }
     }
     updateClock();
@@ -111,7 +116,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function updateWeather(lat = 41.2788, lon = -72.5276) {
         fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`)
-            .then(response => response.json())
+            .then(response => response.ok ? response.json() : Promise.reject())
             .then(data => {
                 weatherText.innerHTML = `<i class="fas fa-cloud-sun" aria-hidden="true"></i> ${Math.round(data.main.temp)}°F in ${data.name}`;
             })
@@ -145,11 +150,11 @@ document.addEventListener("DOMContentLoaded", function () {
         const isDarkMode = body.classList.contains("dark-mode");
         particlesJS("particles-js", {
             particles: {
-                number: { value: 100, density: { enable: true, value_area: 800 } }, // More particles
+                number: { value: 80, density: { enable: true, value_area: 800 } },
                 color: { value: isDarkMode ? "#ffffff" : "#00a000" },
-                shape: { type: "circle" }, // Changed to circles for fun
+                shape: { type: "polygon", polygon: { nb_sides: 6 } }, // Hexagons for uniqueness
                 opacity: { value: isDarkMode ? 0.8 : 0.3, random: true },
-                size: { value: 4, random: true }, // Slightly larger
+                size: { value: 4, random: true },
                 line_linked: { 
                     enable: true, 
                     distance: 120, 
@@ -159,7 +164,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 },
                 move: { 
                     enable: true, 
-                    speed: 4, // Slower for smoother effect
+                    speed: 4, 
                     direction: "none", 
                     random: true, 
                     straight: false, 
@@ -171,7 +176,7 @@ document.addEventListener("DOMContentLoaded", function () {
             interactivity: {
                 detect_on: "canvas",
                 events: {
-                    onhover: { enable: true, mode: "repulse" }, // Fun repulse effect
+                    onhover: { enable: true, mode: "repulse" },
                     onclick: { enable: true, mode: "push" },
                     resize: true
                 }
@@ -184,7 +189,11 @@ document.addEventListener("DOMContentLoaded", function () {
     // Interactive Leaflet map
     const mapElement = document.getElementById("map");
     if (mapElement && typeof L !== "undefined") {
-        const map = L.map("map", { scrollWheelZoom: false }).setView([41.2788, -72.5276], 13); // Disabled scroll zoom
+        const map = L.map("map", { 
+            scrollWheelZoom: false, 
+            dragging: !L.Browser.mobile, // Disable drag on mobile
+            touchZoom: false 
+        }).setView([41.2788, -72.5276], 13);
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
             attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
@@ -196,7 +205,7 @@ document.addEventListener("DOMContentLoaded", function () {
         ];
 
         markers.forEach(markerData => {
-            const marker = L.marker([markerData.lat, markerData.lon]).addTo(map)
+            L.marker([markerData.lat, markerData.lon]).addTo(map)
                 .bindPopup(markerData.popup)
                 .on('click', () => {
                     window.location.href = markerData.url;
@@ -223,20 +232,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const statNumbers = document.querySelectorAll(".stat-number");
     statNumbers.forEach(stat => {
         const target = parseInt(stat.getAttribute("data-count"));
-        let count = 0;
-        const increment = target / 100;
-        const updateCount = () => {
-            if (count < target) {
-                count += increment;
-                stat.textContent = Math.round(count);
-                requestAnimationFrame(updateCount);
-            } else {
-                stat.textContent = target;
-            }
-        };
         const observer = new IntersectionObserver((entries) => {
             if (entries[0].isIntersecting) {
-                updateCount();
+                gsap.to(stat, {
+                    textContent: target,
+                    duration: 2,
+                    roundProps: "textContent",
+                    ease: "power1.out",
+                    onComplete: () => stat.textContent = target
+                });
                 observer.disconnect();
             }
         }, { threshold: 0.5 });
@@ -256,24 +260,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Custom cursor effect with trail
     const cursor = document.querySelector(".cursor");
-    let lastX = 0, lastY = 0;
-    let trailTimeout;
-    function updateCursor(e) {
-        const x = e.clientX;
-        const y = e.clientY;
-        cursor.style.left = `${x}px`;
-        cursor.style.top = `${y}px`;
-        cursor.classList.add("trail");
-        clearTimeout(trailTimeout);
-        trailTimeout = setTimeout(() => {
-            cursor.classList.remove("trail");
-        }, 100);
-        lastX = x;
-        lastY = y;
-    }
-    document.addEventListener("mousemove", (e) => requestAnimationFrame(() => updateCursor(e)));
-    if (window.innerWidth <= 768) {
-        cursor.style.display = "none";
+    if (cursor) {
+        let lastX = 0, lastY = 0;
+        let trailTimeout;
+        function updateCursor(e) {
+            const x = e.clientX;
+            const y = e.clientY;
+            cursor.style.left = `${x}px`;
+            cursor.style.top = `${y}px`;
+            cursor.classList.add("trail");
+            clearTimeout(trailTimeout);
+            trailTimeout = setTimeout(() => cursor.classList.remove("trail"), 100);
+            lastX = x;
+            lastY = y;
+        }
+        document.addEventListener("mousemove", (e) => requestAnimationFrame(() => updateCursor(e)));
+        if (window.innerWidth <= 768) cursor.style.display = "none";
     }
 
     // Service modals without hover sound
@@ -291,7 +293,17 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-        // Removed hover sound by not adding mousemove event
+        service.addEventListener("mousemove", (e) => {
+            const rect = service.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const tiltX = (y - centerY) / 20;
+            const tiltY = -(x - centerX) / 20;
+            service.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.05)`;
+        });
+
         service.addEventListener("mouseleave", () => {
             service.style.transform = "perspective(1000px) scale(1)";
         });
@@ -346,24 +358,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // 3D tilt effect on service cards (simplified)
-    services.forEach(card => {
-        card.addEventListener("mousemove", (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            const tiltX = (y - centerY) / 20;
-            const tiltY = -(x - centerX) / 20;
-            card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.05)`;
-        });
-
-        card.addEventListener("mouseleave", () => {
-            card.style.transform = "perspective(1000px) scale(1)";
-        });
-    });
-
     // Video background fallback
     const heroVideo = document.querySelector(".hero-video");
     if (heroVideo) {
@@ -376,35 +370,32 @@ document.addEventListener("DOMContentLoaded", function () {
     // Gallery lightbox with sound
     const galleryItems = document.querySelectorAll(".gallery-item");
     const lightbox = document.querySelector(".lightbox");
-    const lightboxImg = lightbox.querySelector("img");
-    const lightboxClose = lightbox.querySelector(".lightbox-close");
+    const lightboxImg = lightbox && lightbox.querySelector("img");
+    const lightboxClose = lightbox && lightbox.querySelector(".lightbox-close");
 
-    galleryItems.forEach(item => {
-        item.addEventListener("click", () => {
-            const src = item.getAttribute("data-src");
-            lightboxImg.src = src;
-            lightbox.style.display = "flex";
-            playSound('click');
+    if (galleryItems.length && lightbox && lightboxImg && lightboxClose) {
+        galleryItems.forEach(item => {
+            item.addEventListener("click", () => {
+                lightboxImg.src = item.getAttribute("data-src");
+                lightbox.style.display = "flex";
+                playSound('click');
+            });
+
+            item.addEventListener("mouseover", () => {
+                item.style.transform = "scale(1.1)";
+                playSound('hover', 0.3);
+            });
+
+            item.addEventListener("mouseout", () => {
+                item.style.transform = "scale(1)";
+            });
         });
 
-        item.addEventListener("mouseover", () => {
-            item.style.transform = "scale(1.1)";
-            playSound('hover', 0.3);
-        });
-
-        item.addEventListener("mouseout", () => {
-            item.style.transform = "scale(1)";
-        });
-    });
-
-    if (lightboxClose) {
         lightboxClose.addEventListener("click", () => {
             lightbox.style.display = "none";
             playSound('click');
         });
-    }
 
-    if (lightbox) {
         lightbox.addEventListener("click", (e) => {
             if (e.target === lightbox) {
                 lightbox.style.display = "none";
@@ -415,19 +406,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Scroll progress bar
     const scrollProgress = document.querySelector(".scroll-progress");
-    window.addEventListener("scroll", () => {
-        const scrollTop = window.scrollY;
-        const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const scrollPercent = (scrollTop / docHeight) * 100;
-        scrollProgress.style.width = `${scrollPercent}%`;
-    });
+    if (scrollProgress) {
+        window.addEventListener("scroll", () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            scrollProgress.style.width = `${scrollPercent}%`;
+        });
+    }
 
     // Audio feedback
     let audioContext;
     function playSound(type, volume = 0.5) {
-        if (!audioContext) {
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        }
+        if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
         const oscillator = audioContext.createOscillator();
         const gainNode = audioContext.createGain();
 
@@ -445,10 +436,43 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 100);
     }
 
-    // Resume audio context on user interaction
     document.addEventListener("click", () => {
-        if (audioContext && audioContext.state === "suspended") {
-            audioContext.resume();
-        }
+        if (audioContext && audioContext.state === "suspended") audioContext.resume();
     }, { once: true });
+
+    // Unique sticky note effect
+    const stickyNote = document.createElement("div");
+    stickyNote.className = "sticky-note";
+    stickyNote.innerHTML = "Tech Tip: Regular updates keep your systems secure!";
+    document.body.appendChild(stickyNote);
+    gsap.fromTo(".sticky-note", 
+        { opacity: 0, y: -50, rotation: -5 },
+        { opacity: 1, y: 10, rotation: 0, duration: 1, delay: 2, ease: "elastic.out(1, 0.5)" }
+    );
 });
+
+// Sticky note styles (injected via JS for uniqueness)
+const style = document.createElement("style");
+style.textContent = `
+    .sticky-note {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        background: #ffeb3b;
+        padding: 10px 15px;
+        border-radius: 5px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        font-size: 14px;
+        color: #333;
+        z-index: 1000;
+        transform: rotate(-5deg);
+    }
+    @media (max-width: 768px) {
+        .sticky-note {
+            font-size: 12px;
+            padding: 8px 12px;
+            right: 5px;
+        }
+    }
+`;
+document.head.appendChild(style);

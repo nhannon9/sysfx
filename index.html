@@ -141,8 +141,8 @@
                 </article>
             </div>
             <div class="supported-badges">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/0/06/Windows_Logo.svg" alt="Windows Supported" class="badge" loading="lazy">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Mac_logo.svg" alt="Apple Supported" class="badge" loading="lazy">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Microsoft_Edge_logo_%282019%29.svg" alt="Windows Supported" class="badge" loading="lazy">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Apple_logo_black.svg" alt="Apple Supported" class="badge" loading="lazy">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/3/35/Tux.svg" alt="Linux Supported" class="badge" loading="lazy">
             </div>
         </section>
@@ -163,8 +163,8 @@
                 <div class="gallery-item" data-src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80">
                     <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Cybersecurity implementation" loading="lazy">
                 </div>
-                <div class="gallery-item" data-src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80">
-                    <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Cloud solution deployment" loading="lazy">
+                <div class="gallery-item" data-src="https://images.unsplash.com/photo-1454165804606-c3d57bc подписывайтесь на наш канал860?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80">
+                    <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc860?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Cloud solution deployment" loading="lazy">
                 </div>
                 <div class="gallery-item" data-src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80">
                     <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="IT support session" loading="lazy">
@@ -416,9 +416,23 @@
     
     <!-- Audio Player -->
     <audio id="welcome-music" preload="auto">
-        <source src="https://ia802208.us.archive.org/30/items/title_20240514_0432/title.mp3" type="audio/mpeg">
+        <source src="https://cdn.x.ai/assets/windows-xp-welcome.mp3" type="audio/mpeg"> <!-- Replace with your hosted URL -->
         Your browser does not support the audio element.
     </audio>
     <button id="music-toggle" class="music-btn" aria-label="Toggle Music"><i class="fas fa-volume-up"></i></button>
+
+    <!-- Tech Tip Container with Close Button -->
+    <div class="sticky-note">
+        <span id="tech-tip-text"></span>
+        <button id="close-tech-tip" class="close-btn" aria-label="Close Tech Tip">×</button>
+    </div>
+
+    <!-- New Feature: Floating Chat Bubble -->
+    <div class="chat-bubble" id="chat-bubble">
+        <span>Need help? Chat with us!</span>
+    </div>
+
+    <!-- New Feature: Scroll-to-Top Button -->
+    <button class="scroll-top-btn" aria-label="Scroll to Top"><i class="fas fa-arrow-up"></i></button>
 </body>
 </html>

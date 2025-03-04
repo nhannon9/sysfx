@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Typing effect with GSAP
+    // Simplified typing effect for #typing-effect
     const typingElement = document.getElementById("typing-effect");
     if (typingElement) {
         const phrases = [
@@ -34,30 +34,49 @@ document.addEventListener("DOMContentLoaded", function () {
             "Securing your tech, 24/7.",
             "Building the web of tomorrow."
         ];
-        let currentPhrase = 0;
+        let currentPhraseIndex = 0;
 
-        function typePhrase() {
-            const text = phrases[currentPhrase];
-            gsap.to(typingElement, {
-                text: { value: text, delimiter: "" },
-                duration: text.length * 0.05,
-                ease: "none",
-                onComplete: () => {
-                    setTimeout(() => {
-                        gsap.to(typingElement, {
-                            text: { value: "", delimiter: "" },
-                            duration: text.length * 0.03,
-                            ease: "none",
-                            onComplete: () => {
-                                currentPhrase = (currentPhrase + 1) % phrases.length;
-                                setTimeout(typePhrase, 1500);
-                            }
-                        });
-                    }, 1500);
+        // Ensure element is ready and visible
+        typingElement.style.opacity = "1";
+        typingElement.textContent = ""; // Start empty
+
+        function typeText() {
+            const currentPhrase = phrases[currentPhraseIndex];
+            let charIndex = 0;
+
+            // Clear previous content
+            typingElement.textContent = "";
+
+            // Type out the phrase character by character
+            const typeInterval = setInterval(() => {
+                if (charIndex < currentPhrase.length) {
+                    typingElement.textContent += currentPhrase[charIndex];
+                    charIndex++;
+                } else {
+                    clearInterval(typeInterval);
+                    setTimeout(eraseText, 2000); // Pause before erasing
                 }
-            });
+            }, 50); // Typing speed
         }
-        typePhrase();
+
+        function eraseText() {
+            let text = typingElement.textContent;
+            const eraseInterval = setInterval(() => {
+                if (text.length > 0) {
+                    text = text.slice(0, -1);
+                    typingElement.textContent = text;
+                } else {
+                    clearInterval(eraseInterval);
+                    currentPhraseIndex = (currentPhraseIndex + 1) % phrases.length;
+                    setTimeout(typeText, 500); // Brief pause before next phrase
+                }
+            }, 30); // Erasing speed
+        }
+
+        // Start the typing effect immediately
+        typeText();
+    } else {
+        console.error("Typing element (#typing-effect) not found in the DOM!");
     }
 
     // Dark mode toggle with localStorage
@@ -109,7 +128,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     top: targetElement.offsetTop - 80,
                     behavior: "smooth"
                 });
-                if (window.innerWidth <= 768) {
+                if (window.innerWidth <= 768 && navUl) {
                     navUl.classList.remove("active");
                     hamburger.querySelector("i").classList.remove("fa-times");
                     hamburger.querySelector("i").classList.add("fa-bars");
@@ -567,7 +586,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // New Feature 1: Random Service Highlight
+    // Random Service Highlight
     const serviceGrid = document.querySelector(".service-grid");
     if (serviceGrid) {
         const services = serviceGrid.querySelectorAll(".service");
@@ -578,110 +597,4 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }, 10000);
     }
-
-    // New Feature 2: Easter Egg
-    const easterEggTrigger = document.querySelector(".easter-egg-trigger");
-    if (easterEggTrigger) {
-        let clickCount = 0;
-        easterEggTrigger.addEventListener("click", () => {
-            clickCount++;
-            if (clickCount === 3) {
-                const egg = document.createElement("div");
-                egg.className = "easter-egg";
-                egg.textContent = "🎉 Secret Unlocked! Enjoy a retro surprise!";
-                document.body.appendChild(egg);
-                gsap.fromTo(".easter-egg", 
-                    { opacity: 0, y: -50 },
-                    { opacity: 1, y: 0, duration: 1, ease: "bounce.out" }
-                );
-                setTimeout(() => {
-                    gsap.to(".easter-egg", {
-                        opacity: 0,
-                        y: -50,
-                        duration: 1,
-                        onComplete: () => egg.remove()
-                    });
-                }, 3000);
-                playSound('beep');
-                clickCount = 0;
-            }
-        });
-    }
-
-    // New Feature 3: Dynamic Welcome Message
-    const welcomeMessage = document.querySelector(".hero-text");
-    if (welcomeMessage) {
-        const messages = [
-            "Unlock cutting-edge technology with Sys Fix—your trusted partner in repairs, security, web development, networking, cloud solutions, and IT support.",
-            "Transform your business with sysfx’s innovative tech solutions, tailored just for you.",
-            "From fixes to future-proofing, sysfx is your all-in-one tech ally in Clinton, CT."
-        ];
-        let messageIndex = 0;
-        setInterval(() => {
-            messageIndex = (messageIndex + 1) % messages.length;
-            gsap.to(welcomeMessage, {
-                opacity: 0,
-                duration: 0.5,
-                onComplete: () => {
-                    welcomeMessage.textContent = messages[messageIndex];
-                    gsap.to(welcomeMessage, { opacity: 1, duration: 0.5 });
-                }
-            });
-        }, 8000);
-    }
-
-    // New Feature 4: Scroll Reveal for Timeline Items
-    const timelineItems = document.querySelectorAll(".timeline-item");
-    timelineItems.forEach(item => {
-        gsap.fromTo(item, 
-            { opacity: 0, x: -50 },
-            {
-                opacity: 1,
-                x: 0,
-                duration: 0.8,
-                ease: "power2.out",
-                scrollTrigger: {
-                    trigger: item,
-                    start: "top 90%",
-                    toggleActions: "play none none none"
-                }
-            }
-        );
-    });
-
-    // New Feature 5: Interactive Map Pin Animation
-    if (mapElement && typeof L !== "undefined") {
-        const pinAnimation = () => {
-            const pins = document.querySelectorAll(".leaflet-marker-icon");
-            pins.forEach(pin => {
-                gsap.to(pin, {
-                    y: -10,
-                    duration: 0.5,
-                    repeat: 1,
-                    yoyo: true,
-                    ease: "power1.inOut"
-                });
-            });
-        };
-        setInterval(pinAnimation, 5000);
-    }
 });
-
-// Inject styles for new features
-const style = document.createElement("style");
-style.textContent = `
-    .easter-egg {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: var(--primary-color);
-        color: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 0 20px rgba(0, 160, 0, 0.5);
-        z-index: 1001;
-        font-size: 1.2em;
-    }
-`;
-document.head.appendChild(style);

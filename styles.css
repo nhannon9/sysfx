@@ -6,13 +6,14 @@
     --glass-border: rgba(255, 255, 255, 0.18);
     --secondary-color: #4CAF50;
     --highlight-color: #ffeb3b;
+    --blue-gradient: linear-gradient(45deg, #1E90FF, #00BFFF); /* Added for Explore Services */
 }
 
 body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
-    background: linear-gradient(135deg, #f4f4f4, #e6e6e6);
+    background: linear-gradient(135deg, #f4f4f4, #e6e6e6); /* Gradient added */
     color: #333;
     line-height: 1.6;
     transition: background-color 0.3s ease, color 0.3s ease;
@@ -21,7 +22,7 @@ body {
 }
 
 body.dark-mode {
-    background: #222;
+    background: linear-gradient(135deg, #222, #333); /* Gradient for dark mode */
     color: #eee;
     --glass-bg: rgba(51, 51, 51, 0.8);
     --glass-border: rgba(255, 255, 255, 0.08);
@@ -198,8 +199,25 @@ header {
     top: 0;
     z-index: 100;
     min-height: 240px; /* Increased to ensure space for typing effect */
-    transition: padding 0.3s ease;
+    transition: all 0.3s ease; /* Updated for shrinking */
     box-sizing: border-box;
+}
+
+header.shrink {
+    padding: 10px 20px;
+    min-height: auto;
+}
+
+header.shrink nav, header.shrink .status-bar, header.shrink h1 {
+    display: none;
+}
+
+header.shrink .logo-container {
+    height: 80px;
+}
+
+header.shrink .spinning-logo {
+    width: 80px;
 }
 
 @media (min-width: 769px) {
@@ -237,22 +255,21 @@ body.dark-mode header h1 {
     height: 120px;
     margin-bottom: 5px;
     perspective: 1000px; /* Add perspective for 3D effect */
+    transition: height 0.3s ease; /* Added for shrinking */
 }
 
 .spinning-logo {
     width: 120px;
-    animation: flipAndPulse 5s infinite ease-in-out;
+    animation: simpleSpin 4s infinite linear; /* Simplified to basic spin */
     border-radius: 50%;
     box-shadow: 0 0 15px var(--highlight-color);
     transform-style: preserve-3d; /* Ensure 3D transform */
+    transition: width 0.3s ease; /* Added for shrinking */
 }
 
-@keyframes flipAndPulse {
-    0% { transform: rotateY(0deg) scale(1); }
-    25% { transform: rotateY(180deg) scale(1.05); }
-    50% { transform: rotateY(0deg) scale(1); }
-    75% { transform: rotateY(180deg) scale(1.05); }
-    100% { transform: rotateY(0deg) scale(1); }
+@keyframes simpleSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 /* Typing effect styling */
@@ -339,6 +356,11 @@ body.dark-mode .nav-link {
     color: transparent;
     display: inline-block;
     font-weight: 700;
+}
+
+/* Centered text */
+.centered-text {
+    text-align: center; /* Added for "Find us in Clinton, CT" */
 }
 
 /* Map container and section */
@@ -511,7 +533,7 @@ body.dark-mode .nav-link {
 
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Adjusted for responsiveness */
     gap: 25px;
     max-width: 1200px;
     margin: 0 auto;
@@ -520,10 +542,13 @@ body.dark-mode .nav-link {
 .stat-item {
     padding: 20px;
     transition: transform 0.3s ease;
+    background: rgba(255, 255, 255, 0.1); /* Added subtle gradient effect */
+    border-radius: 12px; /* Added for consistency */
 }
 
 .stat-item:hover {
     transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Added hover effect */
 }
 
 .stat-number {
@@ -572,6 +597,11 @@ body.dark-mode .nav-link {
     background: linear-gradient(45deg, #4CAF50, #00a000);
 }
 
+.modern-button.explore-services {
+    background: var(--blue-gradient); /* Blue gradient for Explore Services */
+    border-radius: 30px; /* Rounded edges */
+}
+
 .modern-button::before {
     content: '';
     position: absolute;
@@ -591,6 +621,11 @@ body.dark-mode .nav-link {
     transform: translateY(-2px) scale(1.05);
     background: linear-gradient(45deg, #4CAF50, #00a000);
     box-shadow: 0 6px 20px rgba(0, 160, 0, 0.5), 0 0 20px rgba(0, 160, 0, 0.7);
+}
+
+.modern-button.explore-services:hover {
+    background: linear-gradient(45deg, #00BFFF, #1E90FF); /* Reverse blue gradient on hover */
+    box-shadow: 0 6px 20px rgba(30, 144, 255, 0.5); /* Blue shadow */
 }
 
 .modern-button:focus {

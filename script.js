@@ -466,6 +466,18 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    // Header shrink on scroll
+    const header = document.querySelector("header");
+    if (header) {
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > 50) {
+                header.classList.add("shrink");
+            } else {
+                header.classList.remove("shrink");
+            }
+        });
+    }
+
     // Audio feedback with mute control
     let audioContext;
     let isMuted = false;

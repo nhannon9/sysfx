@@ -3,459 +3,835 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="sysfx - Professional tech solutions including repairs, security, web development, networking, cloud solutions, and IT support in Clinton, CT">
-    <meta name="keywords" content="tech solutions, computer repair, cybersecurity, web development, networking, cloud solutions, IT support, Clinton CT">
+
+    <!-- Cache Control Headers (Useful during development, consider adjusting for production) -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
+    <!-- SEO Meta Tags -->
+    <title>sysfx - Sys Fix Tech Solutions | Clinton, CT Computer Repair & IT Services</title>
+    <meta name="description" content="sysfx provides expert computer repair, cybersecurity, web development, networking, cloud solutions, and IT support for homes and businesses in Clinton, CT and surrounding areas."> 
+    <meta name="keywords" content="sysfx, Sys Fix, computer repair Clinton CT, IT support Clinton CT, tech support, cybersecurity, web development, networking, cloud solutions, managed IT services, Clinton Connecticut">
     <meta name="author" content="sysfx">
-    <title>sysfx - Sys Fix Tech Solutions</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.sysfx.net">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="sysfx - Expert Tech Solutions in Clinton, CT">
+    <meta property="og:description" content="sysfx: Your local partner for reliable computer repair, security, web design, networking, and comprehensive IT support in Clinton, CT.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.sysfx.net">
+    <meta property="og:image" content="https://www.sysfx.net/assets/logo.jpg">
+    <meta property="og:image:alt" content="sysfx Logo and Tech Background">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <link rel="icon" type="image/png" href="assets/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+    <link rel="shortcut icon" href="assets/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
+    <link rel="manifest" href="assets/site.webmanifest" />
+
+    <!-- Stylesheets -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'"> <!-- Preload FontAwesome -->
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"></noscript>
+    <link rel="preload" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" as="style" onload="this.onload=null;this.rel='stylesheet'"> <!-- Preload Leaflet CSS -->
+    <noscript><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"></noscript>
+    <!-- UPDATE CSS VERSION - Increment version number -->
+    <link rel="stylesheet" href="styles.css?v=1.7"> <!-- Version bump -->
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js" defer></script>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
+
+    <!-- Defer non-critical JS -->
+    <!-- GSAP Core, ScrollTrigger (Ensure these are loaded before script.js if script depends on them immediately) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-    <script src="script.js" defer></script>
+    <!-- Other deferred libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js" defer></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="anonymous" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js" defer></script>
+
+    <!-- Main Script (defer loading) -->
+    <!-- UPDATE JS VERSION - Increment version number -->
+    <script src="script.js?v=1.7" defer></script> <!-- Version bump -->
 </head>
 
-<body>
-    <div class="scroll-progress"></div>
-    <div id="particles-js" class="particles-container"></div>
-    <div class="cursor"></div>
-    <header class="glass-morphism" role="banner">
-        <div class="status-bar">
-            <div id="current-time" aria-live="polite"></div>
-            <div id="weather-widget" aria-live="polite">
-                <span id="weather-text"><i class="fas fa-spinner fa-spin"></i> Loading weather...</span>
-                <button id="local-weather-btn" class="modern-button" style="margin-left: 10px;">Tap for Local Weather</button>
+<body class="preload"> <!-- Add preload class to prevent flashes -->
+    <!-- Preloader -->
+    <div id="preloader" class="preloader" aria-live="polite" aria-busy="true">
+        <div class="preloader-logo">
+             <!-- Assuming logo.png is correct based on your HTML -->
+             <img src="assets/logo.png" alt="sysfx loading..." width="100" height="100">
+        </div>
+        <div class="preloader-dots" aria-hidden="true">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+        <p class="sr-only">Loading sysfx website...</p>
+    </div>
+
+    <!-- Screen Reader Skip Link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Page scroll progress"></div>
+
+    <!-- Particles Background Container -->
+    <div id="particles-js" class="particles-container" aria-hidden="true"></div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor" aria-hidden="true"></div>
+
+    <!-- Header -->
+    <header id="main-header" class="glass-morphism" role="banner">
+        <div class="header-top-bar">
+            <div id="current-time" aria-live="polite">Loading time...</div>
+            <div class="tech-trivia-container" role="note">
+                <div class="tech-trivia">
+                    <span id="trivia-icon" aria-hidden="true">💡</span> <span id="trivia-text">Loading tech fact...</span>
+                </div>
             </div>
+            <!-- Dark Mode Toggle: JS will manage text and icon -->
+            <button id="darkModeToggle" class="mode-button modern-button" aria-label="Switch to dark mode" aria-pressed="false">
+                <!-- Icon and text span structure for easier JS targeting -->
+                <span class="icon-container"><i class="fas fa-moon" aria-hidden="true"></i></span>
+                <span class="mode-button-text">Dark Mode</span>
+            </button>
         </div>
-        
-        <div class="logo-container">
-            <img src="logo.jpg" alt="sysfx Logo, a symbol of tech expertise" class="spinning-logo" loading="lazy">
+        <div class="header-main">
+            <div class="logo-container">
+                <a href="#home" aria-label="sysfx Home">
+                     <!-- Logo: Corrected alt text based on user description, ensured png path -->
+                     <!-- The flip animation is controlled by CSS class 'flipping-logo' -->
+                    <img src="assets/logo.jpg" alt="sysfx Logo, a symbol of tech expertise" class="flipping-logo" width="60" height="60" loading="eager"> <!-- Eager load logo -->
+                </a>
+            </div>
+            <div class="header-titles">
+                <!-- Applied glow and outline classes (styling handled in CSS) -->
+                <h1 class="glow-text outlined-text centered-text">sysfx</h1>
+                <!-- Typing Effect: Added non-breaking space for stability when empty -->
+                <p id="typing-effect" class="gradient-text centered-text" aria-label="Company Tagline - changes dynamically"> </p>
+            </div>
+            <button class="hamburger" id="hamburger-button" aria-label="Toggle Navigation Menu" aria-expanded="false" aria-controls="main-navigation">
+                <span class="hamburger-box" aria-hidden="true">
+                    <span class="hamburger-inner"></span>
+                </span>
+            </button>
         </div>
-        <h1>sysfx</h1>
-        <h3 id="typing-effect" class="gradient-text"></h3>
-        <button class="hamburger" aria-label="Toggle Navigation"><i class="fas fa-bars"></i></button>
-        <nav role="navigation">
-            <ul>
-                <li><a href="#home" class="nav-link"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="#events" class="nav-link"><i class="fas fa-calendar-alt"></i> Events</a></li>
-                <li><a href="#support" class="nav-link"><i class="fas fa-headset"></i> Support</a></li>
-                <li><a href="#community" class="nav-link"><i class="fas fa-users"></i> Community</a></li>
-                <li><a href="#about" class="nav-link"><i class="fas fa-info-circle"></i> About</a></li>
-                <li><a href="#services" class="nav-link"><i class="fas fa-cogs"></i> Services</a></li>
-                <li><a href="#testimonials" class="nav-link"><i class="fas fa-star"></i> Testimonials</a></li>
-                <li><a href="#contact" class="nav-link"><i class="fas fa-envelope"></i> Contact</a></li>
-            </ul>
+        <!-- Navigation: Trimmed to 6 main links  -->
+        <nav id="main-navigation" class="main-nav" role="navigation" aria-label="Main website navigation" aria-hidden="true">
+            <a href="#home" class="nav-link" data-section-id="home"><i class="fas fa-home fa-fw" aria-hidden="true"></i> Home</a>
+            <a href="#services" class="nav-link" data-section-id="services"><i class="fas fa-cogs fa-fw" aria-hidden="true"></i> Services</a>
+            <a href="#about" class="nav-link" data-section-id="about"><i class="fas fa-info-circle fa-fw" aria-hidden="true"></i> About</a>
+            <a href="#gallery" class="nav-link" data-section-id="gallery"><i class="fas fa-image fa-fw" aria-hidden="true"></i> Our Work</a>
+            <a href="#blog" class="nav-link" data-section-id="blog"><i class="fas fa-blog fa-fw" aria-hidden="true"></i> Tech Insights</a>
+            <a href="#contact" class="nav-link" data-section-id="contact"><i class="fas fa-envelope fa-fw" aria-hidden="true"></i> Contact</a>
+            <!-- Removed Links: Location (Covered in Contact), Events, Case Studies, Testimonials (Can be sub-pages later), Community -->
         </nav>
     </header>
 
-    <div class="scrolling-text" role="alert">
-        <span>N-TEC is now sysfx! Discover cutting-edge tech solutions today!</span>
+    <!-- Scrolling Text Bar -->
+    <div class="scrolling-text-container" role="region" aria-label="Announcements">
+        <p class="scrolling-text-content">
+            <span>N-TEC is now sysfx! Discover cutting-edge tech solutions today! Serving Clinton, CT and beyond.</span>
+            <span>Offering next-gen tech services!</span>
+        </p>
     </div>
 
-    <main role="main">
-        <section id="home" class="hero parallax">
-            <video class="hero-video" autoplay muted loop>
-                <source src="https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-screens-4326-large.mp4" type="video/mp4">
+    <!-- Main Content Area -->
+    <main id="main-content" role="main">
+
+        <!-- Hero Section -->
+        <section id="home" class="hero section-animation" aria-labelledby="hero-title">
+            <div class="hero-overlay-animated" aria-hidden="true"></div>
+            <video class="hero-video" autoplay muted loop playsinline aria-hidden="true" poster="assets/hero-poster.jpg">
+                <source src="https://videos.pexels.com/video-files/854097/854097-hd_1920_1080_25fps.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
-            <div class="hero-content glass-morphism">
-                <h2 class="gradient-text">Welcome to sysfx!</h2>
-                <p class="hero-text">Unlock cutting-edge technology with Sys Fix—your trusted partner in repairs, security, web development, networking, cloud solutions, and IT support.</p>
+            <div class="hero-content">
+                <h2 id="hero-title" class="hero-title gradient-text glow-text centered-text outlined-text">Welcome to sysfx!</h2>
+                <p class="hero-text">Unlock cutting-edge technology with Sys Fix—your trusted partner in repairs, security, web development, networking, cloud solutions, and IT support in Clinton, CT.</p>
                 <div class="button-container">
-                    <button class="modern-button primary" onclick="location.href='#contact'">
-                        <i class="fas fa-paper-plane" aria-hidden="true"></i> Get Started
-                    </button>
-                    <button class="modern-button secondary explore-services" onclick="location.href='#services'">
-                        <i class="fas fa-cogs"></i> Explore Services
-                    </button>
-                    <button id="darkModeToggle" class="modern-button" aria-label="Toggle dark mode">
-                        <i class="fas fa-moon" aria-hidden="true"></i> <span class="sr-only">Toggle Dark Mode</span>
-                    </button>
+                    <a href="#contact" class="modern-button primary action-button" aria-label="Get started with sysfx services">
+                        <i class="fas fa-paper-plane" aria-hidden="true"></i> <span class="button-text">Get Started</span>
+                    </a>
+                    <a href="#services" class="modern-button secondary action-button explore-services" aria-label="Explore sysfx services list">
+                        <i class="fas fa-cogs"></i> <span class="button-text">Explore Services</span>
+                    </a>
                 </div>
             </div>
         </section>
 
-        <section class="welcome glass-morphism parallax">
-            <h2 class="gradient-text">Why Choose sysfx?</h2>
+        <!-- Welcome Section -->
+        <section id="welcome" class="welcome glass-morphism section-animation" aria-labelledby="welcome-title">
+            <h2 id="welcome-title" class="gradient-text glow-text centered-text outlined-text">Why Choose sysfx?</h2>
             <p>At sysfx, we deliver expert tech solutions tailored to your needs. Our certified technicians specialize in computer repairs, cybersecurity, web development, networking, cloud solutions, and 24/7 IT support, ensuring your business thrives in the digital age.</p>
-            <p>With over a decade of experience, Sys Fix is committed to precision, innovation, and customer satisfaction. Contact us today to transform your tech infrastructure!</p>
-            <p>Contact us for support at: <span id="email" aria-label="Contact email"></span></p>
-            <button class="modern-button" onclick="location.href='#contact'">Request a Quote</button>
+            <p>With over a decade of experience, Sys Fix is committed to precision, innovation, and customer satisfaction. Based in Clinton, CT, we serve clients regionally and remotely, offering personalized service that transforms your tech infrastructure.</p>
+            <p>Contact us for support at: <a href="mailto:nick@sysfx.net" class="email-link" id="email-display" aria-label="Contact email address: nick@sysfx.net">nick@sysfx.net</a></p>
+            <div class="button-container">
+                <a href="#contact" class="modern-button action-button" aria-label="Request a free quote from sysfx"><span class="button-text">Request a Quote</span></a>
+                <a href="#services" class="modern-button secondary action-button" aria-label="Discover our range of services"><span class="button-text">Discover Services</span></a>
+            </div>
         </section>
 
-        <section id="location" class="glass-morphism parallax location-section">
-            <h2 class="gradient-text centered-text">Find Us in Clinton, CT</h2>
-            <p>Visit our headquarters at 123 Main Street, Clinton, CT, or reach out for remote support. We serve clients across the region with top-tier tech solutions.</p>
-            <div id="map" class="map-container" aria-label="Map showing sysfx location in Clinton, CT"></div>
-            <button class="modern-button" onclick="location.href='#contact'">Get Directions</button>
+        <!-- Location Section -->
+        <section id="location" class="location-section section-animation" aria-labelledby="location-title">
+            <div class="location-content glass-morphism">
+                <h2 id="location-title" class="gradient-text glow-text centered-text outlined-text">Find Us in Clinton, CT</h2>
+                <p>Visit our headquarters in Clinton, CT, or reach out for remote support. We serve clients across the region with top-tier tech solutions.</p>
+                <div id="map" aria-label="Interactive map showing sysfx location in Clinton, CT"></div>
+                <div class="button-container">
+                    <a href="https://maps.google.com/?q=123+Main+Street,+Clinton,+CT" target="_blank" rel="noopener noreferrer" class="modern-button action-button" aria-label="Get directions to sysfx via Google Maps"><span class="button-text">Get Directions</span></a>
+                    <a href="#contact" class="modern-button secondary action-button" aria-label="Schedule an appointment or visit"><span class="button-text">Schedule a Visit</span></a>
+                </div>
+            </div>
         </section>
 
-        <section id="services" class="services glass-morphism parallax">
-            <h2 class="gradient-text">Our Services</h2>
-            <p class="services-text">sysfx offers a comprehensive suite of tech services to empower your business. From hardware fixes to cloud migrations, we’re here to solve your challenges with expertise and efficiency.</p>
+        <!-- Services Section -->
+        <section id="services" class="services glass-morphism parallax section-animation" aria-labelledby="services-title">
+            <h2 id="services-title" class="gradient-text glow-text centered-text">Our Services</h2>
+            <p class="services-description">sysfx offers a comprehensive suite of tech services to empower your business. From hardware fixes to cloud migrations, we’re here to solve your challenges with expertise and efficiency.</p>
             <div class="service-grid">
-                <article class="service card-hover" data-modal="computer-repair">
-                    <i class="fas fa-laptop" aria-hidden="true"></i>
+                <!-- Service Cards: Added tabindex, aria-haspopup for accessibility -->
+                <article class="service card-hover" data-modal-target="computer-repair-modal" tabindex="0" role="button" aria-haspopup="dialog">
+                    <div class="service-icon"><i class="fas fa-laptop fa-fw" aria-hidden="true"></i></div>
                     <h3>Computer Repair</h3>
                     <p>Fast, reliable repairs for desktops, laptops, and more. We fix hardware issues, optimize software, and ensure same-day service for urgent needs.</p>
                     <p class="extra-info">Our certified technicians use state-of-the-art tools to restore your devices to peak performance.</p>
-                    <button class="modern-button small" onclick="location.href='#contact'">Learn More</button>
+                    <span class="modern-button small action-button" aria-hidden="true"><span class="button-text">Learn More</span></span>
                 </article>
-                <article class="service card-hover" data-modal="cybersecurity">
-                    <i class="fas fa-shield-alt" aria-hidden="true"></i>
+                <article class="service card-hover" data-modal-target="cybersecurity-modal" tabindex="0" role="button" aria-haspopup="dialog">
+                    <div class="service-icon"><i class="fas fa-shield-alt fa-fw" aria-hidden="true"></i></div>
                     <h3>Cybersecurity</h3>
                     <p>Protect your data with advanced security solutions, including threat detection, firewalls, and monitoring to safeguard against cyber threats.</p>
                     <p class="extra-info">We provide customized plans to secure your business from evolving digital risks, ensuring peace of mind.</p>
-                    <button class="modern-button small" onclick="location.href='#contact'">Get Protected</button>
+                    <span class="modern-button small action-button" aria-hidden="true"><span class="button-text">Get Protected</span></span>
                 </article>
-                <article class="service card-hover" data-modal="web-development">
-                    <i class="fas fa-code" aria-hidden="true"></i>
+                 <article class="service card-hover" data-modal-target="web-development-modal" tabindex="0" role="button" aria-haspopup="dialog">
+                     <div class="service-icon"><i class="fas fa-code fa-fw" aria-hidden="true"></i></div>
                     <h3>Web Development</h3>
                     <p>Build a stunning online presence with custom websites tailored to your brand, featuring responsive designs and e-commerce capabilities.</p>
                     <p class="extra-info">Our developers create fast, SEO-optimized sites that drive traffic and conversions for your business.</p>
-                    <button class="modern-button small" onclick="location.href='#contact'">Request a Site</button>
+                    <span class="modern-button small action-button" aria-hidden="true"><span class="button-text">Request a Site</span></span>
                 </article>
-                <article class="service card-hover" data-modal="networking">
-                    <i class="fas fa-network-wired" aria-hidden="true"></i>
+                <article class="service card-hover" data-modal-target="networking-modal" tabindex="0" role="button" aria-haspopup="dialog">
+                     <div class="service-icon"><i class="fas fa-network-wired fa-fw" aria-hidden="true"></i></div>
                     <h3>Networking</h3>
                     <p>Set up and maintain secure, robust networks for seamless connectivity, optimized for small businesses to large enterprises.</p>
                     <p class="extra-info">We specialize in enterprise-grade solutions to ensure speed, reliability, and security.</p>
-                    <button class="modern-button small" onclick="location.href='#contact'">Improve Connectivity</button>
+                    <span class="modern-button small action-button" aria-hidden="true"><span class="button-text">Improve Connectivity</span></span>
                 </article>
-                <article class="service card-hover" data-modal="cloud-solutions">
-                    <i class="fas fa-cloud" aria-hidden="true"></i>
+                <article class="service card-hover" data-modal-target="cloud-solutions-modal" tabindex="0" role="button" aria-haspopup="dialog">
+                    <div class="service-icon"><i class="fas fa-cloud fa-fw" aria-hidden="true"></i></div>
                     <h3>Cloud Solutions</h3>
                     <p>Migrate to the cloud with scalable, secure systems to optimize your IT infrastructure and boost efficiency.</p>
                     <p class="extra-info">Our experts streamline your workflow with cutting-edge cloud technology for growth and flexibility.</p>
-                    <button class="modern-button small" onclick="location.href='#contact'">Go Cloud</button>
+                    <span class="modern-button small action-button" aria-hidden="true"><span class="button-text">Go Cloud</span></span>
                 </article>
-                <article class="service card-hover" data-modal="it-support">
-                    <i class="fas fa-phone" aria-hidden="true"></i>
+                <article class="service card-hover" data-modal-target="it-support-modal" tabindex="0" role="button" aria-haspopup="dialog">
+                    <div class="service-icon"><i class="fas fa-headset fa-fw" aria-hidden="true"></i></div>
                     <h3>IT Support</h3>
                     <p>24/7 IT support to keep your systems running smoothly, with proactive maintenance and remote/on-site assistance.</p>
                     <p class="extra-info">Our team is available anytime, anywhere, to resolve issues and maintain peak performance.</p>
-                    <button class="modern-button small" onclick="location.href='#contact'">Get Support</button>
+                    <span class="modern-button small action-button" aria-hidden="true"><span class="button-text">Get Support</span></span>
                 </article>
             </div>
-            <div class="supported-badges">
-                <img src="https://cdn-icons-png.flaticon.com/512/732/732221.png" alt="Windows Supported" class="badge" loading="lazy">
-                <img src="https://cdn-icons-png.flaticon.com/512/2/2235.png" alt="Apple Supported" class="badge" loading="lazy">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/3/35/Tux.svg" alt="Linux Supported" class="badge" loading="lazy">
+             <!-- Supported OS Section -->
+            <div class="supported-os" aria-labelledby="supported-os-title">
+                 <h3 id="supported-os-title" class="supported-os-title centered-text">We Support <span class="gradient-text">All</span> Major Operating Systems</h3>
+                 <div class="os-logo-scroller" aria-label="Supported Operating Systems Logos">
+                     <div class="os-logo-track">
+                        <!-- Added width/height, lazy loading -->
+                        <img src="assets/windows.svg" alt="Windows" class="os-logo" loading="lazy" width="50" height="50">
+                        <img src="assets/macos.svg" alt="macOS" class="os-logo" loading="lazy" width="50" height="50">
+                        <img src="assets/linux.svg" alt="Linux" class="os-logo" loading="lazy" width="50" height="50">
+                        <img src="assets/chromeos.svg" alt="Chrome OS" class="os-logo" loading="lazy" width="50" height="50">
+                        <img src="assets/ubuntu.svg" alt="Ubuntu" class="os-logo" loading="lazy" width="50" height="50">
+                        <img src="assets/fedora.svg" alt="Fedora" class="os-logo" loading="lazy" width="50" height="50">
+                        <img src="assets/android.svg" alt="Android" class="os-logo" loading="lazy" width="50" height="50">
+                        <img src="assets/ios.svg" alt="iOS" class="os-logo apple-dark-invert" loading="lazy" width="50" height="50">
+                        <img src="assets/wearos.svg" alt="Wear OS" class="os-logo" loading="lazy" width="50" height="50">
+                        <img src="assets/watchos.png" alt="watchOS" class="os-logo apple-dark-invert" loading="lazy" width="50" height="50">
+                        <img src="assetstvos.png" alt="tvOS" class="os-logo apple-dark-invert" loading="lazy" width="50" height="50">
+                        <img src="assets/androidtv.svg" alt="Android TV" class="os-logo" loading="lazy" width="50" height="50">
+                        <img src="assets/windowsserver.svg" alt="Windows Server" class="os-logo" loading="lazy" width="50" height="50">
+                        <img src="assets/redhat.svg" alt="Red Hat Enterprise Linux" class="os-logo" loading="lazy" width="50" height="50">
+                        <img src="assets/debian.svg" alt="Debian" class="os-logo" loading="lazy" width="50" height="50">
+                        <!-- Repeat for seamless loop -->
+                        <img src="assets/windows.svg" alt="" class="os-logo" loading="lazy" aria-hidden="true" width="50" height="50">
+                        <img src="assets/macos.svg" alt="" class="os-logo" loading="lazy" aria-hidden="true" width="50" height="50">
+                        <img src="assets/linux.svg" alt="" class="os-logo" loading="lazy" aria-hidden="true" width="50" height="50">
+                        <img src="assets/chromeos.svg" alt="" class="os-logo" loading="lazy" aria-hidden="true" width="50" height="50">
+                        <img src="assets/ubuntu.svg" alt="" class="os-logo" loading="lazy" aria-hidden="true" width="50" height="50">
+                        <img src="assets/fedora.svg" alt="" class="os-logo" loading="lazy" aria-hidden="true" width="50" height="50">
+                        <img src="assets/android.svg" alt="" class="os-logo" loading="lazy" aria-hidden="true" width="50" height="50">
+                        <img src="assets/ios.svg" alt="" class="os-logo apple-dark-invert" loading="lazy" aria-hidden="true" width="50" height="50">
+                    </div>
+                 </div>
+            </div>
+            <div class="button-container">
+                <a href="#contact" class="modern-button action-button" aria-label="Contact us for service inquiries"><span class="button-text">Contact Us</span></a>
             </div>
         </section>
 
-        <section class="gallery">
-            <h2 class="gradient-text">Our Work</h2>
+        <!-- Gallery Section -->
+        <section id="gallery" class="gallery glass-morphism section-animation" aria-labelledby="gallery-title">
+            <h2 id="gallery-title" class="gradient-text glow-text centered-text outlined-text">Our Work</h2>
             <p>Explore our portfolio of successful projects, showcasing our expertise in tech solutions for businesses like yours.</p>
-            <div class="gallery-grid">
-                <div class="gallery-item" data-src="https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80">
-                    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Tech hardware repair project" loading="lazy">
+            <div class="gallery-container" role="list">
+                <!-- Gallery Items: Added role, tabindex, aria-label, and data-alt for lightbox -->
+                <div class="gallery-item card-hover" role="listitem" tabindex="0" aria-label="View image: Tech hardware repair project" data-src="https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" data-alt="Close-up of a computer motherboard with components">
+                    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=70" alt="Tech hardware repair project" loading="lazy" width="300" height="200">
                 </div>
-                <div class="gallery-item" data-src="https://images.unsplash.com/photo-1507679799989-0c83b7a86bb1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80">
-                    <img src="https://images.unsplash.com/photo-1507679799989-0c83b7a86bb1?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Networking setup installation" loading="lazy">
+                 <div class="gallery-item card-hover" role="listitem" tabindex="0" aria-label="View image: Networking setup installation" data-src="https://images.unsplash.com/photo-1548544027-1a96c4c24c7a?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3" data-alt="Server room with racks of network equipment">
+                    <img src="https://images.unsplash.com/photo-1548544027-1a96c4c24c7a?q=80&w=300&auto=format&fit=crop&ixlib=rb-4.0.3" alt="Networking setup installation" loading="lazy" width="300" height="200">
                 </div>
-                <div class="gallery-item" data-src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80">
-                    <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Web development project" loading="lazy">
+                 <div class="gallery-item card-hover" role="listitem" tabindex="0" aria-label="View image: Web development project" data-src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" data-alt="Laptop showing lines of code on screen">
+                    <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=70" alt="Web development project" loading="lazy" width="300" height="200">
                 </div>
-                <div class="gallery-item" data-src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80">
-                    <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Cybersecurity implementation" loading="lazy">
+                 <div class="gallery-item card-hover" role="listitem" tabindex="0" aria-label="View image: Cybersecurity implementation example" data-src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" data-alt="Abstract digital security background">
+                    <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=70" alt="Cybersecurity implementation example" loading="lazy" width="300" height="200">
                 </div>
-                <div class="gallery-item" data-src="https://images.unsplash.com/photo-1454165804606-c3d57bc860?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80">
-                    <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc860?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Cloud solution deployment" loading="lazy">
+                 <div class="gallery-item card-hover" role="listitem" tabindex="0" aria-label="View image: Cloud solution deployment example" data-src="https://images.unsplash.com/photo-1638398827627-284082155e09?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3" data-alt="Cloud computing concept illustration">
+                    <img src="https://images.unsplash.com/photo-1638398827627-284082155e09?q=80&w=300&auto=format&fit=crop&ixlib=rb-4.0.3" alt="Cloud solution deployment example" loading="lazy" width="300" height="200">
                 </div>
-                <div class="gallery-item" data-src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80">
-                    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="IT support session" loading="lazy">
+                 <div class="gallery-item card-hover" role="listitem" tabindex="0" aria-label="View image: IT support session example" data-src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" data-alt="Team collaborating around a laptop">
+                    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=70" alt="IT support session example" loading="lazy" width="300" height="200">
+                </div>
+                 <div class="gallery-item card-hover" role="listitem" tabindex="0" aria-label="View image: Office tech setup" data-src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" data-alt="Modern office interior with technology">
+                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=70" alt="Office tech setup" loading="lazy" width="300" height="200">
                 </div>
             </div>
-            <button class="modern-button" onclick="location.href='#contact'">View Full Portfolio</button>
-            <div class="lightbox">
-                <span class="lightbox-close">×</span>
-                <img src="" alt="Enlarged image">
+            <div class="button-container">
+                <button type="button" class="modern-button action-button" onclick="alert('Full portfolio coming soon!')" aria-label="View full project portfolio"><span class="button-text">View Full Portfolio</span></button>
+            </div>
+            <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-labelledby="lightbox-image" aria-describedby="lightbox-alt-text" aria-hidden="true" style="display: none;">
+                <button class="lightbox-close" aria-label="Close lightbox" type="button">×</button>
+                <img src="" alt="" id="lightbox-image" class="lightbox-image">
+                <span id="lightbox-alt-text" class="sr-only"></span> <!-- Alt text for screen readers -->
             </div>
         </section>
 
-        <section class="stats">
-            <h2 class="gradient-text">Our Impact</h2>
+        <!-- Stats Section (No modals here, styling refinement in CSS) -->
+        <section id="stats" class="stats section-animation" aria-labelledby="stats-title">
+            <h2 id="stats-title" class="gradient-text glow-text centered-text outlined-text">Our Impact</h2>
             <p>Here’s how sysfx has made a difference for our clients through innovative tech solutions.</p>
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-number" data-count="500">0</div>
-                    <div class="stat-label">Clients Served</div>
+            <div class="stats-container">
+                <div class="stat-item card-hover">
+                    <span class="stat-number" data-target="100">0</span>+
+                    <span class="stat-label">Clients Served</span>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number" data-count="1000">0</div>
-                    <div class="stat-label">Repairs Completed</div>
+                <div class="stat-item card-hover">
+                    <span class="stat-number" data-target="150">0</span>+
+                    <span class="stat-label">Repairs Completed</span>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number" data-count="50">0</div>
-                    <div class="stat-label">Websites Built</div>
+                <div class="stat-item card-hover">
+                    <span class="stat-number" data-target="20">0</span>+
+                    <span class="stat-label">Websites Built</span>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number" data-count="200">0</div>
-                    <div class="stat-label">Networks Secured</div>
+                <div class="stat-item card-hover">
+                    <span class="stat-number" data-target="80">0</span>+
+                    <span class="stat-label">Networks Secured</span>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number" data-count="150">0</div>
-                    <div class="stat-label">Cloud Migrations</div>
+                 <div class="stat-item card-hover">
+                    <span class="stat-number" data-target="30">0</span>+
+                    <span class="stat-label">Cloud Migrations</span>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number" data-count="3000">0</div>
-                    <div class="stat-label">Support Tickets Resolved</div>
+                 <div class="stat-item card-hover">
+                    <span class="stat-number" data-target="1000">0</span>+
+                    <span class="stat-label">Support Tickets Resolved</span>
                 </div>
             </div>
-            <button class="modern-button" onclick="location.href='#about'">Learn More About Our Impact</button>
+            <div class="button-container">
+                <a href="#about" class="modern-button action-button" aria-label="Learn more about our company impact"><span class="button-text">Learn More About Us</span></a>
+            </div>
         </section>
 
-        <section id="events" class="events glass-morphism parallax">
-            <h2 class="gradient-text">Events & Workshops</h2>
+        <!-- Events Section (Removed from Nav, kept section for future) -->
+        <section id="events" class="events glass-morphism parallax section-animation" aria-labelledby="events-title">
+            <!-- Applied glow class (no outline on parallax) -->
+            <h2 id="events-title" class="gradient-text glow-text centered-text">Events & Workshops</h2>
             <p>Stay ahead in the tech world by joining our upcoming events and workshops on cybersecurity, web development, networking, and more.</p>
             <div class="event-timeline">
-                <article class="event-card">
-                    <div class="event-date">March 10, 2025</div>
+                 <!-- Event Card Example (Repeat) -->
+                <article class="event-card card-hover">
+                    <div class="event-date"><time datetime="2025-03-10">March 10, 2025</time></div>
                     <div class="event-content">
                         <h3>Cybersecurity 101</h3>
                         <p>Learn the basics of protecting your digital assets in this beginner-friendly workshop.</p>
                         <p class="extra-info">Includes hands-on demos, Q&A with experts, and a certificate of completion.</p>
-                        <button class="modern-button small" onclick="location.href='#contact'">Register Now</button>
+                        <a href="#contact" class="modern-button small action-button" aria-label="Register for Cybersecurity 101 workshop"><span class="button-text">Register Now</span></a>
                     </div>
                 </article>
-                <article class="event-card">
-                    <div class="event-date">March 15, 2025</div>
+                <article class="event-card card-hover">
+                    <div class="event-date"><time datetime="2025-03-15">March 15, 2025</time></div>
                     <div class="event-content">
                         <h3>Intro to Web Development</h3>
                         <p>Start your journey in web development with practical coding exercises and real-world applications.</p>
                         <p class="extra-info">Perfect for beginners—bring your laptop for hands-on learning.</p>
-                        <button class="modern-button small" onclick="location.href='#contact'">Sign Up</button>
+                         <a href="#contact" class="modern-button small action-button" aria-label="Sign up for Introduction to Web Development"><span class="button-text">Sign Up</span></a>
                     </div>
                 </article>
-                <article class="event-card">
-                    <div class="event-date">March 22, 2025</div>
+                <article class="event-card card-hover">
+                    <div class="event-date"><time datetime="2025-03-22">March 22, 2025</time></div>
                     <div class="event-content">
                         <h3>Networking Essentials</h3>
                         <p>Master the fundamentals of networking with real-world applications for business success.</p>
                         <p class="extra-info">Covers routers, switches, and network security basics with expert guidance.</p>
-                        <button class="modern-button small" onclick="location.href='#contact'">Join Event</button>
+                        <a href="#contact" class="modern-button small action-button" aria-label="Join the Networking Essentials event"><span class="button-text">Join Event</span></a>
+                    </div>
+                </article>
+                 <article class="event-card card-hover">
+                    <div class="event-date"><time datetime="2025-04-05">April 5, 2025</time></div>
+                    <div class="event-content">
+                        <h3>Cloud Computing Basics</h3>
+                        <p>Discover how cloud solutions can transform your business operations.</p>
+                        <p class="extra-info">Interactive session with live demos and migration tips.</p>
+                        <a href="#contact" class="modern-button small action-button" aria-label="Register for Cloud Computing Basics workshop"><span class="button-text">Register Now</span></a>
                     </div>
                 </article>
             </div>
-            <button class="modern-button" onclick="location.href='#contact'">View All Events</button>
+            <div class="button-container">
+                 <button type="button" class="modern-button action-button" onclick="alert('Full event calendar coming soon!')" aria-label="View all upcoming events"><span class="button-text">View All Events</span></button>
+            </div>
         </section>
 
-        <section id="case-studies" class="case-studies glass-morphism parallax compact-section">
-            <h2 class="gradient-text">Case Studies</h2>
+        <!-- Case Studies Section (Removed from Nav, kept section for future) -->
+        <section id="case-studies" class="case-studies glass-morphism section-animation" aria-labelledby="casestudies-title">
+             <!-- Applied glow and outline classes -->
+            <h2 id="casestudies-title" class="gradient-text glow-text centered-text outlined-text">Case Studies</h2>
             <p>Discover how sysfx has transformed businesses with our tailored tech solutions.</p>
             <div class="case-study-grid">
+                <!-- Case Study Example (Repeat) -->
                 <article class="case-study card-hover">
-                    <h3>Retail Chain Upgrade</h3>
-                    <p>Revamped a retail chain's network infrastructure, reducing downtime by 40%.</p>
-                    <button class="modern-button small" onclick="location.href='#contact'">Read More</button>
+                    <h3>Retail Chain Network Upgrade</h3>
+                    <p>Revamped a multi-location retail chain's network infrastructure, reducing downtime by 40% and boosting transaction speed.</p>
+                    <p class="extra-info">Implemented secure Wi-Fi 6, SD-WAN, and custom routing solutions.</p>
+                     <button type="button" class="modern-button small action-button" onclick="alert('Full case study coming soon!')" aria-label="Read more about the Retail Chain Network Upgrade case study"><span class="button-text">Read More</span></button>
+                </article>
+                 <article class="case-study card-hover">
+                    <h3>E-commerce Platform Launch</h3>
+                    <p>Built and launched a scalable e-commerce site for a local artisan, boosting online sales by 25% within the first 3 months.</p>
+                    <p class="extra-info">Included custom design, payment gateway integration, and SEO optimization.</p>
+                    <button type="button" class="modern-button small action-button" onclick="alert('Full case study coming soon!')" aria-label="Read more about the E-commerce Platform Launch case study"><span class="button-text">Read More</span></button>
                 </article>
                 <article class="case-study card-hover">
-                    <h3>E-commerce Platform</h3>
-                    <p>Built a scalable e-commerce site, boosting sales by 25% in 3 months.</p>
-                    <button class="modern-button small" onclick="location.href='#contact'">Read More</button>
+                    <h3>Healthcare Practice IT Overhaul</h3>
+                    <p>Modernized a local healthcare practice's IT systems, securing patient data and improving system uptime by over 50%.</p>
+                    <p class="extra-info">Deployed HIPAA-compliant cloud solutions and robust endpoint security.</p>
+                     <button type="button" class="modern-button small action-button" onclick="alert('Full case study coming soon!')" aria-label="Read more about the Healthcare Practice IT Overhaul case study"><span class="button-text">Read More</span></button>
                 </article>
+            </div>
+            <div class="button-container">
+                 <button type="button" class="modern-button action-button" onclick="alert('Full case studies page coming soon!')" aria-label="See all case studies"><span class="button-text">See All Case Studies</span></button>
             </div>
         </section>
 
-        <section id="testimonials" class="testimonials glass-morphism parallax compact-section">
-            <h2 class="gradient-text">What Our Clients Say</h2>
+        <!-- Testimonials Section (Removed from Nav, kept section for future) -->
+        <section id="testimonials" class="testimonials glass-morphism parallax section-animation" aria-labelledby="testimonials-title">
+            <h2 id="testimonials-title" class="gradient-text glow-text centered-text">What Our Clients Say</h2>
             <p>Hear from businesses like yours who’ve transformed their tech with sysfx’s expertise.</p>
-            <div class="testimonial-slider">
-                <article class="testimonial card-hover">
-                    <div class="quote-icon"><i class="fas fa-quote-left" aria-hidden="true"></i></div>
-                    <blockquote>
-                        <p>"Sysfx provided excellent service. They fixed my computer quickly and efficiently, saving our business downtime."</p>
-                        <footer class="testimonial-author">- John Doe, CEO of TechTrend Solutions</footer>
-                    </blockquote>
-                </article>
-                <article class="testimonial card-hover">
-                    <div class="quote-icon"><i class="fas fa-quote-left" aria-hidden="true"></i></div>
-                    <blockquote>
-                        <p>"I’m very happy with the website they built for my business. It’s modern, fast, and drives more traffic than ever."</p>
-                        <footer class="testimonial-author">- Jane Smith, Founder of WebWise Co.</footer>
-                    </blockquote>
-                </article>
-                <article class="testimonial card-hover">
-                    <div class="quote-icon"><i class="fas fa-quote-left" aria-hidden="true"></i></div>
-                    <blockquote>
-                        <p>"Their cybersecurity solutions gave us peace of mind. Our data is now secure from threats we didn’t even know existed."</p>
-                        <footer class="testimonial-author">- Michael Johnson, IT Director at NetSecure Inc.</footer>
-                    </blockquote>
-                </article>
+            <div class="carousel-container" aria-roledescription="carousel" aria-label="Client Testimonials">
+                <div class="testimonial-slider">
+                    <!-- Testimonials: Improved ARIA and structure -->
+                    <article class="testimonial" role="group" aria-roledescription="slide" aria-label="1 of 4" aria-hidden="true">
+                        <div class="quote-icon" aria-hidden="true"><i class="fas fa-quote-left"></i></div>
+                        <blockquote>
+                            <p>"Sysfx provided excellent service. They fixed my computer quickly and efficiently, saving our business valuable downtime during a critical period."</p>
+                            <footer class="testimonial-author"><cite>John D., CEO of TechTrend Solutions</cite></footer>
+                        </blockquote>
+                    </article>
+                    <article class="testimonial" role="group" aria-roledescription="slide" aria-label="2 of 4" aria-hidden="true">
+                        <div class="quote-icon" aria-hidden="true"><i class="fas fa-quote-left"></i></div>
+                        <blockquote>
+                            <p>"I’m absolutely thrilled with the website sysfx built for my business. It’s modern, incredibly fast, and drives significantly more traffic than our old site."</p>
+                            <footer class="testimonial-author"><cite>Jane S., Founder of WebWise Co.</cite></footer>
+                        </blockquote>
+                    </article>
+                    <article class="testimonial" role="group" aria-roledescription="slide" aria-label="3 of 4" aria-hidden="true">
+                         <div class="quote-icon" aria-hidden="true"><i class="fas fa-quote-left"></i></div>
+                        <blockquote>
+                            <p>"Their cybersecurity solutions gave us peace of mind. Our data is now secure from threats we didn’t even know existed. Highly recommended!"</p>
+                            <footer class="testimonial-author"><cite>Michael J., IT Director at NetSecure Inc.</cite></footer>
+                        </blockquote>
+                    </article>
+                     <article class="testimonial" role="group" aria-roledescription="slide" aria-label="4 of 4" aria-hidden="true">
+                        <div class="quote-icon" aria-hidden="true"><i class="fas fa-quote-left"></i></div>
+                        <blockquote>
+                            <p>"The networking setup by sysfx practically doubled our office connectivity speed—amazing work! The team was professional and efficient throughout."</p>
+                            <footer class="testimonial-author"><cite>Sarah L., Office Manager at RetailPro</cite></footer>
+                        </blockquote>
+                    </article>
+                </div>
+                <button type="button" class="carousel-control carousel-prev" aria-label="Previous testimonial" aria-controls="testimonial-slider"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+                <button type="button" class="carousel-control carousel-next" aria-label="Next testimonial" aria-controls="testimonial-slider"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
+                <div id="testimonial-live-region" class="sr-only" aria-live="polite" aria-atomic="true"></div>
             </div>
-            <button class="modern-button" onclick="location.href='#contact'">Share Your Story</button>
+            <div class="button-container">
+                <a href="#contact" class="modern-button action-button" aria-label="Share your feedback or testimonial"><span class="button-text">Share Your Story</span></a>
+            </div>
         </section>
 
-        <section id="about" class="about glass-morphism parallax">
-            <h2 class="gradient-text">About Us</h2>
+        <!-- About Section -->
+        <section id="about" class="about glass-morphism section-animation" aria-labelledby="about-title">
+            <h2 id="about-title" class="gradient-text glow-text centered-text outlined-text">About Us</h2>
             <p>sysfx is a team of experienced tech professionals dedicated to delivering top-notch solutions to our clients. With over 15 years of industry expertise, we specialize in computer repairs, cybersecurity, web development, networking, cloud solutions, and 24/7 IT support.</p>
             <p>Our mission is to empower businesses with innovative technology, ensuring precision, reliability, and exceptional customer service. Located in Clinton, CT, we serve clients across the region, helping them thrive in a digital-first world.</p>
-            <p>Our core values include innovation, integrity, and client satisfaction, driving us to exceed expectations with every project.</p>
-            <button class="modern-button" onclick="location.href='#contact'">Contact Us Today</button>
-            <div class="tech-trivia">
-                <h3>Tech Trivia</h3>
-                <p>Did you know the first computer "bug" was an actual insect? In 1947, engineers found a malfunction in the Harvard Mark II caused by a moth stuck in a relay!</p>
+            <p>Our core values include innovation, integrity, and client satisfaction, driving us to exceed expectations with every project. Whether you’re a small business or a growing enterprise, sysfx is your partner in tech success.</p>
+            <div class="button-container">
+                 <a href="#contact" class="modern-button action-button" aria-label="Contact sysfx today"><span class="button-text">Contact Us Today</span></a>
+                <a href="#services" class="modern-button secondary action-button" aria-label="Explore our technical expertise"><span class="button-text">Explore Our Expertise</span></a>
             </div>
         </section>
 
-        <section id="cta" class="cta glass-morphism parallax compact-section">
-            <h2 class="cta-title">Ready to Transform Your Tech?</h2>
+        <!-- Community Section (Removed from Nav, kept section for future) -->
+        <section id="community" class="community glass-morphism section-animation" aria-labelledby="community-title">
+            <h2 id="community-title" class="gradient-text glow-text centered-text outlined-text">Join Our Community</h2>
+            <p>Connect with tech enthusiasts, business owners, and IT professionals in the sysfx community. Share knowledge, attend events, and grow with us!</p>
+            <div class="button-container">
+                 <a href="#events" class="modern-button action-button" aria-label="Join our upcoming events"><span class="button-text">Join Events</span></a>
+                 <button type="button" class="modern-button secondary action-button" onclick="alert('Newsletter sign-up coming soon!')" aria-label="Subscribe to our newsletter for updates"><span class="button-text">Subscribe to Updates</span></button>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section id="cta" class="cta section-animation" aria-labelledby="cta-title">
+            <h2 id="cta-title" class="cta-title glow-text centered-text outlined-text">Ready to Transform Your Tech?</h2>
             <p>Partner with sysfx for innovative solutions that drive your business forward.</p>
             <div class="button-container">
-                <button class="modern-button primary" onclick="location.href='#contact'">
-                    <i class="fas fa-rocket" aria-hidden="true"></i> Start Now
-                </button>
-                <button class="modern-button secondary" onclick="location.href='#services'">
-                    <i class="fas fa-info-circle"></i> Learn More
-                </button>
+                <a href="#contact" class="modern-button primary action-button" aria-label="Start your project with sysfx now">
+                    <i class="fas fa-rocket" aria-hidden="true"></i> <span class="button-text">Start Now</span>
+                </a>
+                <a href="#services" class="modern-button secondary action-button" aria-label="Learn more details about sysfx services">
+                    <i class="fas fa-info-circle"></i> <span class="button-text">Learn More</span>
+                </a>
             </div>
         </section>
 
-        <section class="blog-teaser glass-morphism parallax">
-            <h2 class="gradient-text">Tech Insights</h2>
+        <!-- Blog Teaser Section -->
+        <section id="blog" class="blog-teaser glass-morphism section-animation" aria-labelledby="blog-title">
+            <h2 id="blog-title" class="gradient-text glow-text centered-text outlined-text">Tech Insights</h2>
             <p>Get a sneak peek at our latest blog posts for tips, tricks, and industry news.</p>
-            <div class="blog-preview">
-                <article>
+            <div class="blog-preview-grid">
+                 <!-- Blog Preview Example (Repeat) -->
+                <article class="blog-post-preview card-hover">
                     <h3>5 Ways to Boost Your Network Speed</h3>
                     <p>Learn simple tweaks to optimize your network performance, from QoS settings to hardware upgrades.</p>
-                    <button class="modern-button small" onclick="alert('Blog coming soon!')">Read More</button>
+                    <button type="button" class="modern-button small action-button" onclick="alert('Blog post coming soon!')" aria-label="Read more about boosting network speed"><span class="button-text">Read More</span></button>
                 </article>
-                <article>
+                <article class="blog-post-preview card-hover">
                     <h3>The Future of Cloud Computing</h3>
-                    <p>Explore how edge computing and AI are shaping the next era of cloud solutions.</p>
-                    <button class="modern-button small" onclick="alert('Blog coming soon!')">Read More</button>
+                    <p>Explore how edge computing and AI are shaping the next era of cloud solutions for businesses.</p>
+                     <button type="button" class="modern-button small action-button" onclick="alert('Blog post coming soon!')" aria-label="Read more about the future of cloud computing"><span class="button-text">Read More</span></button>
                 </article>
+                <article class="blog-post-preview card-hover">
+                    <h3>Top Cybersecurity Tips for Small Businesses</h3>
+                    <p>Protect your company from common threats with these practical, low-cost security measures.</p>
+                    <button type="button" class="modern-button small action-button" onclick="alert('Blog post coming soon!')" aria-label="Read more about cybersecurity tips for small businesses"><span class="button-text">Read More</span></button>
+                </article>
+            </div>
+            <div class="button-container">
+                 <button type="button" class="modern-button action-button" onclick="alert('Blog coming soon!')" aria-label="Visit the full sysfx blog"><span class="button-text">Visit Our Blog</span></button>
             </div>
         </section>
 
-        <section class="tech-timeline glass-morphism parallax">
-            <h2 class="gradient-text">Our Tech Journey</h2>
+        <!-- Tech Timeline Section -->
+        <section class="tech-timeline-section glass-morphism section-animation" aria-labelledby="timeline-title">
+             <!-- Applied glow and outline classes -->
+            <h2 id="timeline-title" class="gradient-text glow-text centered-text outlined-text">Our Tech Journey</h2>
             <p>A brief history of sysfx’s evolution in the tech world.</p>
             <div class="timeline">
-                <div class="timeline-item">
-                    <span class="year">2010</span>
-                    <p>Founded as N-TEC, focusing on local PC repairs.</p>
+                <!-- Timeline Item Example (Repeat) -->
+                <div class="timeline-item card-hover">
+                    <span class="timeline-year">2010</span>
+                    <p class="timeline-description">Founded as N-TEC, focusing on local PC repairs and IT support in Clinton, CT.</p>
                 </div>
-                <div class="timeline-item">
-                    <span class="year">2015</span>
-                    <p>Expanded into cybersecurity and networking solutions.</p>
+                <div class="timeline-item card-hover">
+                    <span class="timeline-year">2015</span>
+                    <p class="timeline-description">Expanded services into cybersecurity and networking solutions tailored for small businesses.</p>
                 </div>
-                <div class="timeline-item">
-                    <span class="year">2020</span>
-                    <p>Rebranded to sysfx, adding web development and cloud services.</p>
+                <div class="timeline-item card-hover">
+                    <span class="timeline-year">2018</span>
+                    <p class="timeline-description">Launched web development services, creating modern online presences for clients.</p>
+                </div>
+                <div class="timeline-item card-hover">
+                    <span class="timeline-year">2020</span>
+                    <p class="timeline-description">Rebranded to sysfx, integrating cloud solutions and offering comprehensive 24/7 IT support.</p>
+                </div>
+                <div class="timeline-item card-hover">
+                    <span class="timeline-year">2025</span>
+                    <p class="timeline-description">Celebrating 15 years of dedicated service, innovation, and growth in tech solutions.</p>
                 </div>
             </div>
         </section>
 
-        <section id="contact" class="contact glass-morphism parallax tiny-section">
-            <h2 class="gradient-text">Contact Us</h2>
+        <!-- Contact Section -->
+        <section id="contact" class="contact glass-morphism section-animation" aria-labelledby="contact-title">
+            <h2 id="contact-title" class="gradient-text glow-text centered-text outlined-text">Contact Us</h2>
             <p>Ready to elevate your tech with sysfx? Contact our team for a free consultation, quote, or support. We’re here to help 24/7!</p>
             <div class="contact-grid">
                 <div class="contact-info">
+                    <h3>Contact Information</h3>
                     <div class="contact-item">
-                        <i class="fas fa-envelope" aria-hidden="true"></i>
-                        <a href="#" class="email-link" id="email-link" aria-label="Email sysfx">Click to email</a>
+                        <i class="fas fa-envelope fa-fw" aria-hidden="true"></i>
+                        <div>
+                             <strong>Email:</strong><br>
+                             <a href="mailto:nick@sysfx.net" class="email-link" id="contact-email-link" aria-label="Email sysfx at nick@sysfx.net">nick@sysfx.net</a>
+                        </div>
                     </div>
                     <div class="contact-item">
-                        <i class="fas fa-phone" aria-hidden="true"></i>
-                        <a href="tel:+18603754425" aria-label="Call sysfx at (860) 375-4425">(860) 375-4425</a>
+                        <i class="fas fa-phone fa-fw" aria-hidden="true"></i>
+                         <div>
+                             <strong>Phone:</strong><br>
+                             <a href="tel:+18603754425" aria-label="Call sysfx at 8 6 0, 3 7 5, 4 4 2 5">(860) 375-4425</a>
+                        </div>
                     </div>
                     <div class="contact-item">
-                        <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
-                        <span>123 Main Street, Clinton, CT</span>
+                        <i class="fas fa-map-marker-alt fa-fw" aria-hidden="true"></i>
+                         <div>
+                            <strong>Address:</strong><br>
+                            <address>
+                                123 Main Street<br>
+                                Clinton, CT 06413<br>
+                                <a href="https://maps.google.com/?q=123+Main+Street,+Clinton,+CT" target="_blank" rel="noopener noreferrer">(View Map)</a>
+                            </address>
+                        </div>
                     </div>
                 </div>
+                <div class="contact-form-container">
+                    <h3>Send Us a Message</h3>
+                    <!-- Form enhancements: novalidate, input types, autocomplete, ARIA for errors -->
+                    <!-- NOTE: Replace YOUR_FORM_ID with your actual Formspree endpoint ID -->
+                    <form class="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" novalidate>
+                        <div class="form-group">
+                             <label for="name" class="form-label">Name:<span class="required-star" aria-hidden="true">*</span></label>
+                            <input type="text" id="name" name="name" class="form-input" required aria-required="true" placeholder="Your Name" autocomplete="name" aria-describedby="name-error">
+                            <span id="name-error" class="form-error" aria-live="polite"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email-input" class="form-label">Email:<span class="required-star" aria-hidden="true">*</span></label>
+                            <input type="email" id="email-input" name="email" class="form-input" required aria-required="true" placeholder="your.email@example.com" autocomplete="email" aria-describedby="email-error">
+                             <span id="email-error" class="form-error" aria-live="polite"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone" class="form-label">Phone <span class="optional">(Optional)</span>:</label>
+                            <input type="tel" id="phone" name="phone" class="form-input" placeholder="(555) 123-4567" autocomplete="tel" aria-describedby="phone-error">
+                             <span id="phone-error" class="form-error" aria-live="polite"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="subject" class="form-label">Subject:<span class="required-star" aria-hidden="true">*</span></label>
+                            <input type="text" id="subject" name="subject" class="form-input" required aria-required="true" placeholder="Reason for contacting" aria-describedby="subject-error">
+                             <span id="subject-error" class="form-error" aria-live="polite"></span>
+                        </div>
+
+                         <div class="form-group">
+                            <label for="message" class="form-label">Message:<span class="required-star" aria-hidden="true">*</span></label>
+                            <textarea id="message" name="message" class="form-textarea" rows="5" required aria-required="true" placeholder="How can we help you today?" aria-describedby="message-error"></textarea>
+                             <span id="message-error" class="form-error" aria-live="polite"></span>
+                        </div>
+
+                        <input type="text" name="_gotcha" style="display:none !important" tabindex="-1" autocomplete="off"> <!-- Honeypot -->
+
+                         <div class="form-footer">
+                            <button type="submit" class="modern-button action-button form-submit-button" aria-label="Send your message to sysfx">
+                                 <span class="button-text">Send Message</span>
+                                 <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                            </button>
+                             <!-- Form status message area -->
+                             <p id="form-status" class="form-status idle" role="status" aria-live="polite"></p>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <button class="modern-button" onclick="location.href='mailto:nick@sysfx.net'">Send Email</button>
         </section>
     </main>
 
-    <footer class="glass-morphism" role="contentinfo">
-        <p>© 2025 sysfx. All rights reserved.</p>
-        <div class="social-links">
-            <a href="https://twitter.com/sysfxtech" target="_blank" aria-label="Follow us on Twitter"><i class="fab fa-twitter"></i></a>
-            <a href="https://facebook.com/sysfxtech" target="_blank" aria-label="Follow us on Facebook"><i class="fab fa-facebook"></i></a>
-            <a href="https://linkedin.com/company/sysfx" target="_blank" aria-label="Follow us on LinkedIn"><i class="fab fa-linkedin"></i></a>
+    <!-- Footer -->
+    <footer class="main-footer glass-morphism" role="contentinfo">
+        <div class="footer-content">
+            <p class="copyright">© <span id="current-year">2025</span> sysfx. All rights reserved.</p>
+            <div class="social-links">
+                <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Follow sysfx on Twitter (opens in new tab)"><i class="fab fa-twitter"></i></a>
+                <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Follow sysfx on Facebook (opens in new tab)"><i class="fab fa-facebook"></i></a>
+                <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Follow sysfx on LinkedIn (opens in new tab)"><i class="fab fa-linkedin"></i></a>
+                <a href="https://www.instagram.com/sys.fx/" target="_blank" rel="noopener noreferrer" aria-label="Follow sysfx on Instagram (opens in new tab)"><i class="fab fa-instagram"></i></a>
+            </div>
+             <nav class="footer-links" aria-label="Footer navigation">
+                <a href="#privacy-policy">Privacy Policy</a>
+                <a href="#terms-of-service">Terms of Service</a>
+             </nav>
         </div>
     </footer>
 
-    <!-- Service Modals -->
-    <div id="computer-repair-modal" class="modal">
-        <div class="modal-content">
-            <span class="modal-close">×</span>
-            <h3>Computer Repair Services</h3>
-            <p>Our computer repair services cover desktops, laptops, and more, addressing hardware issues, software optimization, and urgent needs with same-day service options. Trust our certified technicians to restore your devices to peak performance using state-of-the-art tools.</p>
-            <button class="modern-button small modal-action" onclick="location.href='#contact'">Request Repair</button>
+    <!-- Modals Container -->
+    <div class="modal-container" aria-hidden="true">
+        <!-- Computer Repair Modal -->
+        <div id="computer-repair-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="computer-repair-title" aria-hidden="true" style="display: none;">
+            <div class="modal-content glass-morphism">
+                <button class="modal-close" aria-label="Close Computer Repair Details" type="button">×</button>
+                <h3 id="computer-repair-title" class="modal-title"><i class="fas fa-laptop fa-fw" aria-hidden="true"></i> Computer Repair</h3>
+                <div class="modal-body">
+                    <p>We offer fast, reliable repairs for desktops, laptops (PC & Mac), and peripherals. Our services include:</p>
+                    <ul>
+                        <li>Hardware diagnostics and replacement (RAM, hard drives, screens, etc.)</li>
+                        <li>Software troubleshooting and optimization (OS issues, virus removal)</li>
+                        <li>Data recovery attempts</li>
+                        <li>Performance upgrades</li>
+                    </ul>
+                    <p>Bring your device in or ask about our remote support options!</p>
+                </div>
+                 <div class="modal-footer button-container">
+                    <button type="button" class="modern-button small action-button modal-action" data-link="#contact">Request Repair</button>
+                    <button type="button" class="modern-button small secondary modal-close-alt">Close</button>
+                </div>
+            </div>
         </div>
-    </div>
-    <div id="cybersecurity-modal" class="modal">
-        <div class="modal-content">
-            <span class="modal-close">×</span>
-            <h3>Cybersecurity Solutions</h3>
-            <p>Protect your business with sysfx’s advanced cybersecurity solutions, featuring threat detection, firewalls, and continuous monitoring to shield against cyber threats. We offer tailored plans to secure your data and ensure compliance with industry standards.</p>
-            <button class="modern-button small modal-action" onclick="location.href='#contact'">Secure My Business</button>
+        <!-- Cybersecurity Modal -->
+        <div id="cybersecurity-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="cybersecurity-title" aria-hidden="true" style="display: none;">
+            <div class="modal-content glass-morphism">
+                <button class="modal-close" aria-label="Close Cybersecurity Details" type="button">×</button>
+                <h3 id="cybersecurity-title" class="modal-title"><i class="fas fa-shield-alt fa-fw" aria-hidden="true"></i> Cybersecurity Solutions</h3>
+                <div class="modal-body">
+                    <p>Protect your valuable data and digital assets with our comprehensive cybersecurity services:</p>
+                    <ul>
+                        <li>Threat detection and prevention (Antivirus, Anti-malware)</li>
+                        <li>Firewall setup and management</li>
+                        <li>Network security audits and vulnerability scanning</li>
+                        <li>Data backup and disaster recovery planning</li>
+                        <li>Security awareness training for employees</li>
+                    </ul>
+                    <p>Secure your home or business network against evolving threats.</p>
+                </div>
+                 <div class="modal-footer button-container">
+                    <button type="button" class="modern-button small action-button modal-action" data-link="#contact">Get Protected</button>
+                     <button type="button" class="modern-button small secondary modal-close-alt">Close</button>
+                </div>
+            </div>
         </div>
-    </div>
-    <div id="web-development-modal" class="modal">
-        <div class="modal-content">
-            <span class="modal-close">×</span>
-            <h3>Web Development Services</h3>
-            <p>Create a powerful online presence with sysfx’s web development services. We build custom, responsive websites with e-commerce capabilities, optimized for speed and SEO to drive traffic and conversions for your business.</p>
-            <button class="modern-button small modal-action" onclick="location.href='#contact'">Build My Website</button>
+        <!-- Web Development Modal -->
+        <div id="web-development-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="web-dev-title" aria-hidden="true" style="display: none;">
+            <div class="modal-content glass-morphism">
+                <button class="modal-close" aria-label="Close Web Development Details" type="button">×</button>
+                <h3 id="web-dev-title" class="modal-title"><i class="fas fa-code fa-fw" aria-hidden="true"></i> Web Development</h3>
+                <div class="modal-body">
+                    <p>Create a powerful online presence with our custom web development services:</p>
+                     <ul>
+                        <li>Responsive website design and development</li>
+                        <li>E-commerce solutions (online stores)</li>
+                        <li>Content Management System (CMS) integration (e.g., WordPress)</li>
+                        <li>Website maintenance and updates</li>
+                        <li>Search Engine Optimization (SEO) basics</li>
+                    </ul>
+                    <p>Let us build a fast, secure, and user-friendly website for your brand.</p>
+                </div>
+                 <div class="modal-footer button-container">
+                    <button type="button" class="modern-button small action-button modal-action" data-link="#contact">Request a Site</button>
+                     <button type="button" class="modern-button small secondary modal-close-alt">Close</button>
+                </div>
+            </div>
         </div>
-    </div>
-    <div id="networking-modal" class="modal">
-        <div class="modal-content">
-            <span class="modal-close">×</span>
-            <h3>Networking Solutions</h3>
-            <p>sysfx provides robust networking solutions for seamless connectivity, from small business setups to large enterprise systems. Our experts ensure speed, security, and reliability with enterprise-grade technology.</p>
-            <button class="modern-button small modal-action" onclick="location.href='#contact'">Enhance My Network</button>
-        </div>
-    </div>
-    <div id="cloud-solutions-modal" class="modal">
-        <div class="modal-content">
-            <span class="modal-close">×</span>
-            <h3>Cloud Solutions</h3>
-            <p>Migrate to the cloud with sysfx’s scalable, secure cloud solutions to optimize your IT infrastructure. Our experts streamline your workflow, enhancing efficiency and flexibility for business growth.</p>
-            <button class="modern-button small modal-action" onclick="location.href='#contact'">Migrate to Cloud</button>
-        </div>
-    </div>
-    <div id="it-support-modal" class="modal">
-        <div class="modal-content">
-            <span class="modal-close">×</span>
-            <h3>IT Support Services</h3>
-            <p>Get 24/7 IT support from sysfx to keep your systems running smoothly. Our proactive maintenance and remote/on-site assistance resolve issues quickly, ensuring peak performance anytime, anywhere.</p>
-            <button class="modern-button small modal-action" onclick="location.href='#contact'">Get IT Help</button>
-        </div>
-    </div>
+         <!-- Networking Modal -->
+         <div id="networking-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="networking-title" aria-hidden="true" style="display: none;">
+             <div class="modal-content glass-morphism">
+                 <button class="modal-close" aria-label="Close Networking Details" type="button">×</button>
+                 <h3 id="networking-title" class="modal-title"><i class="fas fa-network-wired fa-fw" aria-hidden="true"></i> Networking</h3>
+                 <div class="modal-body">
+                     <p>Establish reliable and secure network infrastructure for seamless connectivity. Our services cover:</p>
+                     <ul>
+                         <li>Wired and wireless network setup (Wi-Fi 6/6E/7)</li>
+                         <li>Router and switch configuration</li>
+                         <li>Network security implementation (Firewalls, VPNs)</li>
+                         <li>Performance optimization and troubleshooting</li>
+                         <li>Structured cabling</li>
+                     </ul>
+                     <p>From home offices to enterprise environments, we ensure your network is fast and dependable.</p>
+                 </div>
+                 <div class="modal-footer button-container">
+                     <button type="button" class="modern-button small action-button modal-action" data-link="#contact">Improve Connectivity</button>
+                     <button type="button" class="modern-button small secondary modal-close-alt">Close</button>
+                 </div>
+             </div>
+         </div>
+         <!-- Cloud Solutions Modal -->
+          <div id="cloud-solutions-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="cloud-title" aria-hidden="true" style="display: none;">
+             <div class="modal-content glass-morphism">
+                 <button class="modal-close" aria-label="Close Cloud Solutions Details" type="button">×</button>
+                 <h3 id="cloud-title" class="modal-title"><i class="fas fa-cloud fa-fw" aria-hidden="true"></i> Cloud Solutions</h3>
+                 <div class="modal-body">
+                     <p>Leverage the power of the cloud for flexibility, scalability, and efficiency. We provide:</p>
+                     <ul>
+                         <li>Cloud migration planning and execution (AWS, Azure, Google Cloud)</li>
+                         <li>Cloud server setup and management</li>
+                         <li>Microsoft 365 / Google Workspace deployment and support</li>
+                         <li>Cloud backup and disaster recovery solutions</li>
+                         <li>Hybrid cloud infrastructure design</li>
+                     </ul>
+                     <p>Optimize your workflow and reduce infrastructure costs with our tailored cloud strategies.</p>
+                 </div>
+                 <div class="modal-footer button-container">
+                     <button type="button" class="modern-button small action-button modal-action" data-link="#contact">Go Cloud</button>
+                      <button type="button" class="modern-button small secondary modal-close-alt">Close</button>
+                 </div>
+             </div>
+         </div>
+         <!-- IT Support Modal -->
+          <div id="it-support-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="it-support-title" aria-hidden="true" style="display: none;">
+             <div class="modal-content glass-morphism">
+                 <button class="modal-close" aria-label="Close IT Support Details" type="button">×</button>
+                 <h3 id="it-support-title" class="modal-title"><i class="fas fa-headset fa-fw" aria-hidden="true"></i> IT Support</h3>
+                 <div class="modal-body">
+                     <p>Reliable, responsive IT support to keep your systems running smoothly. We offer:</p>
+                     <ul>
+                         <li>24/7 Remote and On-site support</li>
+                         <li>Helpdesk services for quick issue resolution</li>
+                         <li>Proactive system monitoring and maintenance</li>
+                         <li>Managed IT services plans</li>
+                         <li>Hardware and software procurement assistance</li>
+                     </ul>
+                     <p>Focus on your business while we handle the technology.</p>
+                 </div>
+                 <div class="modal-footer button-container">
+                     <button type="button" class="modern-button small action-button modal-action" data-link="#contact">Get Support</button>
+                      <button type="button" class="modern-button small secondary modal-close-alt">Close</button>
+                 </div>
+             </div>
+         </div>
+    </div> <!-- End Modal Container -->
 
-    <!-- Audio Player -->
-    <audio id="welcome-music" preload="auto">
+    <!-- Background Music Player -->
+    <audio id="background-music" loop preload="metadata" aria-label="Background music player">
         <source src="https://ia802208.us.archive.org/30/items/title_20240514_0432/title.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
-    <button id="music-toggle" class="music-btn" aria-label="Toggle Music"><i class="fas fa-volume-up"></i></button>
 
-    <!-- Tech Tip Container with Close Button -->
-    <div class="sticky-note">
-        <span id="tech-tip-text"></span>
-        <button id="close-tech-tip" class="close-btn" aria-label="Close Tech Tip">×</button>
-    </div>
+    <!-- Floating Elements Container -->
+    <aside class="floating-elements" aria-label="Quick access tools">
+        <div class="chat-bubble" id="chat-bubble" role="button" tabindex="0" style="display: none;">
+            <i class="fas fa-comments" aria-hidden="true"></i> <span>Chat (Soon!)</span>
+        </div>
+        <div class="floating-buttons">
+            <button id="music-toggle" class="floating-action-button music-button muted" aria-label="Play background music" aria-pressed="false" type="button">
+                <i class="fas fa-music" aria-hidden="true"></i>
+                <span class="sr-only">Toggle Music</span>
+            </button>
+            <button class="floating-action-button scroll-top-btn" id="scroll-top-button" aria-label="Scroll back to top" style="display: none; opacity: 0; transform: scale(0.8);" type="button">
+                <i class="fas fa-arrow-up" aria-hidden="true"></i>
+                <span class="sr-only">Scroll to Top</span>
+            </button>
+        </div>
+    </aside>
 
-    <!-- Floating Chat Bubble -->
-    <div class="chat-bubble" id="chat-bubble">
-        <span>Need help? Chat with us!</span>
-    </div>
+    <!-- Easter Egg Trigger (Hidden) -->
+    <div class="easter-egg-trigger" aria-hidden="true" style="position: absolute; bottom: 5px; left: 5px; width:10px; height: 10px; opacity: 0; cursor: pointer;"></div>
 
-    <!-- Scroll-to-Top Button -->
-    <button class="scroll-top-btn" aria-label="Scroll to Top"><i class="fas fa-arrow-up"></i></button>
-
-    <!-- Easter Egg Trigger -->
-    <div class="easter-egg-trigger" aria-hidden="true"></div>
 </body>
 </html>

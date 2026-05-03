@@ -1,6 +1,6 @@
 /**
  * SysFX Website Script
- * Version: 2.4 (Optimized & Cleaned)
+ * Version: 3.2 (Optimized with OnePageNav, Debian Boot & Terminal Mode)
  * Author: sysfx 
  *
  * Purpose: Manages dynamic interactions, animations, and third-party
@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Configuration & Feature Flags ---
     const CONFIG = {
-        SCROLLSPY_THROTTLE_MS: 150,
         RESIZE_DEBOUNCE_MS: 250,
         TYPING_SPEED_MS: 85,
         TYPING_DELETE_SPEED_MS: 40,
@@ -28,8 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
             "Your Partner in Tech Solutions.",
             "Expert Computer Repair Services.",
             "Robust Cybersecurity Solutions.",
-            "Custom Web Development.",
-            "Reliable Networking & IT Support.",
+            "Custom Web Architecture.",
+            "Enterprise Networking.",
             "Serving Clinton, CT and Beyond."
         ],
         TECH_TRIVIA: [
@@ -76,7 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const logError = (message, error = '') => console.error(`[SysFX Script Error] ${message}`, error);
     const logWarn = (message) => console.warn(`[SysFX Script Warn] ${message}`);
-    const logInfo = (message) => console.info(`[SysFX Script Info] ${message}`);
 
     const selectElement = (selector, context = document) => {
         try { return context.querySelector(selector); } catch (e) { logError(`Invalid selector: ${selector}`, e); return null; }
@@ -114,7 +112,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let activeModal = null;
     let activeLightboxTarget = null;
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let audioFadeInterval = null;
     let cursorXQuickTo = null;
     let cursorYQuickTo = null;
 
@@ -130,7 +127,6 @@ document.addEventListener('DOMContentLoaded', () => {
             mobileNav: '#mobile-navigation',
             mobileNavClose: '.mobile-nav-close',
             mobileNavOverlay: '#mobile-nav-overlay',
-            navLinks: '.main-nav .nav-link[href^="#"]',
             scrollProgress: '.scroll-progress',
             currentTimeDisplay: '#current-time',
             typingEffectElement: '#typing-effect', mapElement: '#map',
@@ -150,12 +146,12 @@ document.addEventListener('DOMContentLoaded', () => {
             easterEggTrigger: '.easter-egg-trigger',
             customCursor: '.cursor',
             form: '.contact-form', formStatus: '#form-status', skipLink: '.skip-link',
-            mainContent: '#main-content',
-            sectionsForScrollspy: 'main section[id]'
+            mainContent: '#main-content'
         };
         const elements = {};
         for (const key in selectors) {
-            const multiple = ['modals', 'navLinks', 'serviceCards', 'modalScrollButtons', 'galleryItems', 'testimonials', 'statsNumbers', 'animatedSections', 'sectionsForScrollspy'].includes(key);
+            // Include legacy selectors to prevent errors if you ever add those sections back
+            const multiple = ['modals', 'serviceCards', 'modalScrollButtons', 'galleryItems', 'testimonials', 'statsNumbers', 'animatedSections'].includes(key);
             elements[key] = multiple ? selectElements(selectors[key]) : selectElement(selectors[key]);
         }
         if (!elements.body) console.error("FATAL: Body element not found!");
@@ -289,11 +285,11 @@ document.addEventListener('DOMContentLoaded', () => {
             particlesJS('particles-js', {
                 particles: {
                     number: { value: 100, density: { enable: true, value_area: 800 } },
-                    color: { value: "#4CAF50" },
+                    color: { value: "#0dcaf0" },
                     shape: { type: "circle" },
-                    opacity: { value: 0.45, random: true, anim: { enable: true, speed: 0.8, opacity_min: 0.1, sync: false } },
+                    opacity: { value: 0.35, random: true, anim: { enable: true, speed: 0.8, opacity_min: 0.1, sync: false } },
                     size: { value: 3, random: true },
-                    line_linked: { enable: true, distance: 130, color: "#444444", opacity: 0.5, width: 1 },
+                    line_linked: { enable: true, distance: 130, color: "#6f42c1", opacity: 0.3, width: 1 },
                     move: { enable: true, speed: 1.5, direction: "none", random: true, straight: false, out_mode: "out", bounce: false }
                 },
                 interactivity: {
@@ -338,7 +334,7 @@ document.addEventListener('DOMContentLoaded', () => {
         mapInstance.eachLayer((layer) => { if (layer instanceof L.Marker || (layer.options && layer.options.icon instanceof L.DivIcon)) mapInstance.removeLayer(layer); });
         try {
             const computedStyle = getComputedStyle(ELEMENTS.body);
-            const markerColor = ELEMENTS.body.classList.contains('dark-mode') ? (computedStyle.getPropertyValue('--secondary-color').trim() || '#4CAF50') : (computedStyle.getPropertyValue('--primary-color').trim() || '#00a000');
+            const markerColor = ELEMENTS.body.classList.contains('dark-mode') ? (computedStyle.getPropertyValue('--tertiary-color').trim() || '#0d6efd') : (computedStyle.getPropertyValue('--primary-color').trim() || '#058743');
             const borderColor = ELEMENTS.body.classList.contains('dark-mode') ? '#212529' : '#f8f9fa';
             
             const styleId = 'map-marker-keyframes';
@@ -435,7 +431,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const handleLightbox = () => {
-        if (!ELEMENTS.lightbox) return;
+        if (!ELEMENTS.lightbox || ELEMENTS.galleryItems.length === 0) return;
         const openLightbox = (item) => {
             activeLightboxTarget = item;
             ELEMENTS.lightboxImage.src = item.getAttribute('data-src');
@@ -593,46 +589,54 @@ document.addEventListener('DOMContentLoaded', () => {
         document.addEventListener('mouseenter', () => gsap.to(ELEMENTS.customCursor, { opacity: 1, scale: 1, duration: 0.2 }));
     };
 
-    const handleMobileNav = () => {
+    const handleMobileNavToggle = (forceClose = false) => {
         if (!ELEMENTS.hamburgerButton || !ELEMENTS.mobileNav) return;
-        const toggleNav = (forceClose = false) => {
-            const openNav = !ELEMENTS.body.classList.contains('nav-active') && !forceClose;
-            ELEMENTS.body.classList.toggle('nav-active', openNav);
-            ELEMENTS.hamburgerButton.classList.toggle('is-active', openNav);
-            ELEMENTS.hamburgerButton.setAttribute('aria-expanded', String(openNav));
-            ELEMENTS.mobileNav.setAttribute('aria-hidden', String(!openNav));
-            ELEMENTS.mobileNavOverlay.setAttribute('aria-hidden', String(!openNav));
-            
-            if (openNav) {
-                ELEMENTS.mainContent?.setAttribute('inert', ''); ELEMENTS.footer?.setAttribute('inert', '');
-                setTimeout(() => (selectElement('a[href], button', ELEMENTS.mobileNav) || ELEMENTS.mobileNav).focus(), 50);
-            } else {
-                ELEMENTS.mainContent?.removeAttribute('inert'); ELEMENTS.footer?.removeAttribute('inert');
-                ELEMENTS.hamburgerButton.focus();
-            }
-        };
+        const openNav = !ELEMENTS.body.classList.contains('nav-active') && !forceClose;
+        ELEMENTS.body.classList.toggle('nav-active', openNav);
+        ELEMENTS.hamburgerButton.classList.toggle('is-active', openNav);
+        ELEMENTS.hamburgerButton.setAttribute('aria-expanded', String(openNav));
+        ELEMENTS.mobileNav.setAttribute('aria-hidden', String(!openNav));
+        ELEMENTS.mobileNavOverlay.setAttribute('aria-hidden', String(!openNav));
         
-        ELEMENTS.hamburgerButton.addEventListener('click', () => toggleNav());
-        ELEMENTS.mobileNavClose?.addEventListener('click', () => toggleNav(true));
-        ELEMENTS.mobileNavOverlay?.addEventListener('click', () => toggleNav(true));
-        ELEMENTS.navLinks.forEach(link => link.addEventListener('click', () => toggleNav(true)));
+        if (openNav) {
+            ELEMENTS.mainContent?.setAttribute('inert', ''); ELEMENTS.footer?.setAttribute('inert', '');
+            setTimeout(() => (selectElement('a[href], button', ELEMENTS.mobileNav) || ELEMENTS.mobileNav).focus(), 50);
+        } else {
+            ELEMENTS.mainContent?.removeAttribute('inert'); ELEMENTS.footer?.removeAttribute('inert');
+            ELEMENTS.hamburgerButton.focus();
+        }
     };
 
-    const handleScrollspy = () => {
-        if (ELEMENTS.sectionsForScrollspy.length === 0 || !window.IntersectionObserver) return;
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    ELEMENTS.navLinks.forEach(link => {
-                        const isActive = link.getAttribute('href') === `#${entry.target.id}`;
-                        link.classList.toggle('active', isActive);
-                        link.setAttribute('aria-current', isActive ? 'page' : 'false');
-                    });
+    const setupMobileNavListeners = () => {
+        ELEMENTS.hamburgerButton?.addEventListener('click', () => handleMobileNavToggle());
+        ELEMENTS.mobileNavClose?.addEventListener('click', () => handleMobileNavToggle(true));
+        ELEMENTS.mobileNavOverlay?.addEventListener('click', () => handleMobileNavToggle(true));
+    };
+
+    // --- OnePageNav Initialization ---
+    const initializeOnePageNav = () => {
+        if (typeof $ === 'undefined' || !$.fn.onePageNav) {
+            logWarn("jQuery or OnePageNav plugin is missing. Smooth scrolling disabled.");
+            return;
+        }
+
+        const navOptions = {
+            currentClass: 'current',
+            changeHash: false,
+            scrollSpeed: 750,
+            scrollThreshold: 0.5,
+            filter: '',
+            easing: 'swing',
+            begin: function() {
+                // Ensure mobile nav closes smoothly when a link is clicked
+                if (ELEMENTS.body.classList.contains('nav-active')) {
+                    handleMobileNavToggle(true);
                 }
-            });
-        }, { rootMargin: `-${(ELEMENTS.header?.offsetHeight || 80) + 60}px 0px -40% 0px`, threshold: 0 });
-        
-        ELEMENTS.sectionsForScrollspy.forEach(section => observer.observe(section));
+            }
+        };
+
+        $('#desktop-navigation .nav-list').onePageNav(navOptions);
+        $('#mobile-navigation .nav-list').onePageNav(navOptions);
     };
 
     const handleEasterEgg = () => {
@@ -704,6 +708,44 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(remove, CONFIG.PRELOADER_TIMEOUT_MS); // Safety fallback
     };
 
+    // --- Cool Feature 1: Debian Boot Console Log ---
+    const runDebianBootSequence = () => {
+        const styleOk = "color: #0f0; font-weight: bold;";
+        const styleInfo = "color: #0dcaf0; font-weight: bold;";
+        const styleBase = "color: #ccc;";
+        
+        console.log("%c[  OK  ] %cStarted sysfx web services.", styleOk, styleBase);
+        setTimeout(() => console.log("%c[  OK  ] %cReached target Network is Online.", styleOk, styleBase), 200);
+        setTimeout(() => console.log("%c[ INFO ] %cMounting /dev/sda1...", styleInfo, styleBase), 450);
+        setTimeout(() => console.log("%c[  OK  ] %cMounted /var/www/html.", styleOk, styleBase), 600);
+        setTimeout(() => console.log("%c[  OK  ] %cStarted Docker Application Container Engine.", styleOk, styleBase), 800);
+        setTimeout(() => console.log("%c[  OK  ] %cStarted Debian system initialization.", styleOk, styleBase), 1100);
+        setTimeout(() => {
+            console.log("%c\nWelcome to sysfx terminal. All systems nominal.", "color: #00d062; font-size: 14px; font-weight: bold;");
+            console.log("%c(Hint: Press the '~' key for terminal mode)\n", "color: #6c757d; font-style: italic;");
+        }, 1500);
+    };
+
+    // --- Cool Feature 2: Terminal Mode Hotkey ---
+    const handleEasterEggHotkeys = () => {
+        document.addEventListener('keydown', (e) => {
+            // Toggle terminal mode when the tilde (~) key is pressed
+            if (e.key === '`' || e.key === '~') {
+                // Prevent toggling if user is typing in a form field
+                if (document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+                    e.preventDefault();
+                    ELEMENTS.body.classList.toggle('terminal-mode');
+                    
+                    if (ELEMENTS.body.classList.contains('terminal-mode')) {
+                        console.log("%c> Terminal mode activated. UI stripped.", "color: #0f0;");
+                    } else {
+                        console.log("%c> Terminal mode deactivated. UI restored.", "color: #0f0;");
+                    }
+                }
+            }
+        });
+    };
+
     // --- Initialization ---
     const initialize = () => {
         hidePreloader();
@@ -711,12 +753,17 @@ document.addEventListener('DOMContentLoaded', () => {
         adjustLayoutPadding();
         displayTime(); setInterval(displayTime, 60000);
         displayTechTrivia();
-        handleMobileNav();
+        setupMobileNavListeners();
+        initializeOnePageNav(); 
         handleScrollTopButton();
         handleModals();
         handleLightbox();
         handleTestimonialCarousel();
         handleFormSubmission();
+        
+        // Execute the new Easter Egg functions
+        runDebianBootSequence();
+        handleEasterEggHotkeys();
 
         requestAnimationFrame(() => {
             initializeParticles();
@@ -727,8 +774,6 @@ document.addEventListener('DOMContentLoaded', () => {
             handleEasterEgg();
             typeEffectHandler();
         });
-
-        setTimeout(handleScrollspy, 300);
     };
 
     // --- Global Listeners ---
